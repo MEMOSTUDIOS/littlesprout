@@ -1263,9 +1263,9 @@
 
 			#header .content p {
 				text-transform: none;
-				letter-spacing: 0.1rem;
-				font-size: 0.8rem;
-				line-height: 2;
+				letter-spacing: 0.075rem;
+				font-size: 0.9rem;
+				line-height: 1.8;
 			}
 
 		#header nav ul {
