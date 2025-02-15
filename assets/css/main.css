@@ -90,7 +90,7 @@
 
         /* Welcome Section */
         #welcome {
-            background: linear-gradient(rgba(75,43,81,0.25), rgba(255,255,255,0.25)), url('images/little-sprout-bg.png');
+            background: linear-gradient(rgba(75,43,81,0.25), rgba(255,255,255,0.25)), url('/images/little-sprout-bg.png');
             background-size: cover;
 background-repeat: no-repeat;
 background-position: top center;
@@ -158,7 +158,7 @@ background-position: top center;
         /* Cards Section */
         #cards {
             background: #000000;
-background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.1)), url('images/board-game-little-sprout.png');
+background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.1)), url('/images/board-game-little-sprout.png');
             background-size: cover;
 background-repeat: no-repeat;
 background-position: center center;
