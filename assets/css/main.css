@@ -283,7 +283,7 @@ max-width: 80px;}
 padding: 10px 5px;}
 .tcenter {text-align: center;}
 .small, .category {font-size: 16px; font-weight: 400;}
-.category {display: flex; align-items:center;}
+.category {display: flex; align-items:center; justify-content: space-between;}
 /* Captivating product image styling */
 .product-img {
   display: block;
@@ -318,7 +318,7 @@ padding: 10px 5px;}
 }
 .mt-5 {margin-top: 50px;}
 .mt-3 {margin-top: 30px;}
-.card-img {width: 40px; margin-left: 70px;}
+.card-img {width: 40px;}
 .card-category {width: 24px; margin-right: 5px;}
 
 .language-switcher {
