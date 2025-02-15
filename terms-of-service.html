@@ -20,7 +20,12 @@
             <a href="index.html" class="logo" title="Logo Little Sprout">
                    <img src="images/logo-little-sprout.png" alt="icon"><span>Little Sprout</span>
             </a>
-           
+           <!-- Add this right before the closing </nav> tag, inside the nav-container div -->
+<div class="language-switcher">
+    <a href="index.html" id="en-link" class="active2" title="English">EN</a>
+    <span class="divider">|</span>
+    <a href="index-ro.html" id="ro-link" title="Romanian">RO</a>
+</div>
         </div>
     </nav>
 
@@ -534,6 +539,20 @@ Enforcement Division: [lucian.mangu@gmail.com]<br/></p>
                 });
             });
         });
+document.addEventListener('DOMContentLoaded', function() {
+    // Determine which page we're on
+    const currentPath = window.location.pathname;
+    const enLink = document.getElementById('en-link');
+    const roLink = document.getElementById('ro-link');
+    
+    if (currentPath.includes('index-ro.html')) {
+        enLink.classList.remove('active2');
+        roLink.classList.add('active2');
+    } else {
+        enLink.classList.add('active2');
+        roLink.classList.remove('active2');
+    }
+});
     </script>
 </body>
 </html>
