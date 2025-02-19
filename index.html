@@ -15,7 +15,7 @@
 <body>
     <nav>
         <div class="nav-container">
-            <a href="index-ro.html" class="logo" title="Logo Little Sprout">
+            <a href="index.html" class="logo" title="Logo Little Sprout">
                    <img src="images/logo-little-sprout.png" alt="icon"><span>Little Sprout</span>
             </a>
             <ul>
@@ -26,9 +26,9 @@
                 <li><a href="#shop">Comandă</a></li>
             </ul>
 <div class="language-switcher">
-<a href="index-ro.html" id="ro-link" class="active2" title="Romanian">RO</a>
+<a href="index.html" id="ro-link" class="active2" title="Romanian">RO</a>
     <span class="divider">|</span>
-    xx<a href="index.html" id="en-link" title="English">EN</a>
+    <a href="en.html" id="en-link" title="English">EN</a>
 </div>
 <!-- Add this right before the closing </nav> tag, inside the nav-container div -->
 
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentFile = currentPath.split('/').pop() || 'index.html';
     
     // Update active states based on current page
-    if (currentFile === 'index-ro.html') {
+    if (currentFile === 'index.html') {
         enLink.classList.remove('active2');
         roLink.classList.add('active2');
     } else {
@@ -305,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Update href attributes to ensure proper navigation
-    enLink.href = currentFile === 'index-ro.html' ? 'index.html' : '#';
-    roLink.href = currentFile === 'index.html' ? 'index-ro.html' : '#';
+    enLink.href = currentFile === 'en.html' ? 'en.html' : '#';
+    roLink.href = currentFile === 'index.html' ? 'index.html' : '#';
     
     // Add click handlers to prevent navigation when already on the page
     enLink.addEventListener('click', function(e) {
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     roLink.addEventListener('click', function(e) {
-        if (currentFile === 'index-ro.html') {
+        if (currentFile === 'en.html') {
             e.preventDefault();
         }
     });
