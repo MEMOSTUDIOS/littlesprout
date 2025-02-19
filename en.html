@@ -26,10 +26,10 @@
                 <li><a href="#shop">Shop</a></li>
             </ul>
 <div class="language-switcher">
-    <a href="en.html" id="en-link" class="active2" title="English">EN</a>
-    <span class="divider">|</span>
     <a href="index.html" id="ro-link" title="Romanian">RO</a>
-</div>x
+    <span class="divider">|</span>
+    <a href="en.html" id="en-link" title="English">EN</a>
+</div>
 <!-- Add this right before the closing </nav> tag, inside the nav-container div -->
 
         </div>
@@ -297,30 +297,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentFile = currentPath.split('/').pop() || 'index.html';
     
     // Update active states based on current page
-    if (currentFile === 'index-ro.html') {
-        enLink.classList.remove('active2');
+    if (currentFile === 'index.html' || currentFile === '') {
         roLink.classList.add('active2');
-    } else {
+        enLink.classList.remove('active2');
+    } else if (currentFile === 'en.html') {
         enLink.classList.add('active2');
         roLink.classList.remove('active2');
     }
     
-    // Update href attributes to ensure proper navigation
-    enLink.href = currentFile === 'index-ro.html' ? 'index.html' : '#';
-    roLink.href = currentFile === 'index.html' ? 'index-ro.html' : '#';
-    
-    // Add click handlers to prevent navigation when already on the page
-    enLink.addEventListener('click', function(e) {
-        if (currentFile === 'index.html') {
-            e.preventDefault();
-        }
-    });
-    
-    roLink.addEventListener('click', function(e) {
-        if (currentFile === 'index-ro.html') {
-            e.preventDefault();
-        }
-    });
+    // Remove any click event prevention
+    enLink.href = 'en.html';
+    roLink.href = 'index.html';
 });
     </script>
 </body>
