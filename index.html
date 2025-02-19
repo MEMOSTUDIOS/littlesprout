@@ -305,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Update href attributes to ensure proper navigation
-    enLink.href = currentFile === 'en.html' ? 'en.html' : '#';
-    roLink.href = currentFile === 'index.html' ? 'index.html' : '#';
+    enLink.href = currentFile === 'en.html' ? 'en.html' : 'en.html';
+    roLink.href = currentFile === 'index.html' ? 'index.html' : 'index.html';
     
     // Add click handlers to prevent navigation when already on the page
     enLink.addEventListener('click', function(e) {
