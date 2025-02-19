@@ -26,9 +26,9 @@
                 <li><a href="#shop">Comandă</a></li>
             </ul>
 <div class="language-switcher">
-<a href="index.html" id="ro-link" class="active2" title="Romanian">RO</a>
+<a href="index.html" id="ro-link" title="Romanian">RO</a>
     <span class="divider">|</span>
-    <a href="en.html" id="en-link" title="English">EN</a>
+    <a href="en.html" id="en-link" class="active2" title="English">EN</a>
 </div>
 <!-- Add this right before the closing </nav> tag, inside the nav-container div -->
 
@@ -310,13 +310,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add click handlers to prevent navigation when already on the page
     enLink.addEventListener('click', function(e) {
-        if (currentFile === 'index.html') {
+        if (currentFile === 'en.html') {
             e.preventDefault();
         }
     });
     
     roLink.addEventListener('click', function(e) {
-        if (currentFile === 'en.html') {
+        if (currentFile === 'index.html') {
             e.preventDefault();
         }
     });
