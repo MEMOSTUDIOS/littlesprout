@@ -90,11 +90,11 @@
 
         /* Welcome Section */
         #welcome {
-            background: linear-gradient(rgba(75,43,81,0.25), rgba(255,255,255,0.05)), url('/images/little-sprout-bg.png');
+            background: linear-gradient(rgba(75,43,81,0.27), rgba(255,255,255,0.05)), url('/images/little-sprout-bg.png');
             background-size: cover;
 background-repeat: no-repeat;
 background-position: top center;
-            color: white;
+            color: #f9f9f9;
             text-align: center;
         }
 
