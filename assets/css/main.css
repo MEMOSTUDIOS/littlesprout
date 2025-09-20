@@ -383,3 +383,116 @@ display: none;
     grid-column: 1 / -1;
 	}
 }
+
+/* --- Fog Section Container --- */
+        /* This is the section that will contain the fog effect. */
+        #c-fog-effect__hero-section {
+            position: relative; /* CRITICAL: Establishes a positioning context for the fog. */
+            height: 70vh; /* Make it a section, not full height. */
+            width: 100%; /* Span the full width. */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Your+Content+Here');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden; /* CRITICAL: Ensures fog layers don't extend beyond this container. */
+        }
+
+        .c-fog-effect__content-wrapper {
+            z-index: 10; /* Ensures content is above the background but below the fog */
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1rem;
+        }
+
+        #c-fog-effect__hero-section h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(0,0,0,0.7);
+        }
+
+        /* --- Fog Wrapper --- */
+        /* This container holds all the fog layers. */
+        .c-fog-effect__fog-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through the fog to content below */
+            z-index: 20; /* Places fog on top of the content */
+        }
+
+        /* --- Individual Fog Layer Styling --- */
+        .c-fog-effect__fog, .c-fog-effect__fog::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            opacity: 0; /* Start invisible, animation will fade it in */
+            animation-iteration-count: infinite;
+            will-change: transform, opacity;
+        }
+
+        /* Layer 1: Large, slow-moving base fog */
+        #c-fog-effect__fog-1 {
+            background-image: radial-gradient(closest-side, rgba(255, 255, 255, 0.15), transparent);
+            animation: c-fog-effect__drift-1 60s linear;
+        }
+        /* Layer 2 (Pseudo-element of Layer 1) */
+        #c-fog-effect__fog-1::after {
+            background-image: radial-gradient(closest-side, rgba(255, 255, 255, 0.12), transparent);
+            animation: c-fog-effect__drift-2 45s linear;
+        }
+
+        /* Layer 3: Smaller, drifting wisps */
+        #c-fog-effect__fog-2 {
+            background-image: radial-gradient(closest-side, rgba(255, 255, 255, 0.1), transparent);
+            animation: c-fog-effect__drift-3 30s linear;
+        }
+        /* Layer 4 (Pseudo-element of Layer 2) */
+        #c-fog-effect__fog-2::after {
+            background-image: radial-gradient(closest-side, rgba(255, 255, 255, 0.08), transparent);
+            animation: c-fog-effect__drift-4 75s linear;
+        }
+
+
+        /* --- Keyframe Animations (Optimized & Renamed) --- */
+        @keyframes c-fog-effect__drift-1 {
+            0% { transform: translate(-50%, -50%); opacity: 0; }
+            25% { opacity: 0.8; }
+            50% { transform: translate(0%, 0%); opacity: 0.5; }
+            75% { opacity: 0.8; }
+            100% { transform: translate(50%, 50%); opacity: 0; }
+        }
+
+        @keyframes c-fog-effect__drift-2 {
+            0% { transform: translate(50%, 50%); opacity: 0; }
+            25% { opacity: 0.7; }
+            50% { transform: translate(0, 0); opacity: 0.4; }
+            75% { opacity: 0.7; }
+            100% { transform: translate(-50%, -50%); opacity: 0; }
+        }
+        
+        @keyframes c-fog-effect__drift-3 {
+            0% { transform: translate(-20%, 40%); opacity: 0; }
+            25% { opacity: 0.6; }
+            50% { transform: translate(20%, -30%); opacity: 0.3; }
+            75% { opacity: 0.6; }
+            100% { transform: translate(-20%, 40%); opacity: 0; }
+        }
+        
+        @keyframes c-fog-effect__drift-4 {
+            0% { transform: translate(40%, -40%); opacity: 0; }
+            25% { opacity: 0.5; }
+            50% { transform: translate(-40%, 0); opacity: 0.2; }
+            75% { opacity: 0.5; }
+            100% { transform: translate(40%, 40%); opacity: 0; }
+        }
