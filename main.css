@@ -6,10 +6,12 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Nunito', sans-serif;
             line-height: 1.6;
             color: #333;
             padding-top: 70px; /* Add padding for fixed nav */
+font-size: 16px;
+letter-spacing: 0.66px;
         }
 
         /* Navigation */
@@ -112,7 +114,8 @@ background-position: top center;
             border-radius: 18px 0 18px 0;
             cursor: pointer;
             margin-top: 2rem;
-            transition: background 0.3s;
+            transition: background 0.66s;
+text-decoration: none;
         }
 
         .cta-button:hover {
