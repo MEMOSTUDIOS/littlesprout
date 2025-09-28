@@ -268,14 +268,14 @@
         
         #card-hand {
             position: absolute; bottom: -250px; left: 50%; transform: translateX(-50%);
-            width: 1100px; display: flex; justify-content: center; gap: -100px;
+            width: 1100px; display: flex; justify-content: center;
             transition: bottom 1s cubic-bezier(0.65, 0, 0.35, 1); z-index: 40;
         }
         #card-hand.visible { bottom: -60px; }
 
         #opponent-card-hand {
             position: absolute; top: -250px; left: 50%; transform: translateX(-50%);
-            width: 1100px; display: flex; justify-content: center; gap: -100px;
+            width: 1100px; display: flex; justify-content: center;
             transition: top 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s;
             z-index: 40;
             opacity: 0.3; 
@@ -298,6 +298,12 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
             flex-shrink: 0;
         }
+        /* NEW: Use negative margins for card overlap */
+        #card-hand .card:not(:first-child),
+        #opponent-card-hand .opponent-card:not(:first-child) {
+            margin-left: -125px;
+        }
+
         .card:not(.inactive):hover {
             transform: rotate(var(--rotation)) translateY(-15px);
             z-index: 10;
@@ -486,12 +492,12 @@
         .product-box button:hover, .subscribe-form button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(98, 182, 203, 0.6); } 
         
         #replay-button {
-            background: var(--glow-color); /* Changed to solid white */
-            color: var(--color-background); /* Changed to dark text */
+            background: var(--glow-color);
+            color: var(--color-background);
             border: 2px solid var(--glow-color);
         } 
         #replay-button:hover {
-            background: #e0e0e0; /* Darker white on hover */
+            background: #e0e0e0;
             border-color: #e0e0e0;
             color: var(--color-background);
         }
@@ -629,7 +635,12 @@
             #sidebar { width: 220px; }
             #game-title { font-size: 1.5rem; }
             .card, .opponent-card { width: 130px; height: 192px; }
-            #card-hand, #opponent-card-hand { width: 900px; gap: -40px; }
+            #card-hand, #opponent-card-hand { width: 900px; }
+            /* NEW: Use negative margins for card overlap */
+            #card-hand .card:not(:first-child),
+            #opponent-card-hand .opponent-card:not(:first-child) {
+                margin-left: -85px;
+            }
         }
         
         @media (max-width: 768px) {
@@ -695,16 +706,21 @@
                 display: none; 
             }
             #card-hand.visible { bottom: 40px; }
-            #card-hand { width: 95vw; gap: -75px; }
+            #card-hand { width: 95vw; }
             .card { width: 100px; height: 160px; padding: 5px; }
             .card-actions { margin-bottom: 0px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
             .card-title { font-size: 0.5rem; }
 
             #opponent-card-hand.visible { top: -70px; }
-            #opponent-card-hand { width: 95vw; gap: -75px; }
-            .opponent-card { width: 100px; height: 140px; }
+            #opponent-card-hand { width: 95vw; }
             
+            /* NEW: Use negative margins for card overlap */
+            #card-hand .card:not(:first-child),
+            #opponent-card-hand .opponent-card:not(:first-child) {
+                margin-left: -85px;
+            }
+
             #reveal-section {
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
