@@ -180,6 +180,7 @@
             background-size: auto;
             position: absolute;
             z-index: 0;
+            transition: width 0.3s ease, height 0.3s ease;
         }
 
         #game-board {
@@ -192,6 +193,9 @@
             border: 2px solid #dfe2c6;
             transform: none;
             top: auto; left: auto;
+            transition: width 0.3s ease, height 0.3s ease;
+            /* UPDATED: Set z-index for proper layering */
+            z-index: 10;
         }
         
         #spots-container { position: absolute; top: 50%; left: 50%; width: 1px; height: 1px; }
@@ -269,7 +273,8 @@
         #card-hand {
             position: absolute; bottom: -250px; left: 50%; transform: translateX(-50%);
             width: 1100px; display: flex; justify-content: center;
-            transition: bottom 1s cubic-bezier(0.65, 0, 0.35, 1); z-index: 40;
+            /* UPDATED: z-index starts low */
+            transition: bottom 1s cubic-bezier(0.65, 0, 0.35, 1); z-index: 5;
         }
         #card-hand.visible { bottom: -60px; }
 
@@ -277,12 +282,18 @@
             position: absolute; top: -250px; left: 50%; transform: translateX(-50%);
             width: 1100px; display: flex; justify-content: center;
             transition: top 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s;
-            z-index: 40;
+            /* UPDATED: z-index starts low */
+            z-index: 5;
             opacity: 0.3; 
             pointer-events: none;
         }
         #opponent-card-hand.visible { top: -70px; }
         #opponent-card-hand.active { opacity: 1; }
+
+        /* UPDATED: Class to raise z-index of hand during player's turn */
+        .hand-active {
+            z-index: 15;
+        }
 
         .card {
             width: 150px; height: 220px;
@@ -299,10 +310,9 @@
             flex-shrink: 0;
         }
         
-        /* UPDATED: Spread cards out more on desktop */
         #card-hand .card:not(:first-child),
         #opponent-card-hand .opponent-card:not(:first-child) {
-            margin-left: -60px;
+            margin-left: -20px;
         }
 
         .card:not(.inactive):hover {
@@ -632,16 +642,15 @@
         #confirmation-message svg { margin: 0 auto 1rem; }
 
         @media (max-width: 1200px) {
-            :root { --board-size: 500px; }
+            :root { --board-size: 480px; }
             #sidebar { width: 220px; }
             #game-title { font-size: 1.5rem; }
             .card, .opponent-card { width: 130px; height: 192px; }
             #card-hand, #opponent-card-hand { width: 900px; }
             
-            /* UPDATED: Spread cards out more on medium screens */
             #card-hand .card:not(:first-child),
             #opponent-card-hand .opponent-card:not(:first-child) {
-                margin-left: -55px;
+                margin-left: -15px;
             }
         }
         
@@ -709,10 +718,10 @@
             }
             #card-hand.visible { bottom: 40px; }
             #card-hand { width: 95vw; }
-            .card { width: 100px; height: 160px; padding: 5px; }
             
-            /* UPDATED: Added rule to make opponent cards same size as player cards on mobile */
-            .opponent-card { width: 100px; height: 160px; }
+            /* UPDATED: Cards are now slightly smaller on mobile to allow for a wider spread */
+            .card { width: 80px; height: 128px; padding: 5px; }
+            .opponent-card { width: 80px; height: 128px; }
 
             .card-actions { margin-bottom: 0px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
@@ -721,10 +730,10 @@
             #opponent-card-hand.visible { top: -70px; }
             #opponent-card-hand { width: 95vw; }
             
-            /* UPDATED: Spread cards out more on mobile */
+            /* UPDATED: Wider spread for mobile cards */
             #card-hand .card:not(:first-child),
             #opponent-card-hand .opponent-card:not(:first-child) {
-                margin-left: -50px;
+                margin-left: -20px;
             }
 
             #reveal-section {
@@ -802,6 +811,12 @@
             .subscribe-form input,
             .subscribe-form button {
                 width: 100%;
+            }
+        }
+
+        @media (max-height: 820px) and (min-width: 769px) {
+            :root {
+                --board-size: 480px;
             }
         }
     </style>
@@ -1093,6 +1108,9 @@
                 this.elements.opponentCardHand.classList.remove('active');
                 this.setHandInteractable(false);
                 this.elements.dice.forEach(d => this.updateDieFace(d, 1));
+
+                // NEW: Ensure hand z-index is reset
+                this.elements.cardHand.classList.remove('hand-active');
                 
                 this.elements.colorPalette.classList.remove('visible');
                 this.elements.diceContainer.classList.remove('visible');
@@ -1126,6 +1144,9 @@
             promptPlacePawn() { this.updateStepsUI(3); document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing'); },
             promptPlayerTurn() {
                 this.updateStepsUI(0);
+
+                // NEW: Raise card hand z-index when it's the player's turn
+                this.elements.cardHand.classList.add('hand-active');
                 
                 if (this.state.forceMemorize) {
                     this.elements.narrationText.textContent = "You recall the murky spot... you must Memorize your findings to proceed. Choose a +2 action.";
@@ -1231,6 +1252,9 @@
                 document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
                 this.setHandInteractable(false);
                 this.showGamificationText(`+${moveAmount}`, clickedElement);
+
+                // NEW: Lower card hand z-index after a choice is made
+                this.elements.cardHand.classList.remove('hand-active');
                 
                 let newSpotIndex = this.state.playerPawnPosition;
                 for (let i = 0; i < moveAmount; i++) { newSpotIndex += this.config.SPOTS_PER_RING; }
