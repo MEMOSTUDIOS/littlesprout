@@ -176,7 +176,7 @@
             background-image: url('https://littlesprout.ro/images/board-game-little-sprout.png?q=80&w=2074&auto=format&fit=crop');
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 25px rgba(0,0,0,0.7);
-background-size: auto;
+            background-size: auto;
             position: absolute;
             z-index: 0;
         }
@@ -513,18 +513,23 @@ background-size: auto;
             .card, .opponent-card { width: 130px; height: 192px; }
             #card-hand, #opponent-card-hand { width: 900px; gap: -40px; }
         }
+        
+        /* ===== CORRECTED MOBILE STYLES ===== */
         @media (max-width: 768px) {
             :root { --board-size: 90vw; } 
+
+            /* FIX: Use flex-direction column for proper stacking on mobile */
             #main-container {
+                flex-direction: column;
                 position: relative;
             }
+
+            /* FIX: Sidebar is now a normal flex item, not absolutely positioned */
             #sidebar {
-                position: absolute;
-                top: 0;
-                left: 0;
                 width: 100%; 
                 height: auto; 
-                max-height: 100px; /* MODIFIED: Reduced height */
+                max-height: 110px;
+                flex-shrink: 0; /* Prevents the sidebar from shrinking */
                 flex-direction: column;
                 border-right: none; 
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -557,28 +562,39 @@ background-size: auto;
                 top: -10px; left: -10px;
             }
 
-            #game-container { flex: 1; width: 100%; }
-            #game-board { top: auto; }
+            /* FIX: Use padding to push board up instead of relative positioning */
+            #game-container { 
+                flex: 1; 
+                width: 100%; 
+                padding-bottom: 100px; /* This shifts the content up */
+            }
+
+            /* FIX: Enforce aspect ratio to prevent ovals */
+            #game-board-frame,
+            #game-board {
+                aspect-ratio: 1 / 1;
+                height: var(--board-size); /* Explicitly set height */
+            }
+
             #game-title { 
                 font-size: 1.2rem; 
-                top: 115px; /* MODIFIED: Adjusted for new sidebar height */
                 display: none; 
             }
-            #card-hand.visible { bottom: 40px; } /* MODIFIED: Moved up */
+            #card-hand.visible { bottom: 40px; }
             #card-hand { width: 95vw; gap: -75px; }
             .card { width: 100px; height: 140px; padding: 5px; }
             .card-actions { margin-top: 5px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
             .card-title { font-size: 0.5rem; }
 
-            #opponent-card-hand.visible { top: -60px; } /* MODIFIED: Tucked under top bar */
+            #opponent-card-hand.visible { top: -50px; } 
             #opponent-card-hand { width: 95vw; gap: -75px; }
             .opponent-card { width: 100px; height: 140px; }
             
             #reveal-section {
                 padding-bottom: 100px;
-                padding-top: 60px; /* MODIFIED: Added padding top */
-                box-sizing: border-box; /* MODIFIED: Added for better padding calculation */
+                padding-top: 60px;
+                box-sizing: border-box;
             }
             .product-container {
                 flex-direction: row;
@@ -595,7 +611,7 @@ background-size: auto;
             }
             #reveal-title {
                 font-size: 2.5rem;
-                margin-top: 0; /* MODIFIED: Removed negative margin */
+                margin-top: 0;
             }
             
             #reveal-section #replay-button {
