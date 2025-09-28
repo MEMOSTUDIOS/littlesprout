@@ -188,7 +188,7 @@
             background-image: url('https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border-radius: 50%;     
+            border-radius: 50%;   
             border: 2px solid #dfe2c6;
             transform: none;
             top: auto; left: auto;
@@ -396,7 +396,7 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             opacity: 0; visibility: hidden; transition: opacity 1s ease, visibility 0s 1s; 
             z-index: 60; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); 
-            overflow-y: auto; padding: 40px 0;
+            padding: 40px 0;
             z-index: 9999;
         } 
         #reveal-section.visible { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
@@ -417,7 +417,6 @@
         .product-container { 
             padding: 20px 0;
             margin-bottom: 0;
-            display: flex; /* Changed for mobile scroll snap */
         }
         .slider-track {
             display: flex;
@@ -702,47 +701,74 @@
             #opponent-card-hand { width: 95vw; gap: -75px; }
             .opponent-card { width: 100px; height: 140px; }
             
+            /* START: FIX for Mobile Popup */
             #reveal-section {
-                padding-bottom: 100px;
-                padding-top: 60px;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                padding: 20px 0 0; /* Remove bottom padding */
                 box-sizing: border-box;
             }
             #reveal-title {
                 font-size: 2rem;
                 margin-top: 0;
+                flex-shrink: 0;
+                padding: 0 20px;
             }
             .product-container-wrapper {
-                max-width: 100%; /* Allow full width for scrolling */
-            }
-            /* START: Mobile Scroll Snap Styles */
-            .product-container {
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                scrollbar-width: none;
+                flex-grow: 1; /* Allow content to fill space */
+                overflow-y: auto; /* Make content area scrollable */
                 -webkit-overflow-scrolling: touch;
+                padding: 20px;
+                max-width: 100%;
             }
-            .product-container::-webkit-scrollbar { display: none; }
-            .slider-track {
-                transform: none !important; /* Disable JS transform on mobile */
-                padding-left: calc(50vw - 130px); /* Center the first item */
-                padding-right: calc(50vw - 130px); /* Center the last item */
-            }
-            .product-box {
-                scroll-snap-align: center;
-                width: 260px;
-            }
-            /* END: Mobile Scroll Snap Styles */
-
-            .slider-arrow { display: none; }
             
-            #reveal-section #replay-button {
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: calc(100% - 40px);
-                z-index: 61;
+            .product-container {
+                overflow-x: visible;
+                scroll-snap-type: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
             }
+            
+            .slider-track {
+                transform: none !important;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            
+            .product-box {
+                scroll-snap-align: none;
+                width: 100%;
+                max-width: 350px;
+                flex-shrink: 0;
+            }
+            
+            .slider-arrow, .slider-dots { 
+                display: none; 
+            }
+            
+            #reveal-footer {
+                flex-shrink: 0;
+                padding: 15px 20px;
+                width: 100%;
+                box-sizing: border-box;
+                margin-top: 0;
+                flex-direction: column;
+                gap: 15px;
+                background: var(--color-background); /* Add background to avoid content showing through */
+            }
+
+            #reveal-section #replay-button {
+                position: static;
+                transform: none;
+                width: 100%;
+                max-width: 350px;
+                z-index: auto;
+                order: -1; /* Show replay button above the form */
+            }
+            /* END: FIX for Mobile Popup */
         }
     </style>
 </head>
@@ -779,16 +805,16 @@
             <div id="reveal-section">
                  <h1 id="reveal-title">Play the Adventure Home</h1>
                  <div id="product-container">
-                      <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
-                      <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
-                      <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
                  </div>
                  <div id="reveal-footer">
-                      <button id="replay-button">Replay demo</button>
-                      <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
-                           <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
-                           <button type="submit">Subscribe</button>
-                      </form>
+                       <button id="replay-button">Replay demo</button>
+                       <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
+                             <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
+                             <button type="submit">Subscribe</button>
+                       </form>
                  </div>
             </div>
         </div>
@@ -1254,18 +1280,26 @@
                 const isMobile = window.matchMedia("(max-width: 768px)").matches;
                 let track, slides;
 
+                // On mobile, the layout is handled by CSS flexbox, so we don't need JS logic
                 if (isMobile) {
-                    slides = Array.from(container.children);
-                } else {
-                    track = document.createElement('div');
-                    track.className = 'slider-track';
-                    while (container.firstChild) {
-                        track.appendChild(container.firstChild);
+                    // Hide the desktop-only slider navigation elements if they exist
+                    const existingWrapper = container.closest('.product-container-wrapper');
+                    if (existingWrapper) {
+                        existingWrapper.querySelector('.slider-arrow.prev')?.remove();
+                        existingWrapper.querySelector('.slider-arrow.next')?.remove();
+                        existingWrapper.querySelector('.slider-dots')?.remove();
                     }
-                    container.appendChild(track);
-                    slides = Array.from(track.children);
+                    return;
                 }
-
+                
+                track = document.createElement('div');
+                track.className = 'slider-track';
+                while (container.firstChild) {
+                    track.appendChild(container.firstChild);
+                }
+                container.appendChild(track);
+                slides = Array.from(track.children);
+                
                 if (slides.length === 0) return;
 
                 const wrapper = document.createElement('div');
@@ -1307,22 +1341,15 @@
 
                 const updateNav = () => {
                     dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
-                    if (!isMobile) {
-                       prevButton.style.display = currentIndex === 0 ? 'none' : 'flex';
-                       nextButton.style.display = currentIndex === slides.length - 1 ? 'none' : 'flex';
-                    }
+                    prevButton.style.display = currentIndex === 0 ? 'none' : 'flex';
+                    nextButton.style.display = currentIndex === slides.length - 1 ? 'none' : 'flex';
                 };
                 
                 const moveToSlide = (slideIndex) => {
                     const slideWidth = getSlideWidth();
-                    if (isMobile) {
-                        const scrollPosition = slides[slideIndex].offsetLeft - (container.offsetWidth / 2) + (slides[slideIndex].offsetWidth / 2);
-                        container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-                    } else {
-                        currentTranslate = -slideIndex * slideWidth;
-                        prevTranslate = currentTranslate;
-                        track.style.transform = `translateX(${currentTranslate}px)`;
-                    }
+                    currentTranslate = -slideIndex * slideWidth;
+                    prevTranslate = currentTranslate;
+                    track.style.transform = `translateX(${currentTranslate}px)`;
                     currentIndex = slideIndex;
                     updateNav();
                 };
@@ -1330,64 +1357,40 @@
                 nextButton.addEventListener('click', () => { if (currentIndex < slides.length - 1) moveToSlide(currentIndex + 1); });
                 prevButton.addEventListener('click', () => { if (currentIndex > 0) moveToSlide(currentIndex - 1); });
 
-                if (isMobile) {
-                    let scrollTimeout;
-                    container.addEventListener('scroll', () => {
-                        clearTimeout(scrollTimeout);
-                        scrollTimeout = setTimeout(() => {
-                            let minDistance = Infinity;
-                            let newIndex = currentIndex;
-                            const containerCenter = container.scrollLeft + container.offsetWidth / 2;
-                            slides.forEach((slide, index) => {
-                                const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-                                const distance = Math.abs(containerCenter - slideCenter);
-                                if (distance < minDistance) {
-                                    minDistance = distance;
-                                    newIndex = index;
-                                }
-                            });
-                            if (newIndex !== currentIndex) {
-                                currentIndex = newIndex;
-                                updateNav();
-                            }
-                        }, 150);
-                    });
-                } else {
-                    let isDragging = false, startPos = 0, currentTranslate = 0, prevTranslate = 0, animationID;
-                    const getPositionX = (e) => e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-                    
-                    const touchStart = (e) => {
-                        startPos = getPositionX(e);
-                        isDragging = true;
-                        animationID = requestAnimationFrame(animation);
-                        track.style.transition = 'none';
-                        e.preventDefault();
-                    };
-                    const touchMove = (e) => {
-                        if (isDragging) currentTranslate = prevTranslate + getPositionX(e) - startPos;
-                    };
-                    const touchEnd = () => {
-                        cancelAnimationFrame(animationID);
-                        isDragging = false;
-                        const movedBy = currentTranslate - prevTranslate;
-                        if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex++;
-                        if (movedBy > 100 && currentIndex > 0) currentIndex--;
-                        track.style.transition = 'transform 0.5s ease-in-out';
-                        moveToSlide(currentIndex);
-                    };
-                    const animation = () => {
-                        track.style.transform = `translateX(${currentTranslate}px)`;
-                        if (isDragging) requestAnimationFrame(animation);
-                    };
-                    
-                    track.addEventListener('mousedown', touchStart);
-                    track.addEventListener('touchstart', touchStart, { passive: false });
-                    window.addEventListener('mousemove', touchMove);
-                    window.addEventListener('touchmove', touchMove, { passive: false });
-                    window.addEventListener('mouseup', touchEnd);
-                    window.addEventListener('touchend', touchEnd);
-                    window.addEventListener('mouseleave', () => { if (isDragging) touchEnd(); });
-                }
+                let isDragging = false, startPos = 0, currentTranslate = 0, prevTranslate = 0, animationID;
+                const getPositionX = (e) => e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+                
+                const touchStart = (e) => {
+                    startPos = getPositionX(e);
+                    isDragging = true;
+                    animationID = requestAnimationFrame(animation);
+                    track.style.transition = 'none';
+                    e.preventDefault();
+                };
+                const touchMove = (e) => {
+                    if (isDragging) currentTranslate = prevTranslate + getPositionX(e) - startPos;
+                };
+                const touchEnd = () => {
+                    cancelAnimationFrame(animationID);
+                    isDragging = false;
+                    const movedBy = currentTranslate - prevTranslate;
+                    if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex++;
+                    if (movedBy > 100 && currentIndex > 0) currentIndex--;
+                    track.style.transition = 'transform 0.5s ease-in-out';
+                    moveToSlide(currentIndex);
+                };
+                const animation = () => {
+                    track.style.transform = `translateX(${currentTranslate}px)`;
+                    if (isDragging) requestAnimationFrame(animation);
+                };
+                
+                track.addEventListener('mousedown', touchStart);
+                track.addEventListener('touchstart', touchStart, { passive: false });
+                window.addEventListener('mousemove', touchMove);
+                window.addEventListener('touchmove', touchMove, { passive: false });
+                window.addEventListener('mouseup', touchEnd);
+                window.addEventListener('touchend', touchEnd);
+                window.addEventListener('mouseleave', () => { if (isDragging) touchEnd(); });
                 
                 updateNav();
                 window.addEventListener('resize', () => moveToSlide(currentIndex));
@@ -1418,6 +1421,5 @@
         };
         document.addEventListener('DOMContentLoaded', () => { setTimeout(() => game.init(), 0); });
     </script>
-<script src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" xintegrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"3a54c548c7f745f0a19c86a8a6c5af6d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
