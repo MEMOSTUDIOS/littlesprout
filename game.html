@@ -187,7 +187,7 @@ background-size: auto;
             background-image: url('https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border-radius: 50%;          
+            border-radius: 50%;         
             border: 2px solid #dfe2c6;
             transform: none;
             top: auto; left: auto;
@@ -524,7 +524,7 @@ background-size: auto;
                 left: 0;
                 width: 100%; 
                 height: auto; 
-                max-height: 130px; 
+                max-height: 100px; /* MODIFIED: Reduced height */
                 flex-direction: column;
                 border-right: none; 
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -547,7 +547,6 @@ background-size: auto;
                 min-height: auto;
             }
 
-            /* ===== THIS IS THE MODIFIED CODE ===== */
             .spot {
                 width: 25px; height: 25px;
                 top: -12.5px; left: -12.5px;
@@ -562,21 +561,25 @@ background-size: auto;
             #game-board { top: auto; }
             #game-title { 
                 font-size: 1.2rem; 
-                top: 145px;
+                top: 115px; /* MODIFIED: Adjusted for new sidebar height */
                 display: none; 
             }
-            #card-hand.visible { bottom: 10px; }
+            #card-hand.visible { bottom: 40px; } /* MODIFIED: Moved up */
             #card-hand { width: 95vw; gap: -75px; }
             .card { width: 100px; height: 140px; padding: 5px; }
             .card-actions { margin-top: 5px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
             .card-title { font-size: 0.5rem; }
 
-            #opponent-card-hand.visible { top: 0px; }
+            #opponent-card-hand.visible { top: -60px; } /* MODIFIED: Tucked under top bar */
             #opponent-card-hand { width: 95vw; gap: -75px; }
             .opponent-card { width: 100px; height: 140px; }
             
-            #reveal-section { padding-bottom: 100px; }
+            #reveal-section {
+                padding-bottom: 100px;
+                padding-top: 60px; /* MODIFIED: Added padding top */
+                box-sizing: border-box; /* MODIFIED: Added for better padding calculation */
+            }
             .product-container {
                 flex-direction: row;
                 overflow-x: auto;
@@ -590,7 +593,10 @@ background-size: auto;
                 flex-shrink: 0;
                 width: 220px;
             }
-            #reveal-title { font-size: 2.5rem; margin-top: -50px; }
+            #reveal-title {
+                font-size: 2.5rem;
+                margin-top: 0; /* MODIFIED: Removed negative margin */
+            }
             
             #reveal-section #replay-button {
                 position: fixed;
@@ -692,6 +698,7 @@ background-size: auto;
 
 
     <script>
+        // Your JavaScript remains the same
         const game = {
             elements: {}, state: {}, spotCoordinates: [],
             config: {
