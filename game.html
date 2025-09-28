@@ -187,7 +187,7 @@
             background-image: url('https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border-radius: 50%;      
+            border-radius: 50%;     
             border: 2px solid #dfe2c6;
             transform: none;
             top: auto; left: auto;
@@ -563,7 +563,7 @@
         }
         
         @media (max-width: 768px) {
-            :root { --board-size: 90vw; } 
+            :root { --board-size: 80vw; } /* MODIFIED: Reduced from 90vw */
 
             #main-container {
                 flex-direction: column;
@@ -611,7 +611,7 @@
             #game-container { 
                 flex: 1; 
                 width: 100%; 
-                padding-bottom: 120px; /* MODIFIED: Increased to move board up more */
+                padding-bottom: 140px; /* MODIFIED: Increased to move board up more */
             }
 
             #game-board-frame,
@@ -631,7 +631,7 @@
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
             .card-title { font-size: 0.5rem; }
 
-            #opponent-card-hand.visible { top: -70px; } /* MODIFIED: Moved up 20px more */
+            #opponent-card-hand.visible { top: -70px; }
             #opponent-card-hand { width: 95vw; gap: -75px; }
             .opponent-card { width: 100px; height: 140px; }
             
@@ -702,16 +702,16 @@
             <div id="reveal-section">
                  <h1 id="reveal-title">Play the Adventure Home</h1>
                  <div id="product-container" class="product-container">
-                       <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
-                       <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
-                       <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
+                      <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
+                      <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
+                      <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
                  </div>
                  <div id="reveal-footer">
-                       <button id="replay-button">Replay demo</button>
-                       <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
+                      <button id="replay-button">Replay demo</button>
+                      <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
                            <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
                            <button type="submit">Subscribe</button>
-                       </form>
+                      </form>
                  </div>
             </div>
         </div>
