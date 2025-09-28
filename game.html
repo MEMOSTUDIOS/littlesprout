@@ -398,26 +398,91 @@
         } 
         #reveal-section.visible { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
         #reveal-title { 
-            font-family: var(--font-main); font-weight:700; font-size: 4rem; 
+            font-family: var(--font-main); font-weight:700; font-size: 3rem; /* MODIFIED: Reduced size */
             margin-bottom: 20px; text-shadow: 0 0 20px var(--glow-color);
             margin-top: -100px;
             padding-bottom: 20px;
             text-align: center;
-        } 
+        }
+        /* START: New Slider Styles */
+        .product-container-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 80vw;
+            margin: 0 auto;
+        }
         .product-container { 
-            display: flex; gap: 40px; 
-            overflow-x: auto;
-            cursor: grab;
-            padding: 20px;
-            margin-bottom: 20px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            overflow: hidden; /* Hide slides outside the container */
+            padding: 20px 0;
+            margin-bottom: 0;
+            display: block; /* Override flex for slider */
+        }
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 40px; /* Keep the gap between items */
+            padding-bottom: 10px;
+        }
+        .product-box { 
+            width: 240px; /* MODIFIED: Set a consistent width */
+            text-align: center; 
+            cursor: pointer; 
+            transition: transform 0.3s ease; 
+            flex-shrink: 0; 
+            padding-bottom: 20px; 
         } 
-        .product-container::-webkit-scrollbar { display: none; }
-
-        .product-box { text-align: center; cursor: pointer; transition: transform 0.3s ease; flex-shrink: 0; padding-bottom: 20px; } 
         .product-box:hover { transform: scale(1.05); } 
-        .product-box img { width: 220px; height: auto; margin-bottom: 15px; } 
+        .product-box img { 
+            width: 100%; /* MODIFIED: Make image responsive to box width */
+            height: auto; 
+            margin-bottom: 15px; 
+        } 
+        .slider-arrow {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+            user-select: none;
+        }
+        .slider-arrow:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .slider-arrow.prev { left: -10px; }
+        .slider-arrow.next { right: -10px; }
+
+        .slider-dots {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .slider-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            padding: 0;
+        }
+        .slider-dot.active {
+            background-color: #fff;
+        }
+        /* END: New Slider Styles */
+        
         .product-box h3 { font-family: var(--font-main); font-weight: 700; font-size: 1.2rem; color: #e1f5fe; } 
         .product-box p { font-size: 0.9rem; color: #ccc; max-width: 220px; margin: 10px auto; } 
         .product-box button, #replay-button, .subscribe-form button { font-family: var(--font-main); font-weight: 700; font-size: 1rem; padding: 12px 24px; border-radius: 50px; border: none; cursor: pointer; transition: all 0.3s ease; text-transform: capitalize; } 
@@ -563,7 +628,7 @@
         }
         
         @media (max-width: 768px) {
-            :root { --board-size: 80vw; } /* MODIFIED: Reduced from 90vw */
+            :root { --board-size: 80vw; } 
 
             #main-container {
                 flex-direction: column;
@@ -611,7 +676,7 @@
             #game-container { 
                 flex: 1; 
                 width: 100%; 
-                padding-bottom: 140px; /* MODIFIED: Increased to move board up more */
+                padding-bottom: 140px; 
             }
 
             #game-board-frame,
@@ -621,7 +686,7 @@
             }
 
             #game-title { 
-                font-size: 1.2rem; 
+                font-size: 1.1rem; 
                 display: none; 
             }
             #card-hand.visible { bottom: 40px; }
@@ -640,23 +705,20 @@
                 padding-top: 60px;
                 box-sizing: border-box;
             }
-            .product-container {
-                flex-direction: row;
-                overflow-x: auto;
-                padding: 10px 20px;
-                width: 100%;
-                scrollbar-width: none;
-                justify-content: flex-start;
-            }
-            .product-container::-webkit-scrollbar { display: none; }
-            .product-box {
-                flex-shrink: 0;
-                width: 220px;
-            }
             #reveal-title {
-                font-size: 2.5rem;
-                margin-top: 0;
+                font-size: 1.5rem; /* MODIFIED: Reduced size for mobile */
+                margin-top: -40px;
             }
+            .product-container-wrapper {
+                max-width: 95vw;
+            }
+            .slider-track {
+                gap: 20px;
+            }
+            .product-box {
+                width: 260px; /* MODIFIED: Increased width/height on mobile */
+            }
+            .slider-arrow { display: none; } /* Hide arrows on mobile, rely on touch */
             
             #reveal-section #replay-button {
                 position: fixed;
@@ -700,8 +762,8 @@
             <div id="opponent-card-hand"></div>
             <div id="card-hand"></div>
             <div id="reveal-section">
-                 <h1 id="reveal-title">Play the Adventure Home</h1>
-                 <div id="product-container" class="product-container">
+                 <h2 id="reveal-title">Play the Adventure Home</h2>
+                 <div id="product-container">
                       <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
                       <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
                       <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
@@ -775,14 +837,14 @@
             },
             tutorialSteps: [
                 { text: "First, pick a color for your very own Little Sprout.", action: 'promptColor', stepNumber: 1 },
-                { text: "Great choice! Now, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
+                { text: "Now, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
                 { text: () => `You rolled a ${game.state.diceSum}! Click the glowing space to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
                 { text: "Your turn! Choose an action from any card in your hand.", action: 'promptPlayerTurn' },
-                { text: "Well done! Now it's a friend's turn...", action: 'opponentTurn' },
+                { text: "Well done! Now it's your friend's turn...", action: 'opponentTurn' },
                 { text: "It's your turn again! Choose an action to move even closer.", action: 'promptPlayerTurn' },
                 { text: "You made it to the heart of the forest! What an amazing adventure!", action: 'endGameSuccess' }
             ],
-            init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.elements.loader.classList.add('hidden'); this.resetGame(true); this.makeDraggable(this.elements.productContainer); },
+            init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.elements.loader.classList.add('hidden'); this.resetGame(true); this.initSlider(this.elements.productContainer); },
             cacheElements() {
                 const requiredIds = ['loader','sidebar','narration-text','reveal-section','replay-button','spots-container','dice-container','color-palette','card-hand','opponent-card-hand','game-container','steps-list','game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
                 requiredIds.forEach(id => { 
@@ -1106,7 +1168,6 @@
                     this.state.playerPawnPosition = newSpotIndex;
                 }
 
-                // First, check if the player just fulfilled a forced +2 move and clear the state.
                 if (this.state.forceMemorize && moveAmount === 2) {
                     this.state.forceMemorize = false;
                 }
@@ -1114,8 +1175,6 @@
                 const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
                 const isBlackSpot = (ringIndex === 1 || ringIndex === 3);
 
-                // Then, determine if the new spot requires the *next* turn to be a forced move.
-                // This correctly handles landing on the second black spot after clearing the first.
                 if (isBlackSpot) {
                     this.state.forceMemorize = true;
                 }
@@ -1175,26 +1234,124 @@
                 this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
                 this.elements.cardHand.querySelectorAll('.card').forEach(card => { card.classList.toggle('inactive', !isInteractable); });
             },
-            makeDraggable(element) {
-                let isDown = false;
-                let startX;
-                let scrollLeft;
+            initSlider(container) {
+                const track = document.createElement('div');
+                track.className = 'slider-track';
+                while (container.firstChild) {
+                    track.appendChild(container.firstChild);
+                }
+                container.appendChild(track);
 
-                element.addEventListener('mousedown', (e) => {
-                    isDown = true;
-                    element.style.cursor = 'grabbing';
-                    startX = e.pageX - element.offsetLeft;
-                    scrollLeft = element.scrollLeft;
+                const slides = Array.from(track.children);
+                if (slides.length === 0) return;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'product-container-wrapper';
+                container.parentNode.insertBefore(wrapper, container);
+                wrapper.appendChild(container);
+
+                const prevButton = document.createElement('button');
+                prevButton.innerHTML = '‹';
+                prevButton.className = 'slider-arrow prev';
+                wrapper.appendChild(prevButton);
+
+                const nextButton = document.createElement('button');
+                nextButton.innerHTML = '›';
+                nextButton.className = 'slider-arrow next';
+                wrapper.appendChild(nextButton);
+
+                const dotsNav = document.createElement('div');
+                dotsNav.className = 'slider-dots';
+                wrapper.appendChild(dotsNav);
+                slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'slider-dot';
+                    dotsNav.appendChild(dot);
+                    dot.addEventListener('click', () => moveToSlide(i));
                 });
-                element.addEventListener('mouseleave', () => { isDown = false; element.style.cursor = 'grab'; });
-                element.addEventListener('mouseup', () => { isDown = false; element.style.cursor = 'grab'; });
-                element.addEventListener('mousemove', (e) => {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - element.offsetLeft;
-                    const walk = (x - startX) * 2;
-                    element.scrollLeft = scrollLeft - walk;
+                const dots = Array.from(dotsNav.children);
+
+                let currentIndex = 0;
+                let isDragging = false;
+                let startPos = 0;
+                let currentTranslate = 0;
+                let prevTranslate = 0;
+                let animationID;
+
+                const getSlideWidth = () => {
+                    if (slides.length > 1) {
+                        const slideRect = slides[0].getBoundingClientRect();
+                        const nextSlideRect = slides[1].getBoundingClientRect();
+                        return nextSlideRect.left - slideRect.left;
+                    }
+                    return slides[0].getBoundingClientRect().width;
+                };
+
+                const moveToSlide = (slideIndex) => {
+                    const slideWidth = getSlideWidth();
+                    currentTranslate = -slideIndex * slideWidth;
+                    prevTranslate = currentTranslate;
+                    track.style.transform = `translateX(${currentTranslate}px)`;
+                    currentIndex = slideIndex;
+                    updateNav();
+                };
+
+                const updateNav = () => {
+                    dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
+                    prevButton.style.display = currentIndex === 0 ? 'none' : 'flex';
+                    nextButton.style.display = currentIndex === slides.length - 1 ? 'none' : 'flex';
+                };
+
+                const getPositionX = (event) => event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                
+                const touchStart = (index) => (event) => {
+                    startPos = getPositionX(event);
+                    isDragging = true;
+                    animationID = requestAnimationFrame(animation);
+                    track.style.transition = 'none';
+                    event.preventDefault();
+                };
+
+                const touchMove = (event) => {
+                    if (isDragging) {
+                        const currentPosition = getPositionX(event);
+                        currentTranslate = prevTranslate + currentPosition - startPos;
+                    }
+                };
+
+                const touchEnd = () => {
+                    cancelAnimationFrame(animationID);
+                    isDragging = false;
+                    const movedBy = currentTranslate - prevTranslate;
+
+                    if (movedBy < -50 && currentIndex < slides.length - 1) currentIndex++;
+                    if (movedBy > 50 && currentIndex > 0) currentIndex--;
+
+                    track.style.transition = 'transform 0.5s ease-in-out';
+                    moveToSlide(currentIndex);
+                };
+
+                const animation = () => {
+                    track.style.transform = `translateX(${currentTranslate}px)`;
+                    if (isDragging) requestAnimationFrame(animation);
+                };
+
+                nextButton.addEventListener('click', () => { if (currentIndex < slides.length - 1) moveToSlide(currentIndex + 1); });
+                prevButton.addEventListener('click', () => { if (currentIndex > 0) moveToSlide(currentIndex - 1); });
+                
+                slides.forEach((slide, index) => {
+                    slide.addEventListener('dragstart', (e) => e.preventDefault());
+                    slide.addEventListener('touchstart', touchStart(index), { passive: false });
+                    slide.addEventListener('mousedown', touchStart(index));
                 });
+                
+                window.addEventListener('touchmove', touchMove, { passive: false });
+                window.addEventListener('touchend', touchEnd);
+                window.addEventListener('mousemove', touchMove);
+                window.addEventListener('mouseup', touchEnd);
+
+                moveToSlide(0);
+                window.addEventListener('resize', () => moveToSlide(currentIndex));
             },
             handleSubscription(event) {
                 event.preventDefault();
