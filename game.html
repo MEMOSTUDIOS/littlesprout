@@ -223,26 +223,52 @@
             100% { box-shadow: 0 0 15px 5px var(--color-accent), 0 0 10px 2px var(--color-accent) inset; outline: 2px solid rgba(30, 185, 115, 0.5); }
         }
 
-        /* === NEW WINNING EFFECT === */
         .winning-pawn {
             animation: winning-glow 2.5s ease-in-out;
             z-index: 100 !important;
         }
         @keyframes winning-glow {
             0% { 
-                transform: scale(1.2);
+                transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.2);
                 box-shadow: 0 0 20px 10px var(--glow-color), 0 0 30px 15px var(--color-accent);
                 border-color: var(--color-accent);
             }
             50% { 
-                transform: scale(1.5);
+                transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.5);
                 box-shadow: 0 0 40px 20px var(--glow-color), 0 0 50px 25px var(--color-accent);
                 border-color: var(--glow-color);
             }
             100% { 
-                transform: scale(1.2);
+                transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.2);
                 box-shadow: 0 0 20px 10px var(--glow-color), 0 0 30px 15px var(--color-accent);
                 border-color: var(--color-accent);
+            }
+        }
+
+        /* === NEW "WINNER!" TEXT STYLE === */
+        .winner-text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translate(-50%, -150%);
+            font-family: var(--font-main);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #feca57;
+            text-shadow: 0 0 5px black, 0 0 15px #ff9f43;
+            z-index: 101;
+            pointer-events: none;
+            white-space: nowrap;
+            animation: fade-in-scale 1s ease-out forwards;
+        }
+        @keyframes fade-in-scale {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -150%) scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -150%) scale(1);
             }
         }
         
@@ -581,6 +607,7 @@
                 width: 20px; height: 20px;
                 top: -10px; left: -10px;
             }
+            .winner-text { font-size: 1.8rem; }
 
             #game-container { 
                 flex: 1; 
@@ -921,8 +948,9 @@
                 this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
                 [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => { pawn.style.transition = 'opacity 0s, transform 0s'; pawn.style.opacity = '0'; pawn.style.transform = `scale(0)`; });
                 
-                // === UPDATE: Clean up winning effect class on reset ===
                 this.elements.playerSprout.classList.remove('winning-pawn');
+                const existingWinnerText = this.elements.spotsContainer.querySelector('.winner-text');
+                if (existingWinnerText) existingWinnerText.remove();
                 
                 document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
                 this.elements.cardHand.classList.add('visible'); 
@@ -991,13 +1019,19 @@
                 });
             },
             opponentTurn() { this.handleOpponentTurn(); },
-            // === UPDATE: Add winning effect and delay before showing popup ===
             endGameSuccess() {
                 this.elements.playerSprout.classList.add('winning-pawn');
+
+                const winnerText = document.createElement('div');
+                winnerText.textContent = 'Winner!';
+                winnerText.className = 'winner-text';
+                this.elements.spotsContainer.appendChild(winnerText);
+
                 setTimeout(() => {
                     this.reveal();
                     this.elements.playerSprout.classList.remove('winning-pawn');
-                }, 2500); // 2.5 second delay
+                    winnerText.remove();
+                }, 2500);
             },
             handleColorChoice(color) { 
                 this.state.selectedPawnColor = color; this.elements.playerSprout.style.backgroundColor = color;
@@ -1069,13 +1103,16 @@
                 if (newSpotIndex >= centerSpotIndex) { newSpotIndex = centerSpotIndex; this.state.reachedCenter = true; }
                 
                 if (newSpotIndex !== this.state.playerPawnPosition) {
-                    const pos = this.spotCoordinates[newSpotIndex]; this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`; this.state.playerPawnPosition = newSpotIndex;
+                    const pos = this.spotCoordinates[newSpotIndex]; 
+                    this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`; 
+                    this.state.playerPawnPosition = newSpotIndex;
                 }
 
                 const ringIndex = Math.floor(newSpotIndex / this.config.SPOTS_PER_RING);
                 const isBlackSpot = (ringIndex === 1 || ringIndex === 3);
 
-                if (this.state.turn === 1 && moveAmount === 1 && isBlackSpot) {
+                // === UPDATE: Force memorize on ANY black spot if using a +1 move ===
+                if (moveAmount === 1 && isBlackSpot) {
                     this.state.forceMemorize = true;
                 }
 
