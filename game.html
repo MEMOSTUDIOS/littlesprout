@@ -218,9 +218,9 @@ background-size: auto;
 
         .glowing { animation: pulse-glow 1.5s infinite; }
         @keyframes pulse-glow {
-            0% { box-shadow: 0 0 15px 5px var(--glow-color), 0 0 10px 2px var(--glow-color) inset; outline: 2px solid rgba(255, 255, 255, 0.5); }
-            50% { box-shadow: 0 0 30px 10px var(--glow-color), 0 0 15px 4px var(--glow-color) inset; outline: 3px solid rgba(255, 255, 255, 0.8); }
-            100% { box-shadow: 0 0 15px 5px var(--glow-color), 0 0 10px 2px var(--glow-color) inset; outline: 2px solid rgba(255, 255, 255, 0.5); }
+            0% { box-shadow: 0 0 15px 5px var(--color-accent), 0 0 10px 2px var(--color-accent) inset; outline: 2px solid rgba(30, 185, 115, 0.5); }
+            50% { box-shadow: 0 0 30px 10px var(--color-accent), 0 0 15px 4px var(--color-accent) inset; outline: 3px solid rgba(30, 185, 115, 0.8); }
+            100% { box-shadow: 0 0 15px 5px var(--color-accent), 0 0 10px 2px var(--color-accent) inset; outline: 2px solid rgba(30, 185, 115, 0.5); }
         }
         
         #card-hand {
@@ -547,14 +547,15 @@ background-size: auto;
                 min-height: auto;
             }
 
+            /* ===== THIS IS THE MODIFIED CODE ===== */
             .spot {
-                width: 30px; height: 30px;
-                top: -15px; left: -15px;
-                font-size: 0.8rem;
-            }
-            .sprout-pawn {
                 width: 25px; height: 25px;
                 top: -12.5px; left: -12.5px;
+                font-size: 0.7rem;
+            }
+            .sprout-pawn {
+                width: 20px; height: 20px;
+                top: -10px; left: -10px;
             }
 
             #game-container { flex: 1; width: 100%; }
@@ -635,9 +636,9 @@ background-size: auto;
             <div id="reveal-section">
                  <h1 id="reveal-title">Play the Adventure Home</h1>
                  <div id="product-container" class="product-container">
-                      <div class="product-box"><img src="https://placehold.co/300x300/4CAF50/FFFFFF/png?text=" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
-                      <div class="product-box"><img src="https://placehold.co/300x300/a5d6a7/FFFFFF/png?text=" alt="Expansion Box Art"><h3>'Whispering Woods' Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
-                      <div class="product-box"><img src="https://placehold.co/300x300/1B5E20/FFFFFF/png?text=" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
+                      <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
+                      <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
+                      <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
                  </div>
                  <div id="reveal-footer">
                       <button id="replay-button">Replay demo</button>
@@ -697,7 +698,6 @@ background-size: auto;
                 SPOTS_PER_RING: 11,
                 PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
                 CARD_TITLES: ["Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
-                // ===== CHANGE #1: ADDED AN ARRAY FOR CARD IMAGES =====
                 CARD_IMAGES: [
                     "https://littlesprout.ro/images/card-black-woodpecker.png",
                     "https://littlesprout.ro/images/card-praying-mantis.png",
@@ -751,7 +751,6 @@ background-size: auto;
                     card.className = 'card';
                     const rotation = (i - centerIndex) * rotationMultiplier;
                     card.style.setProperty('--rotation', `${rotation}deg`);
-                    // ===== CHANGE #2: UPDATED CARD HTML TO USE DYNAMIC IMAGE AND ALT TEXT =====
                     card.innerHTML = `
                         <p class="card-title">${this.config.CARD_TITLES[i] || 'New Card'}</p>
                         <div class="card-actions">
@@ -809,7 +808,6 @@ background-size: auto;
                         const spot = document.createElement('div');
                         spot.className = 'spot'; spot.id = `spot-${spotCounter}`; spot.style.zIndex = ringIndex + 1;
                         
-                        // UPDATED: Removed the +1/+2 innerHTML from spots
                         if (ring.radius === 0) {
                             spot.id = 'center-spot';
                         } else if (ringIndex === 0) {
