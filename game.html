@@ -280,8 +280,8 @@
             justify-content: center;
             border-radius: 5px;
             overflow: hidden;
-            background: #ccc;
-            margin-top: 10px;
+            background: none;
+            margin-top: 0px;
         }
         .card-image-placeholder img {
             width: 100%;
@@ -514,22 +514,19 @@
             #card-hand, #opponent-card-hand { width: 900px; gap: -40px; }
         }
         
-        /* ===== CORRECTED MOBILE STYLES ===== */
         @media (max-width: 768px) {
             :root { --board-size: 90vw; } 
 
-            /* FIX: Use flex-direction column for proper stacking on mobile */
             #main-container {
                 flex-direction: column;
                 position: relative;
             }
 
-            /* FIX: Sidebar is now a normal flex item, not absolutely positioned */
             #sidebar {
                 width: 100%; 
                 height: auto; 
                 max-height: 110px;
-                flex-shrink: 0; /* Prevents the sidebar from shrinking */
+                flex-shrink: 0;
                 flex-direction: column;
                 border-right: none; 
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -562,18 +559,16 @@
                 top: -10px; left: -10px;
             }
 
-            /* FIX: Use padding to push board up instead of relative positioning */
             #game-container { 
                 flex: 1; 
                 width: 100%; 
-                padding-bottom: 100px; /* This shifts the content up */
+                padding-bottom: 120px; /* MODIFIED: Increased to move board up more */
             }
 
-            /* FIX: Enforce aspect ratio to prevent ovals */
             #game-board-frame,
             #game-board {
                 aspect-ratio: 1 / 1;
-                height: var(--board-size); /* Explicitly set height */
+                height: var(--board-size);
             }
 
             #game-title { 
@@ -582,12 +577,12 @@
             }
             #card-hand.visible { bottom: 40px; }
             #card-hand { width: 95vw; gap: -75px; }
-            .card { width: 100px; height: 140px; padding: 5px; }
-            .card-actions { margin-top: 5px; }
+            .card { width: 100px; height: 160px; padding: 5px; }
+            .card-actions { margin-bottom: 0px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
             .card-title { font-size: 0.5rem; }
 
-            #opponent-card-hand.visible { top: -50px; } 
+            #opponent-card-hand.visible { top: -70px; } /* MODIFIED: Moved up 20px more */
             #opponent-card-hand { width: 95vw; gap: -75px; }
             .opponent-card { width: 100px; height: 140px; }
             
