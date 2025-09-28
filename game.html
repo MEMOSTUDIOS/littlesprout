@@ -15,7 +15,7 @@
             --color-accent: #1eb973;
             --glow-color: #ffffff;
             --board-size: 600px;
-            --color-winner-glow: #feca57; /* MODIFIED: Added yellow for winner animation */
+            --color-winner-glow: #feca57;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,7 @@
             width: 100%;
             max-width: 1400px;
             height: 100%;
-            overflow: hidden; /* Fix for mobile scroll issues */
+            overflow: hidden;
         }
         
         #loader {
@@ -218,7 +218,6 @@
         #opponent-sprout { background-color: #6a0dad; }
 
         .glowing { animation: pulse-glow 1.5s infinite; }
-        /* MODIFIED: Simplified the spot glow to be a pure green, matching the card action glow */
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 15px 5px var(--color-accent); }
             50% { box-shadow: 0 0 30px 10px var(--color-accent); }
@@ -232,7 +231,6 @@
         @keyframes winning-glow {
             0% { 
                 transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.2);
-                /* MODIFIED: Changed green glow to yellow */
                 box-shadow: 0 0 20px 10px var(--glow-color), 0 0 30px 15px var(--color-winner-glow);
                 border-color: var(--color-winner-glow);
             }
@@ -264,14 +262,8 @@
             animation: fade-in-scale 1s ease-out forwards;
         }
         @keyframes fade-in-scale {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -150%) scale(0.5);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -150%) scale(1);
-            }
+            from { opacity: 0; transform: translate(-50%, -150%) scale(0.5); }
+            to { opacity: 1; transform: translate(-50%, -150%) scale(1); }
         }
         
         #card-hand {
@@ -407,7 +399,7 @@
             padding-bottom: 20px;
             text-align: center;
         }
-        /* START: Reworked Slider Styles */
+        
         .product-container-wrapper {
             position: relative;
             width: 100%;
@@ -482,7 +474,6 @@
         .slider-dot.active {
             background-color: #fff;
         }
-        /* END: Reworked Slider Styles */
         
         .product-box h3 { font-family: var(--font-main); font-weight: 700; font-size: 1.2rem; color: #e1f5fe; } 
         .product-box p { font-size: 0.9rem; color: #ccc; max-width: 220px; margin: 10px auto; } 
@@ -701,74 +692,85 @@
             #opponent-card-hand { width: 95vw; gap: -75px; }
             .opponent-card { width: 100px; height: 140px; }
             
-            /* START: FIX for Mobile Popup */
+            /* --- START: NEW MOBILE POPUP STYLES --- */
             #reveal-section {
-                display: flex;
-                flex-direction: column;
+                overflow-y: auto; /* Make the whole popup scrollable */
+                -webkit-overflow-scrolling: touch;
+                padding: 60px 20px; /* Add padding for content spacing */
+                display: block; /* Reset layout for simple scrolling */
                 height: 100%;
-                padding: 20px 0 0; /* Remove bottom padding */
                 box-sizing: border-box;
+                justify-content: flex-start; /* Align content to the top */
             }
+
             #reveal-title {
                 font-size: 2rem;
                 margin-top: 0;
-                flex-shrink: 0;
-                padding: 0 20px;
+                margin-bottom: 40px;
+                padding-bottom: 0;
+                text-align: center;
             }
+
+            /* Unset styles from the slider JS */
             .product-container-wrapper {
-                flex-grow: 1; /* Allow content to fill space */
-                overflow-y: auto; /* Make content area scrollable */
-                -webkit-overflow-scrolling: touch;
-                padding: 20px;
-                max-width: 100%;
+                all: unset;
             }
-            
-            .product-container {
-                overflow-x: visible;
-                scroll-snap-type: none;
+
+            #product-container {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 gap: 30px;
-            }
-            
-            .slider-track {
-                transform: none !important;
-                padding-left: 0;
-                padding-right: 0;
-            }
-            
-            .product-box {
-                scroll-snap-align: none;
-                width: 100%;
-                max-width: 350px;
-                flex-shrink: 0;
-            }
-            
-            .slider-arrow, .slider-dots { 
-                display: none; 
-            }
-            
-            #reveal-footer {
-                flex-shrink: 0;
-                padding: 15px 20px;
-                width: 100%;
-                box-sizing: border-box;
-                margin-top: 0;
-                flex-direction: column;
-                gap: 15px;
-                background: var(--color-background); /* Add background to avoid content showing through */
+                padding: 0;
+                margin: 0;
+                overflow: visible;
             }
 
-            #reveal-section #replay-button {
+            .product-box {
+                width: 100%;
+                max-width: 350px;
+                padding-bottom: 0;
+                scroll-snap-align: none;
+            }
+            
+            .slider-arrow, .slider-dots {
+                display: none !important;
+            }
+
+            #reveal-footer {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                margin-top: 50px; /* Space above the replay button */
+                padding: 0;
+            }
+
+            #replay-button {
                 position: static;
                 transform: none;
                 width: 100%;
                 max-width: 350px;
-                z-index: auto;
-                order: -1; /* Show replay button above the form */
             }
-            /* END: FIX for Mobile Popup */
+            
+            .subscribe-form {
+                display: flex;
+                flex-direction: column; /* Stack input and button */
+                gap: 15px;
+                align-items: center;
+                width: 100%;
+                max-width: 350px;
+                padding: 20px;
+                border-radius: 15px;
+                background: rgba(255, 255, 255, 0.3);
+            }
+            
+            .subscribe-form input,
+            .subscribe-form button {
+                width: 100%;
+            }
+             /* --- END: NEW MOBILE POPUP STYLES --- */
         }
     </style>
 </head>
@@ -1275,23 +1277,17 @@
                 this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
                 this.elements.cardHand.querySelectorAll('.card').forEach(card => { card.classList.toggle('inactive', !isInteractable); });
             },
-            // MODIFIED: Reworked slider logic for desktop drag and mobile native scroll
+            // MODIFIED: Reworked slider logic to be disabled on mobile
             initSlider(container) {
                 const isMobile = window.matchMedia("(max-width: 768px)").matches;
-                let track, slides;
-
-                // On mobile, the layout is handled by CSS flexbox, so we don't need JS logic
+                
+                // On mobile, DO NOT initialize the slider. Let CSS handle the simple vertical layout.
                 if (isMobile) {
-                    // Hide the desktop-only slider navigation elements if they exist
-                    const existingWrapper = container.closest('.product-container-wrapper');
-                    if (existingWrapper) {
-                        existingWrapper.querySelector('.slider-arrow.prev')?.remove();
-                        existingWrapper.querySelector('.slider-arrow.next')?.remove();
-                        existingWrapper.querySelector('.slider-dots')?.remove();
-                    }
                     return;
                 }
-                
+
+                // --- Desktop Slider Logic (unchanged) ---
+                let track, slides;
                 track = document.createElement('div');
                 track.className = 'slider-track';
                 while (container.firstChild) {
