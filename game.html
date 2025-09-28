@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Sprout - The Adventure Begins</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+        :root {
+            --font-main: 'Nunito', sans-serif;
+            --color-background: #0D1B2A;
+            --color-primary: #1B4965;
+            --color-secondary: #E0E1DD;
+            --color-accent: #1eb973;
+            --glow-color: #ffffff;
+            --board-size: 600px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main); background-color: var(--color-background); color: #fff;
+            overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh;
+        }
+        
+        #main-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+        }
+        
+        #loader {
+            font-family: var(--font-main); font-size: 1.5rem; color: var(--glow-color); position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%; background: var(--color-background);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; transition: opacity 0.5s ease-out;
+        }
+        #loader.hidden { opacity: 0; pointer-events: none; }
+
+        #sidebar {
+            width: 280px;
+            height: 90vh;
+            max-height: 750px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-primary);
+            border-right: 2px solid var(--color-primary);
+            z-index: 1111;
+        }
+        
+        #setup-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        #sidebar h2 {
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--glow-color);
+            text-align: center;
+            margin-bottom: 0;
+        }
+        
+        #steps-list {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            text-align: left;
+            counter-reset: steps;
+            margin-bottom: 0;
+        }
+        #steps-list li {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #aaa;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        #steps-list li::before {
+            counter-increment: steps;
+            content: counter(steps) ". ";
+            color: var(--color-accent);
+            margin-right: 10px;
+        }
+        #steps-list li.step-active {
+            color: var(--glow-color);
+            transform: scale(1.05);
+        }
+        
+        /* Container to prevent layout shift */
+        #interactive-controls-container {
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        #dice-container {
+            display: flex; gap: 15px; cursor: pointer;
+            transition: opacity 0.5s, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #dice-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #dice-container.selectable {
+            transform: scale(1.05);
+        }
+        /* Smaller Dice */
+        .dice { width: 45px; height: 45px; background-color: var(--color-secondary); border-radius: 8px; padding: 6px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); box-shadow: 0 3px 8px rgba(0,0,0,0.3); }
+        .dot { width: 8px; height: 8px; background-color: var(--color-primary); border-radius: 50%; align-self: center; justify-self: center; }
+        .dice[data-value="1"] .dot:nth-child(1){grid-area:2/2}.dice[data-value="2"] .dot:nth-child(1){grid-area:1/1}.dice[data-value="2"] .dot:nth-child(2){grid-area:3/3}.dice[data-value="3"] .dot:nth-child(1){grid-area:1/1}.dice[data-value="3"] .dot:nth-child(2){grid-area:2/2}.dice[data-value="3"] .dot:nth-child(3){grid-area:3/3}.dice[data-value="4"] .dot:nth-child(1){grid-area:1/1}.dice[data-value="4"] .dot:nth-child(2){grid-area:1/3}.dice[data-value="4"] .dot:nth-child(3){grid-area:3/1}.dice[data-value="4"] .dot:nth-child(4){grid-area:3/3}.dice[data-value="5"] .dot:nth-child(1){grid-area:1/1}.dice[data-value="5"] .dot:nth-child(2){grid-area:1/3}.dice[data-value="5"] .dot:nth-child(3){grid-area:2/2}.dice[data-value="5"] .dot:nth-child(4){grid-area:3/1}.dice[data-value="5"] .dot:nth-child(5){grid-area:3/3}.dice[data-value="6"] .dot:nth-child(1),.dice[data-value="6"] .dot:nth-child(2){grid-row:1}.dice[data-value="6"] .dot:nth-child(3),.dice[data-value="6"] .dot:nth-child(4){grid-row:2}.dice[data-value="6"] .dot:nth-child(5),.dice[data-value="6"] .dot:nth-child(6){grid-row:3}.dice[data-value="6"] .dot:nth-child(1),.dice[data-value="6"] .dot:nth-child(3),.dice[data-value="6"] .dot:nth-child(5){grid-column:1}.dice[data-value="6"] .dot:nth-child(2),.dice[data-value="6"] .dot:nth-child(4),.dice[data-value="6"] .dot:nth-child(6){grid-column:3}
+        .rolling { animation: subtleRoll 0.5s ease-out; }
+        @keyframes subtleRoll { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        
+        #color-palette { display: flex; justify-content: center; gap: 10px; transition: opacity 0.5s, transform 0.5s; opacity: 0; transform: scale(0.8); pointer-events: none; }
+        #color-palette.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .color-swatch { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; transition: transform 0.2s; }
+        .color-swatch:hover { transform: scale(1.15); }
+        
+        #narration-box {
+            width: 100%;
+            margin-top: auto;
+            padding: 15px; background: none; border-radius: 15px;
+            border: none;
+            text-align: center;
+            margin: 0 auto;
+        }
+        #narration-text { font-family: var(--font-main); font-size: 1rem; line-height: 1.2; color: #e1f5fe; text-shadow: 0 0 5px var(--glow-color); }
+        
+        #game-container { flex: 1; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
+        
+        #game-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--glow-color);
+            text-shadow: 0 0 10px var(--color-primary);
+            z-index: 45;
+            white-space: nowrap;
+        }
+
+        #game-board-frame {
+            width: calc(var(--board-size) + 40px);
+            height: calc(var(--board-size) + 40px);
+            background-color: #1f3a52;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 25px rgba(0,0,0,0.7);
+            position: absolute;
+            z-index: 0;
+        }
+
+        #game-board {
+            position: relative; 
+            width: var(--board-size); height: var(--board-size);
+            /* This conic-gradient creates the colored segments on the board */
+            background-image: conic-gradient(
+                from -16.36deg, /* Offset to center segments under spots */
+                #f7a732, #f0c340, #92c045, #55b64c, #29b9e6, #2b77c8,
+                #4a4aa8, #684196, #9e2a8f, #e53935, #d82b45, #f7a732
+            );
+            border-radius: 50%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 2px solid #dfe2c6;
+            transform: none;
+            top: auto; left: auto;
+        }
+        
+        #spots-container { position: absolute; top: 50%; left: 50%; width: 1px; height: 1px; }
+
+        .spot {
+            position: absolute; width: 40px; height: 40px;
+            top: -20px; left: -20px; 
+            border-radius: 50%; cursor: pointer; transition: box-shadow 0.3s ease, background-color 0.3s;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #ffffff; 
+            color: var(--color-primary); font-size: 1.2rem; font-family: var(--font-main); font-weight: 700;
+        }
+        
+        #center-spot { background-color: #ffffff !important; pointer-events: none; }
+
+        .sprout-pawn {
+            position: absolute; top: -17.5px; left: -17.5px;
+            width: 35px; height: 35px;
+            border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px #000, 0 0 20px #fff;
+            z-index: 50;
+            opacity: 0; transform: scale(0);
+            transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s;
+        }
+        #opponent-sprout { background-color: #6a0dad; }
+
+        .glowing { animation: pulse-glow 1.5s infinite; }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px 5px var(--glow-color), 0 0 10px 2px var(--glow-color) inset; outline: 2px solid rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 30px 10px var(--glow-color), 0 0 15px 4px var(--glow-color) inset; outline: 3px solid rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 15px 5px var(--glow-color), 0 0 10px 2px var(--glow-color) inset; outline: 2px solid rgba(255, 255, 255, 0.5); }
+        }
+        
+        #card-hand {
+            position: absolute; bottom: -250px; left: 50%; transform: translateX(-50%);
+            width: 1100px; display: flex; justify-content: center; gap: -50px;
+            transition: bottom 1s cubic-bezier(0.65, 0, 0.35, 1); z-index: 40;
+        }
+        #card-hand.visible { bottom: -60px; }
+
+        #opponent-card-hand {
+            position: absolute; top: -250px; left: 50%; transform: translateX(-50%);
+            width: 1100px; display: flex; justify-content: center; gap: -50px;
+            transition: top 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s;
+            z-index: 40;
+            opacity: 0.3; 
+            pointer-events: none;
+        }
+        #opponent-card-hand.visible { top: -10px; }
+        #opponent-card-hand.active { opacity: 1; }
+
+        .card {
+            width: 150px; height: 220px;
+            position: relative;
+            background-color: var(--color-secondary);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; justify-content: flex-start;
+            padding: 10px;
+            border: 2px solid #1eb973;
+            --rotation: 0deg;
+            transform: rotate(var(--rotation));
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            flex-shrink: 0;
+        }
+        .card:not(.inactive):hover {
+            transform: rotate(var(--rotation)) translateY(-15px);
+            z-index: 10;
+        }
+        .card.inactive { opacity: 0.5; transform: rotate(var(--rotation)) scale(0.95); pointer-events: none; }
+        .card-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .card-actions {
+            width: 100%;
+            display: flex; flex-direction: row; justify-content: space-around; align-items: center;
+        }
+        .card-image-placeholder {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            overflow: hidden;
+            background: #ccc;
+            margin-top: 10px;
+        }
+        .card-image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .action-dot {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem;
+            cursor: pointer; position: relative; pointer-events: none;
+            transition: box-shadow 0.3s;
+        }
+        .action-dot.white { background-color: #fff; color: #333; }
+        .action-dot.black { background-color: #333; color: #fff; }
+        .hand-interactable .action-dot { pointer-events: auto; }
+        .action-dot::after {
+            content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%;
+            transform: translateX(-50%); background-color: #333; color: #fff;
+            padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;
+            white-space: nowrap; opacity: 0; transition: opacity 0.2s; pointer-events: none;
+        }
+        .action-dot:hover::after { opacity: 1; }
+        .glowing-action { animation: pulse-glow-action 1.5s infinite; }
+        @keyframes pulse-glow-action {
+            0% { box-shadow: 0 0 12px 3px var(--color-accent); }
+            50% { box-shadow: 0 0 20px 6px var(--color-accent); }
+            100% { box-shadow: 0 0 12px 3px var(--color-accent); }
+        }
+
+        .opponent-card {
+            width: 150px; height: 220px;
+            position: relative;
+            background: linear-gradient(45deg, #1B4965, #0D1B2A);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border: 2px solid #5fa8d3;
+            --rotation: 0deg;
+            transform: rotate(var(--rotation));
+            flex-shrink: 0;
+        }
+
+        .floating-text {
+            position: fixed;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffca28;
+            text-shadow: 0 0 5px black;
+            pointer-events: none;
+            animation: float-up 1s ease-out forwards;
+            z-index: 9999;
+        }
+        @keyframes float-up {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-50px); opacity: 0; }
+        }
+
+        #reveal-section { 
+            position: fixed; top:0; left:0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            opacity: 0; visibility: hidden; transition: opacity 1s ease, visibility 0s 1s; 
+            z-index: 60; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); 
+            overflow-y: auto; padding: 40px 0;
+            z-index: 9999;
+        } 
+        #reveal-section.visible { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
+        #reveal-title { 
+            font-family: var(--font-main); font-weight:700; font-size: 4rem; 
+            margin-bottom: 20px; text-shadow: 0 0 20px var(--glow-color);
+            margin-top: -100px;
+            padding-bottom: 20px;
+            text-align: center;
+        } 
+        .product-container { 
+            display: flex; gap: 40px; 
+            overflow-x: auto;
+            cursor: grab;
+            padding: 20px;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        } 
+        .product-container::-webkit-scrollbar { display: none; }
+
+        .product-box { text-align: center; cursor: pointer; transition: transform 0.3s ease; flex-shrink: 0; padding-bottom: 20px; } 
+        .product-box:hover { transform: scale(1.05); } 
+        .product-box img { width: 220px; height: auto; margin-bottom: 15px; } 
+        .product-box h3 { font-family: var(--font-main); font-weight: 700; font-size: 1.2rem; color: #e1f5fe; } 
+        .product-box p { font-size: 0.9rem; color: #ccc; max-width: 220px; margin: 10px auto; } 
+        .product-box button, #replay-button, .subscribe-form button { font-family: var(--font-main); font-weight: 700; font-size: 1rem; padding: 12px 24px; border-radius: 50px; border: none; cursor: pointer; transition: all 0.3s ease; text-transform: capitalize; } 
+        .product-box button, .subscribe-form button { background: linear-gradient(45deg, #62B6CB, #1B4965); color: #fff; box-shadow: 0 4px 15px rgba(98, 182, 203, 0.4); } 
+        .product-box button:hover, .subscribe-form button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(98, 182, 203, 0.6); } 
+        #replay-button { background: transparent; color: var(--glow-color); border: 2px solid var(--glow-color); } 
+        #replay-button:hover { background: var(--glow-color); color: var(--color-background); }
+
+        #reveal-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .subscribe-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .subscribe-form input {
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--color-accent);
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
+            font-family: var(--font-main);
+            font-size: 1rem;
+        }
+        .subscribe-form input::placeholder { color: #ccc; }
+        
+        /* Custom Subscription Alert */
+        #subscription-alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, transform 0.5s, visibility 0.5s;
+        }
+        #subscription-alert.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 10px);
+        }
+
+        /* Pre-order Modal Styles */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s, 0s;
+        }
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            position: relative;
+            background-color: var(--color-primary);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 500px;
+            color: var(--color-secondary);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal.visible .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-header h3 { font-size: 1.5rem; color: var(--glow-color); }
+        .modal-close-btn { background: none; border: none; color: var(--color-secondary); font-size: 1.5rem; cursor: pointer; line-height: 1; }
+        .modal-body { padding: 1.5rem; }
+        .modal-body .form-group { margin-bottom: 1rem; }
+        .modal-body label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #ccc; }
+        .modal-body input, .modal-body textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 2px solid #62B6CB;
+            background-color: var(--color-background);
+            color: #fff;
+            font-family: var(--font-main);
+            font-size: 1rem;
+        }
+        .modal-body button {
+            width: 100%;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, var(--color-accent), #1a9c6a);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(30, 185, 115, 0.4);
+        }
+        .modal-body button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(30, 185, 115, 0.6); }
+
+        #confirmation-message { display: none; text-align: center; padding: 2rem; }
+        #confirmation-message svg { margin: 0 auto 1rem; }
+
+        @media (max-width: 1200px) {
+            :root { --board-size: 500px; }
+            #sidebar { width: 220px; }
+            #game-title { font-size: 1.5rem; }
+            .card, .opponent-card { width: 130px; height: 192px; }
+            #card-hand, #opponent-card-hand { width: 900px; gap: -40px; }
+        }
+        @media (max-width: 768px) {
+            :root { --board-size: 80vw; } 
+            #main-container {
+                position: relative;
+            }
+            #sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%; 
+                height: auto; 
+                max-height: 130px; 
+                flex-direction: column;
+                border-right: none; 
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 10px;
+                z-index: 500;
+                background: rgba(27, 73, 101, 0.85);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            }
+            #sidebar h2, #steps-list { display: none; }
+            #setup-controls { 
+                flex-direction: column; 
+                gap: 15px; 
+                width: 100%; 
+            }
+            #narration-box { margin-top: 0; width: 100%; order: -1; padding: 15px 0px;  }
+            
+            #interactive-controls-container {
+                min-height: auto;
+            }
+
+            .spot {
+                width: 30px; height: 30px;
+                top: -15px; left: -15px;
+                font-size: 0.8rem;
+            }
+            .sprout-pawn {
+                width: 25px; height: 25px;
+                top: -12.5px; left: -12.5px;
+            }
+
+            #game-container { flex: 1; width: 100%; }
+            #game-board { top: auto; }
+            #game-title { 
+                font-size: 1.2rem; 
+                top: 145px;
+                /* This hides the title on mobile screens */
+                display: none; 
+            }
+            #card-hand.visible { bottom: -30px; }
+            #card-hand { width: 100%; gap: -40px; }
+            .card { width: 80px; height: 112px; padding: 5px; }
+            .card-actions { margin-top: 5px; }
+            .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
+            .card-title { font-size: 0.5rem; }
+
+            #opponent-card-hand.visible { top: 0px; }
+            #opponent-card-hand { width: 100%; gap: -40px; }
+            .opponent-card { width: 80px; height: 112px; }
+            
+            #reveal-section { padding-bottom: 100px; }
+            .product-container {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 10px 20px;
+                width: 100%;
+                scrollbar-width: none;
+                justify-content: flex-start;
+            }
+            .product-container::-webkit-scrollbar { display: none; }
+            .product-box {
+                flex-shrink: 0;
+                width: 220px;
+            }
+            #reveal-title { font-size: 2.5rem; margin-top: -50px; }
+            .subscribe-form { display: none; }
+            #reveal-section #replay-button {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 40px);
+                z-index: 61;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">The Forest is Waking Up...</div>
+    <div id="main-container">
+        <div id="sidebar">
+            <div id="setup-controls">
+                <h2>Start Your Adventure</h2>
+                <ol id="steps-list">
+                    <li id="step-1">Choose Your Color</li>
+                    <li id="step-2">Roll the Dice</li>
+                    <li id="step-3">Place Your Sprout</li>
+                </ol>
+                <div id="interactive-controls-container">
+                    <div id="color-palette"></div>
+                    <div id="dice-container">
+                        <div class="dice" data-value="1"><div class="dot"></div></div>
+                        <div class="dice" data-value="1"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="narration-box"><p id="narration-text"></p></div>
+        </div>
+        
+        <div id="game-container">
+            <h1 id="game-title">Little Sprout: Adventure in Nature</h1>
+            <div id="game-board-frame"></div>
+            <div id="game-board">
+                <div id="spots-container"></div>
+            </div>
+            <div id="opponent-card-hand"></div>
+            <div id="card-hand"></div>
+            <div id="reveal-section">
+                 <h1 id="reveal-title">Play the Adventure Home</h1>
+                 <div id="product-container" class="product-container">
+                       <div class="product-box"><img src="https://placehold.co/300x300/4CAF50/FFFFFF/png?text=" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://placehold.co/300x300/a5d6a7/FFFFFF/png?text=" alt="Expansion Box Art"><h3>'Whispering Woods' Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://placehold.co/300x300/1B5E20/FFFFFF/png?text=" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
+                 </div>
+                 <div id="reveal-footer">
+                       <button id="replay-button">Replay demo</button>
+                       <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
+                             <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
+                             <button type="submit">Subscribe</button>
+                       </form>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="subscription-alert">
+        <svg xmlns="http://www.w.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Thank you for subscribing!</span>
+    </div>
+
+    <div id="preorder-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div id="preorder-form-container">
+                <div class="modal-header">
+                    <h3>Pre-order Little Sprout</h3>
+                    <button class="modal-close-btn">&times;</button>
+                </div>
+                <form id="preorder-form" class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Elara Vance" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="elara.vance@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Shipping Address</label>
+                        <textarea id="address" rows="3" placeholder="123 Mystic Lane, Spellbound City" required></textarea>
+                    </div>
+                    <p style="font-size: 0.8rem; text-align: center; opacity: 0.7; margin-bottom: 1rem;">Note: This is a demo. No payment will be processed.</p>
+                    <button type="submit">Confirm Pre-order ($49.99)</button>
+                </form>
+            </div>
+            <div id="confirmation-message">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <h3 style="font-size: 1.8rem; color: var(--glow-color); margin-bottom: 0.5rem;">Pre-order Confirmed!</h3>
+                <p>Thank you! A confirmation has been sent to your email. We'll notify you when your adventure ships.</p>
+                <button id="close-confirmation-btn" style="background: var(--color-accent); color: white; padding: 10px 20px; border-radius: 5px; margin-top: 1.5rem; border: none; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const game = {
+            elements: {}, state: {}, spotCoordinates: [],
+            config: {
+                SPOTS_PER_RING: 11,
+                PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
+                CARD_TITLES: ["Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
+                OUTER_RING_COLORS: ['#f7a732','#f0c340','#92c045','#55b64c','#29b9e6','#2b77c8','#4a4aa8','#684196','#9e2a8f','#e53935','#d82b45']
+            },
+            tutorialSteps: [
+                { text: "First, pick a color for your very own Little Sprout.", action: 'promptColor', stepNumber: 1 },
+                { text: "Great choice! Now, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
+                { text: () => `You rolled a ${game.state.diceSum}! Click the glowing space to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
+                { text: "Your turn! Choose an action from any card in your hand.", action: 'promptPlayerTurn' },
+                { text: "Well done! Now it's a friend's turn...", action: 'opponentTurn' },
+                { text: "It's your turn again! Choose an action to move even closer.", action: 'promptPlayerTurn' },
+                { text: "You made it to the heart of the forest! What an amazing adventure!", action: 'endGameSuccess' },
+                { text: "The journey continues! You explored bravely, but the deepest forest awaits another time.", action: 'endGameFailure' }
+            ],
+            init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.elements.loader.classList.add('hidden'); this.resetGame(true); this.makeDraggable(this.elements.productContainer); },
+            cacheElements() {
+                const requiredIds = ['loader','sidebar','narration-text','reveal-section','replay-button','spots-container','dice-container','color-palette','card-hand','opponent-card-hand','game-container','steps-list','game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
+                requiredIds.forEach(id => { 
+                    const element = document.getElementById(id);
+                    if (!element) console.error(`Critical element not found: #${id}`); 
+                    this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element; 
+                });
+                this.elements.dice = this.elements.diceContainer.querySelectorAll('.dice');
+                // Cache modal specific elements
+                this.elements.preorderModal.overlay = this.elements.preorderModal.querySelector('.modal-overlay');
+                this.elements.preorderModal.closeBtn = this.elements.preorderModal.querySelector('.modal-close-btn');
+                this.elements.preorderModal.form = this.elements.preorderModal.querySelector('#preorder-form');
+                this.elements.preorderModal.formContainer = this.elements.preorderModal.querySelector('#preorder-form-container');
+                this.elements.preorderModal.confirmationMsg = this.elements.preorderModal.querySelector('#confirmation-message');
+                this.elements.preorderModal.closeConfirmationBtn = this.elements.preorderModal.querySelector('#close-confirmation-btn');
+            },
+            createDynamicElements() {
+                this.elements.playerSprout = this.createPawn('player-sprout');
+                this.elements.opponentSprout = this.createPawn('opponent-sprout');
+                this.elements.opponentSprout.style.backgroundColor = '#6a0dad';
+                
+                const cardCount = 6;
+                
+                // Player Cards
+                const playerCardFragment = document.createDocumentFragment();
+                this.elements.cardHand.innerHTML = '';
+                for(let i = 0; i < cardCount; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const rotation = (i - 2.5) * 6;
+                    card.style.setProperty('--rotation', `${rotation}deg`);
+                    card.innerHTML = `
+                        <p class="card-title">${this.config.CARD_TITLES[i]}</p>
+                        <div class="card-actions">
+                            <div class="action-dot white" data-move="1" data-tooltip="Draw +1">+1</div>
+                            <div class="action-dot black" data-move="2" data-tooltip="Memorize +2">+2</div>
+                            <div class="action-dot white" data-move="1" data-tooltip="Interpret +1">+1</div>
+                        </div>
+                        <div class="card-image-placeholder">
+                           <img src="https://placehold.co/130x80/e0e1dd/1B4965?text=Your+Art+Here" alt="${this.config.CARD_TITLES[i]} Art">
+                        </div>
+                    `;
+                    playerCardFragment.appendChild(card);
+                }
+                this.elements.cardHand.appendChild(playerCardFragment);
+
+                // Opponent Cards
+                const opponentCardFragment = document.createDocumentFragment();
+                this.elements.opponentCardHand.innerHTML = '';
+                for(let i = 0; i < cardCount; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'opponent-card';
+                    const rotation = (i - 2.5) * -6;
+                    card.style.setProperty('--rotation', `${rotation}deg`);
+                    opponentCardFragment.appendChild(card);
+                }
+                this.elements.opponentCardHand.appendChild(opponentCardFragment);
+            },
+            createPawn(id) { const pawn = document.createElement('div'); pawn.id = id; pawn.className = 'sprout-pawn'; return pawn; },
+            createBoardLayout() {
+                this.elements.spotsContainer.innerHTML = ''; this.spotCoordinates = []; let spotCounter = 0;
+                const rings = [
+                    { numSpots: this.config.SPOTS_PER_RING, radius: 280 }, 
+                    { numSpots: this.config.SPOTS_PER_RING, radius: 210 },
+                    { numSpots: this.config.SPOTS_PER_RING, radius: 140 }, 
+                    { numSpots: this.config.SPOTS_PER_RING, radius: 70 },
+                    { numSpots: 1, radius: 0 }
+                ];
+                
+                const boardWidth = this.elements.gameBoard.getBoundingClientRect().width;
+
+                // If the board isn't rendered yet, wait for the next frame
+                if (boardWidth === 0) {
+                    requestAnimationFrame(() => this.createBoardLayout());
+                    return;
+                }
+
+                const baseBoardSize = 600;
+                const currentBoardScale = boardWidth / baseBoardSize;
+
+                rings.forEach((ring, ringIndex) => {
+                    for (let i = 0; i < ring.numSpots; i++) {
+                        const angle = (i / ring.numSpots) * 2 * Math.PI - (Math.PI / 2);
+                        const x = Math.cos(angle) * ring.radius * currentBoardScale;
+                        const y = Math.sin(angle) * ring.radius * currentBoardScale;
+                        this.spotCoordinates.push({ x, y });
+                        const spot = document.createElement('div');
+                        spot.className = 'spot'; spot.id = `spot-${spotCounter}`; spot.style.zIndex = ringIndex + 1;
+                        
+                        if (ring.radius === 0) { spot.id = 'center-spot'; }
+                        else if (ringIndex === 0) {
+                            spot.innerHTML = `<span>${i + 2}</span>`;
+                            spot.addEventListener('click', () => this.handleSpotClick(i));
+                        }
+                        
+                        spot.style.transform = `translate(${x}px, ${y}px)`;
+                        this.elements.spotsContainer.appendChild(spot);
+                        spotCounter++;
+                    }
+                });
+                this.elements.spotsContainer.appendChild(this.elements.playerSprout);
+                this.elements.spotsContainer.appendChild(this.elements.opponentSprout);
+                
+                // After creating spots, we need to re-place the pawns if they are already on the board
+                if (this.state && this.state.playerPawnPosition > -1) {
+                    const playerPos = this.spotCoordinates[this.state.playerPawnPosition];
+                    this.elements.playerSprout.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px) scale(1)`;
+                }
+                if (this.state && this.state.opponentPawnPosition > -1) {
+                    const opponentPos = this.spotCoordinates[this.state.opponentPawnPosition];
+                    this.elements.opponentSprout.style.transform = `translate(${opponentPos.x}px, ${opponentPos.y}px) scale(1)`;
+                }
+            },
+            createColorPalette() {
+                this.elements.colorPalette.innerHTML = '';
+                this.config.PAWN_COLORS.forEach(color => {
+                    const swatch = document.createElement('div'); swatch.className = 'color-swatch'; swatch.style.backgroundColor = color;
+                    swatch.addEventListener('click', () => this.handleColorChoice(color)); this.elements.colorPalette.appendChild(swatch);
+                });
+            },
+            attachEventListeners() {
+                this.elements.replayButton.addEventListener('click', () => this.resetGame());
+                this.elements.cardHand.querySelectorAll('.action-dot').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.handleActionChoice(parseInt(btn.dataset.move), e.target);
+                    });
+                });
+                // Pre-order modal listeners
+                document.querySelectorAll('.preorder-btn').forEach(btn => btn.addEventListener('click', () => this.openPreorderModal()));
+                this.elements.preorderModal.overlay.addEventListener('click', () => this.closePreorderModal());
+                this.elements.preorderModal.closeBtn.addEventListener('click', () => this.closePreorderModal());
+                this.elements.preorderModal.closeConfirmationBtn.addEventListener('click', () => this.closePreorderModal());
+                this.elements.preorderModal.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.elements.preorderModal.formContainer.style.display = 'none';
+                    this.elements.preorderModal.confirmationMsg.style.display = 'block';
+                });
+                // Add resize listener to rebuild the board
+                window.addEventListener('resize', () => this.createBoardLayout());
+            },
+            nextStep() {
+                this.state.currentStep++;
+                if (this.state.currentStep < this.tutorialSteps.length) {
+                    const step = this.tutorialSteps[this.state.currentStep];
+                    if (step) { this.elements.narrationText.textContent = typeof step.text === 'function' ? step.text() : step.text; this.updateStepsUI(step.stepNumber); this[step.action](); }
+                }
+            },
+            resetGame(isInitialStart = false) {
+                if (!isInitialStart) { this.elements.gameBoard.classList.remove('reveal'); this.elements.revealSection.classList.remove('visible'); }
+                this.state = { currentStep: -1, diceSum: 0, playerPawnPosition: -1, opponentPawnPosition: -1, selectedPawnColor: this.config.PAWN_COLORS[0], turn: 1, reachedCenter: false };
+                this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
+                [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => { pawn.style.transition = 'opacity 0s, transform 0s'; pawn.style.opacity = '0'; pawn.style.transform = `scale(0)`; });
+                document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
+                this.elements.cardHand.classList.add('visible'); 
+                this.elements.opponentCardHand.classList.add('visible');
+                this.elements.opponentCardHand.classList.remove('active');
+                this.setHandInteractable(false);
+                this.elements.dice.forEach(d => this.updateDieFace(d, 1));
+                
+                this.elements.colorPalette.classList.remove('visible');
+                this.elements.diceContainer.classList.remove('visible');
+
+                if (window.innerWidth <= 768) {
+                    this.elements.colorPalette.style.display = 'none';
+                    this.elements.diceContainer.style.display = 'none';
+                }
+                setTimeout(() => this.nextStep(), isInitialStart ? 0 : 1500);
+            },
+            updateStepsUI(stepNumber) { this.elements.stepsList.querySelectorAll('li').forEach((step, index) => { step.classList.toggle('step-active', index + 1 === stepNumber); }); },
+            promptColor() {
+                this.updateStepsUI(1);
+                this.elements.diceContainer.classList.remove('visible');
+                this.elements.colorPalette.classList.add('visible');
+                if (window.innerWidth <= 768) {
+                    this.elements.diceContainer.style.display = 'none';
+                    this.elements.colorPalette.style.display = 'flex';
+                }
+            },
+            promptDiceRoll() {
+                this.updateStepsUI(2);
+                this.elements.colorPalette.classList.remove('visible');
+                this.elements.diceContainer.classList.add('visible', 'selectable');
+                if (window.innerWidth <= 768) {
+                    this.elements.colorPalette.style.display = 'none';
+                    this.elements.diceContainer.style.display = 'flex';
+                }
+                this.elements.diceContainer.addEventListener('click', () => this.handleDiceRoll(), { once: true });
+            },
+            promptPlacePawn() { this.updateStepsUI(3); document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing'); },
+            promptPlayerTurn() { 
+                this.updateStepsUI(0); 
+                this.setHandInteractable(true); 
+                this.elements.opponentCardHand.classList.add('active'); 
+                const thirdCardAction = this.elements.cardHand.querySelectorAll('.card')[2].querySelector('.action-dot');
+                if(thirdCardAction) thirdCardAction.classList.add('glowing-action');
+            },
+            opponentTurn() { this.handleOpponentTurn(); },
+            endGameSuccess() { this.reveal(); }, endGameFailure() { this.reveal(); },
+            handleColorChoice(color) { 
+                this.state.selectedPawnColor = color; this.elements.playerSprout.style.backgroundColor = color;
+                this.elements.colorPalette.classList.remove('visible');
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => { this.elements.colorPalette.style.display = 'none'; }, 500);
+                }
+                this.nextStep(); 
+            },
+            handleDiceRoll() {
+                this.elements.diceContainer.classList.remove('selectable'); let rollCount = 0;
+                const rollInterval = setInterval(() => {
+                    rollCount++;
+                    this.elements.dice.forEach(d => { d.classList.add('rolling'); const randomValue = Math.ceil(Math.random() * 6); this.updateDieFace(d, randomValue); });
+                    if (rollCount > 5) {
+                        clearInterval(rollInterval);
+                        const val1 = Math.ceil(Math.random() * 6), val2 = Math.ceil(Math.random() * 6);
+                        this.updateDieFace(this.elements.dice[0], val1); this.updateDieFace(this.elements.dice[1], val2);
+                        this.state.diceSum = val1 + val2;
+                        this.elements.dice.forEach(d => d.classList.remove('rolling'));
+                        setTimeout(() => this.nextStep(), 500);
+                    }
+                }, 100);
+            },
+            handleSpotClick(index) {
+                if (this.state.currentStep !== 2 || index !== this.state.diceSum - 2) return;
+                
+                this.elements.diceContainer.classList.remove('visible');
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => { this.elements.diceContainer.style.display = 'none'; }, 500);
+                }
+                
+                document.getElementById(`spot-${index}`).classList.remove('glowing'); this.updateStepsUI(0);
+                this.elements.playerSprout.style.transition = 'opacity 0.5s';
+                const pos = this.spotCoordinates[index];
+                this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+
+                requestAnimationFrame(() => {
+                    this.elements.playerSprout.style.opacity = '1';
+                    setTimeout(() => {
+                        this.elements.playerSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
+                        this.placeOpponentPawn(index);
+                        this.nextStep(); 
+                    }, 500);
+                });
+                this.state.playerPawnPosition = index;
+            },
+            placeOpponentPawn(playerStartIndex) {
+                const opponentStartIndex = (playerStartIndex + 4) % this.config.SPOTS_PER_RING;
+                this.state.opponentPawnPosition = opponentStartIndex;
+                const pos = this.spotCoordinates[opponentStartIndex];
+                this.elements.opponentSprout.style.transition = 'opacity 0.5s';
+                this.elements.opponentSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+                requestAnimationFrame(() => {
+                    this.elements.opponentSprout.style.opacity = '1';
+                    setTimeout(() => {
+                         this.elements.opponentSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
+                    }, 500);
+                });
+            },
+            handleActionChoice(moveAmount, clickedElement) {
+                document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
+                this.setHandInteractable(false);
+                this.showGamificationText(`+${moveAmount}`, clickedElement);
+                let newSpotIndex = this.state.playerPawnPosition;
+                for (let i = 0; i < moveAmount; i++) { newSpotIndex += this.config.SPOTS_PER_RING; }
+                const centerSpotIndex = this.spotCoordinates.length - 1;
+                if (newSpotIndex >= centerSpotIndex) { newSpotIndex = centerSpotIndex; this.state.reachedCenter = true; }
+                if (newSpotIndex !== this.state.playerPawnPosition) {
+                    const pos = this.spotCoordinates[newSpotIndex]; this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`; this.state.playerPawnPosition = newSpotIndex;
+                }
+                let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : (this.state.turn === 1 ? 'opponentTurn' : 'endGameFailure');
+                if (nextFlowStep === 'opponentTurn') this.state.turn = 2;
+                this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
+                setTimeout(() => this.nextStep(), 1500);
+            },
+            handleOpponentTurn() {
+                setTimeout(() => {
+                    const newPosIndex = this.state.opponentPawnPosition + this.config.SPOTS_PER_RING;
+                    const newPos = this.spotCoordinates[newPosIndex];
+                    this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
+                    this.state.opponentPawnPosition = newPosIndex;
+                    setTimeout(() => this.nextStep(), 1500);
+                }, 1000);
+            },
+            showGamificationText(text, targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                const el = document.createElement('div');
+                el.textContent = text;
+                el.className = 'floating-text';
+                el.style.left = `${rect.left + rect.width / 2 - 15}px`;
+                el.style.top = `${rect.top - 10}px`;
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => el.remove());
+            },
+            reveal() { 
+                this.elements.gameBoard.classList.add('reveal'); this.elements.revealSection.classList.add('visible'); 
+                const finalNarrationIndex = this.state.reachedCenter ? this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess') : this.tutorialSteps.findIndex(s => s.action === 'endGameFailure');
+                this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text;
+            },
+            updateDieFace(dieElement, value) { dieElement.dataset.value = value; let dots = ''; for (let i = 0; i < value; i++) dots += '<div class="dot"></div>'; dieElement.innerHTML = dots; },
+            setHandInteractable(isInteractable) {
+                this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
+                this.elements.cardHand.querySelectorAll('.card').forEach(card => { card.classList.toggle('inactive', !isInteractable); });
+            },
+            makeDraggable(element) {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                element.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    element.style.cursor = 'grabbing';
+                    startX = e.pageX - element.offsetLeft;
+                    scrollLeft = element.scrollLeft;
+                });
+                element.addEventListener('mouseleave', () => { isDown = false; element.style.cursor = 'grab'; });
+                element.addEventListener('mouseup', () => { isDown = false; element.style.cursor = 'grab'; });
+                element.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - element.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    element.scrollLeft = scrollLeft - walk;
+                });
+            },
+            handleSubscription(event) {
+                event.preventDefault();
+                const emailInput = this.elements.subscribeEmail;
+                if (emailInput.value && emailInput.value.includes('@')) {
+                    this.elements.subscriptionAlert.classList.add('visible');
+                    setTimeout(() => {
+                        this.elements.subscriptionAlert.classList.remove('visible');
+                    }, 3000);
+                    emailInput.value = '';
+                } else {
+                    emailInput.style.borderColor = '#ff6b6b';
+                    setTimeout(() => { emailInput.style.borderColor = 'var(--color-accent)'; }, 2000);
+                }
+            },
+            openPreorderModal() {
+                this.elements.preorderModal.form.reset();
+                this.elements.preorderModal.formContainer.style.display = 'block';
+                this.elements.preorderModal.confirmationMsg.style.display = 'none';
+                this.elements.preorderModal.classList.add('visible');
+            },
+            closePreorderModal() {
+                this.elements.preorderModal.classList.remove('visible');
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => { setTimeout(() => game.init(), 0); });
+    </script>
+</body>
+</html>
