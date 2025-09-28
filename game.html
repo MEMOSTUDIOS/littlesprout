@@ -187,7 +187,7 @@
             background-image: url('https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border-radius: 50%;         
+            border-radius: 50%;      
             border: 2px solid #dfe2c6;
             transform: none;
             top: auto; left: auto;
@@ -221,6 +221,29 @@
             0% { box-shadow: 0 0 15px 5px var(--color-accent), 0 0 10px 2px var(--color-accent) inset; outline: 2px solid rgba(30, 185, 115, 0.5); }
             50% { box-shadow: 0 0 30px 10px var(--color-accent), 0 0 15px 4px var(--color-accent) inset; outline: 3px solid rgba(30, 185, 115, 0.8); }
             100% { box-shadow: 0 0 15px 5px var(--color-accent), 0 0 10px 2px var(--color-accent) inset; outline: 2px solid rgba(30, 185, 115, 0.5); }
+        }
+
+        /* === NEW WINNING EFFECT === */
+        .winning-pawn {
+            animation: winning-glow 2.5s ease-in-out;
+            z-index: 100 !important;
+        }
+        @keyframes winning-glow {
+            0% { 
+                transform: scale(1.2);
+                box-shadow: 0 0 20px 10px var(--glow-color), 0 0 30px 15px var(--color-accent);
+                border-color: var(--color-accent);
+            }
+            50% { 
+                transform: scale(1.5);
+                box-shadow: 0 0 40px 20px var(--glow-color), 0 0 50px 25px var(--color-accent);
+                border-color: var(--glow-color);
+            }
+            100% { 
+                transform: scale(1.2);
+                box-shadow: 0 0 20px 10px var(--glow-color), 0 0 30px 15px var(--color-accent);
+                border-color: var(--color-accent);
+            }
         }
         
         #card-hand {
@@ -653,16 +676,16 @@
             <div id="reveal-section">
                  <h1 id="reveal-title">Play the Adventure Home</h1>
                  <div id="product-container" class="product-container">
-                      <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
-                      <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
-                      <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
+                       <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
                  </div>
                  <div id="reveal-footer">
-                      <button id="replay-button">Replay demo</button>
-                      <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
-                          <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
-                          <button type="submit">Subscribe</button>
-                      </form>
+                       <button id="replay-button">Replay demo</button>
+                       <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
+                           <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
+                           <button type="submit">Subscribe</button>
+                       </form>
                  </div>
             </div>
         </div>
@@ -732,8 +755,7 @@
                 { text: "Your turn! Choose an action from any card in your hand.", action: 'promptPlayerTurn' },
                 { text: "Well done! Now it's a friend's turn...", action: 'opponentTurn' },
                 { text: "It's your turn again! Choose an action to move even closer.", action: 'promptPlayerTurn' },
-                { text: "You made it to the heart of the forest! What an amazing adventure!", action: 'endGameSuccess' },
-                { text: "The journey continues! You explored bravely, but the deepest forest awaits another time.", action: 'endGameFailure' }
+                { text: "You made it to the heart of the forest! What an amazing adventure!", action: 'endGameSuccess' }
             ],
             init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.elements.loader.classList.add('hidden'); this.resetGame(true); this.makeDraggable(this.elements.productContainer); },
             cacheElements() {
@@ -898,6 +920,10 @@
                 this.state = { currentStep: -1, diceSum: 0, playerPawnPosition: -1, opponentPawnPosition: -1, selectedPawnColor: this.config.PAWN_COLORS[0], turn: 1, reachedCenter: false, forceMemorize: false };
                 this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
                 [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => { pawn.style.transition = 'opacity 0s, transform 0s'; pawn.style.opacity = '0'; pawn.style.transform = `scale(0)`; });
+                
+                // === UPDATE: Clean up winning effect class on reset ===
+                this.elements.playerSprout.classList.remove('winning-pawn');
+                
                 document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
                 this.elements.cardHand.classList.add('visible'); 
                 this.elements.opponentCardHand.classList.add('visible');
@@ -965,7 +991,14 @@
                 });
             },
             opponentTurn() { this.handleOpponentTurn(); },
-            endGameSuccess() { this.reveal(); }, endGameFailure() { this.reveal(); },
+            // === UPDATE: Add winning effect and delay before showing popup ===
+            endGameSuccess() {
+                this.elements.playerSprout.classList.add('winning-pawn');
+                setTimeout(() => {
+                    this.reveal();
+                    this.elements.playerSprout.classList.remove('winning-pawn');
+                }, 2500); // 2.5 second delay
+            },
             handleColorChoice(color) { 
                 this.state.selectedPawnColor = color; this.elements.playerSprout.style.backgroundColor = color;
                 this.elements.colorPalette.classList.remove('visible');
@@ -1049,9 +1082,11 @@
                 if (this.state.forceMemorize && moveAmount === 2) {
                     this.state.forceMemorize = false;
                 }
+                
+                let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
+                
+                if (this.state.turn === 1) this.state.turn = 2;
 
-                let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : (this.state.turn === 1 ? 'opponentTurn' : 'endGameFailure');
-                if (nextFlowStep === 'opponentTurn') this.state.turn = 2;
                 this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
                 setTimeout(() => this.nextStep(), 1500);
             },
@@ -1076,7 +1111,7 @@
             },
             reveal() { 
                 this.elements.gameBoard.classList.add('reveal'); this.elements.revealSection.classList.add('visible'); 
-                const finalNarrationIndex = this.state.reachedCenter ? this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess') : this.tutorialSteps.findIndex(s => s.action === 'endGameFailure');
+                const finalNarrationIndex = this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess');
                 this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text;
             },
             updateDieFace(dieElement, value) { dieElement.dataset.value = value; let dots = ''; for (let i = 0; i < value; i++) dots += '<div class="dot"></div>'; dieElement.innerHTML = dots; },
@@ -1137,5 +1172,6 @@
         };
         document.addEventListener('DOMContentLoaded', () => { setTimeout(() => game.init(), 0); });
     </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"3a54c548c7f745f0a19c86a8a6c5af6d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
