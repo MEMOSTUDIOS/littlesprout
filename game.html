@@ -1106,15 +1106,19 @@
                     this.state.playerPawnPosition = newSpotIndex;
                 }
 
-                const ringIndex = Math.floor(newSpotIndex / this.config.SPOTS_PER_RING);
-                const isBlackSpot = (ringIndex === 1 || ringIndex === 3);
-
-                if (moveAmount === 1 && isBlackSpot) {
-                    this.state.forceMemorize = true;
-                }
-
+                // === BUG FIX & UPDATE: This logic now correctly handles all black spots ===
+                // First, check if the player just fulfilled a forced +2 move.
                 if (this.state.forceMemorize && moveAmount === 2) {
                     this.state.forceMemorize = false;
+                }
+
+                // Next, determine if the new spot requires the NEXT turn to be a forced move.
+                const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
+                const isBlackSpot = (ringIndex === 1 || ringIndex === 3);
+
+                // If the player landed on ANY black spot, their next move is forced.
+                if (isBlackSpot) {
+                    this.state.forceMemorize = true;
                 }
                 
                 let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
@@ -1124,17 +1128,14 @@
                 this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
                 setTimeout(() => this.nextStep(), 1500);
             },
-            // === UPDATE: Enhanced opponent AI logic ===
             handleOpponentTurn() {
                 setTimeout(() => {
                     const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
                     let moveDistance;
 
-                    // If the opponent is on the first black ring (ring index 1), jump 2 spaces.
                     if (currentRingIndex === 1) {
                         moveDistance = this.config.SPOTS_PER_RING * 2;
                     } else {
-                        // Otherwise, make a standard 1-space move.
                         moveDistance = this.config.SPOTS_PER_RING;
                     }
 
