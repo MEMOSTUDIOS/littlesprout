@@ -245,7 +245,6 @@
             }
         }
 
-        /* === NEW "WINNER!" TEXT STYLE === */
         .winner-text {
             position: absolute;
             left: 0;
@@ -758,7 +757,6 @@
 
 
     <script>
-        // Your JavaScript remains the same
         const game = {
             elements: {}, state: {}, spotCoordinates: [],
             config: {
@@ -1111,7 +1109,6 @@
                 const ringIndex = Math.floor(newSpotIndex / this.config.SPOTS_PER_RING);
                 const isBlackSpot = (ringIndex === 1 || ringIndex === 3);
 
-                // === UPDATE: Force memorize on ANY black spot if using a +1 move ===
                 if (moveAmount === 1 && isBlackSpot) {
                     this.state.forceMemorize = true;
                 }
@@ -1127,12 +1124,28 @@
                 this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
                 setTimeout(() => this.nextStep(), 1500);
             },
+            // === UPDATE: Enhanced opponent AI logic ===
             handleOpponentTurn() {
                 setTimeout(() => {
-                    const newPosIndex = this.state.opponentPawnPosition + this.config.SPOTS_PER_RING;
-                    const newPos = this.spotCoordinates[newPosIndex];
-                    this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
-                    this.state.opponentPawnPosition = newPosIndex;
+                    const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
+                    let moveDistance;
+
+                    // If the opponent is on the first black ring (ring index 1), jump 2 spaces.
+                    if (currentRingIndex === 1) {
+                        moveDistance = this.config.SPOTS_PER_RING * 2;
+                    } else {
+                        // Otherwise, make a standard 1-space move.
+                        moveDistance = this.config.SPOTS_PER_RING;
+                    }
+
+                    const newPosIndex = this.state.opponentPawnPosition + moveDistance;
+                    
+                    if (newPosIndex < this.spotCoordinates.length) {
+                        const newPos = this.spotCoordinates[newPosIndex];
+                        this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
+                        this.state.opponentPawnPosition = newPosIndex;
+                    }
+
                     setTimeout(() => this.nextStep(), 1500);
                 }, 1000);
             },
