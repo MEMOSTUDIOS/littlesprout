@@ -298,10 +298,11 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
             flex-shrink: 0;
         }
-        /* NEW: Use negative margins for card overlap */
+        
+        /* UPDATED: Spread cards out more on desktop */
         #card-hand .card:not(:first-child),
         #opponent-card-hand .opponent-card:not(:first-child) {
-            margin-left: -125px;
+            margin-left: -60px;
         }
 
         .card:not(.inactive):hover {
@@ -636,10 +637,11 @@
             #game-title { font-size: 1.5rem; }
             .card, .opponent-card { width: 130px; height: 192px; }
             #card-hand, #opponent-card-hand { width: 900px; }
-            /* NEW: Use negative margins for card overlap */
+            
+            /* UPDATED: Spread cards out more on medium screens */
             #card-hand .card:not(:first-child),
             #opponent-card-hand .opponent-card:not(:first-child) {
-                margin-left: -85px;
+                margin-left: -55px;
             }
         }
         
@@ -708,6 +710,10 @@
             #card-hand.visible { bottom: 40px; }
             #card-hand { width: 95vw; }
             .card { width: 100px; height: 160px; padding: 5px; }
+            
+            /* UPDATED: Added rule to make opponent cards same size as player cards on mobile */
+            .opponent-card { width: 100px; height: 160px; }
+
             .card-actions { margin-bottom: 0px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
             .card-title { font-size: 0.5rem; }
@@ -715,10 +721,10 @@
             #opponent-card-hand.visible { top: -70px; }
             #opponent-card-hand { width: 95vw; }
             
-            /* NEW: Use negative margins for card overlap */
+            /* UPDATED: Spread cards out more on mobile */
             #card-hand .card:not(:first-child),
             #opponent-card-hand .opponent-card:not(:first-child) {
-                margin-left: -85px;
+                margin-left: -50px;
             }
 
             #reveal-section {
@@ -833,16 +839,16 @@
             <div id="reveal-section">
                  <h1 id="reveal-title">Play the Adventure Home</h1>
                  <div id="product-container">
-                       <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
-                       <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
-                       <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
+                         <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art"><h3>Standard Edition</h3><p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button></div>
+                         <div class="product-box"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art"><h3>Game Expansion</h3><p>New characters, darker secrets, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button></div>
+                         <div class="product-box"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
                  </div>
                  <div id="reveal-footer">
-                       <button id="replay-button">Replay demo</button>
-                       <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
-                             <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
-                             <button type="submit">Subscribe</button>
-                       </form>
+                         <button id="replay-button">Replay demo</button>
+                         <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
+                                <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
+                                <button type="submit">Subscribe</button>
+                         </form>
                  </div>
             </div>
         </div>
