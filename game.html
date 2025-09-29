@@ -929,7 +929,7 @@
             tutorialSteps: [
                 { text: "First, pick a color for your very own Little Sprout.", action: 'promptColor', stepNumber: 1 },
                 { text: "Next, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
-                { text: () => `You rolled a ${game.state.diceSum}! Click the glowing ${game.state.diceSum}! to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
+                { text: () => `You rolled a ${game.state.diceSum}! Click the glowing ${game.state.diceSum} to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
                 { text: "Now, choose an action from any card in your hand.", action: 'promptPlayerTurn' },
                 { text: "Well done! Now it is your friend's turn...", action: 'opponentTurn' },
                 { text: "Good. It is your turn again!", action: 'promptPlayerTurn' },
