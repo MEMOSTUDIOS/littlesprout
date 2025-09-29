@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -720,8 +721,8 @@
             #card-hand { width: 95vw; }
             
             /* UPDATED: Cards are now slightly smaller on mobile to allow for a wider spread */
-            .card { width: 80px; height: 128px; padding: 5px; }
-            .opponent-card { width: 80px; height: 128px; }
+            .card { width: 95px; height: 150px; padding: 5px; }
+            .opponent-card { width: 95px; height: 128px; }
 
             .card-actions { margin-bottom: 0px; }
             .action-dot { width: 20px; height: 20px; font-size: 0.7rem; }
@@ -733,7 +734,7 @@
             /* UPDATED: Wider spread for mobile cards */
             #card-hand .card:not(:first-child),
             #opponent-card-hand .opponent-card:not(:first-child) {
-                margin-left: -20px;
+                margin-left: -10px;
             }
 
             #reveal-section {
@@ -927,12 +928,12 @@
             },
             tutorialSteps: [
                 { text: "First, pick a color for your very own Little Sprout.", action: 'promptColor', stepNumber: 1 },
-                { text: "Great choice! Now, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
-                { text: () => `You rolled a ${game.state.diceSum}! Click the glowing space to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
-                { text: "Your turn! Choose an action from any card in your hand.", action: 'promptPlayerTurn' },
-                { text: "Well done! Now it's your friend's turn...", action: 'opponentTurn' },
-                { text: "It's your turn again! Choose an action to move even closer.", action: 'promptPlayerTurn' },
-                { text: "You made it to the heart of the forest! What an amazing adventure!", action: 'endGameSuccess' }
+                { text: "Next, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
+                { text: () => `You rolled a ${game.state.diceSum}! Click the glowing ${game.state.diceSum}! to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
+                { text: "Now, choose an action from any card in your hand.", action: 'promptPlayerTurn' },
+                { text: "Well done! Now it is your friend's turn...", action: 'opponentTurn' },
+                { text: "Good. It is your turn again!", action: 'promptPlayerTurn' },
+                { text: "You made it to the heart of the forest!", action: 'endGameSuccess' }
             ],
             init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.elements.loader.classList.add('hidden'); this.resetGame(true); this.initSlider(this.elements.productContainer); },
             cacheElements() {
