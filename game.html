@@ -185,19 +185,33 @@
         }
 
         #game-board {
-            position: relative; 
-            width: var(--board-size); height: var(--board-size);
-            background-image: url('https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            border-radius: 50%;   
-            border: 2px solid #dfe2c6;
-            transform: none;
-            top: auto; left: auto;
-            transition: width 0.3s ease, height 0.3s ease;
-            /* UPDATED: Set z-index for proper layering */
-            z-index: 10;
-        }
+    position: relative; /* This is crucial */
+    width: var(--board-size);
+    height: var(--board-size);
+    border-radius: 50%;
+    border: 2px solid #dfe2c6;
+    transform: none;
+    top: auto;
+    left: auto;
+    transition: width 0.3s ease, height 0.3s ease;
+    z-index: 10;
+    /* Ensure content inside is not hidden by the new background */
+    overflow: hidden; 
+}
+#game-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop);
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* Match the parent's border-radius */
+    opacity: 0.6; /* Set your desired opacity here */
+    z-index: -1; /* Places the background behind the content */
+}
         
         #spots-container { position: absolute; top: 50%; left: 50%; width: 1px; height: 1px; }
 
@@ -717,7 +731,7 @@
                 font-size: 1.2rem; 
                 display: none; 
             }
-            #card-hand.visible { bottom: 50px; }
+            #card-hand.visible { bottom: 40px; }
             #card-hand { width: 95vw; }
             
             /* UPDATED: Cards are now slightly smaller on mobile to allow for a wider spread */
