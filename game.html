@@ -157,7 +157,6 @@
         }
         #narration-text { font-family: var(--font-main); font-size: 1rem; line-height: 1.2; color: #e1f5fe; text-shadow: 0 0 5px var(--glow-color); }
         
-        /* --- REVERTED: Game container is a centered placeholder again --- */
         #game-container { 
             flex: 1; 
             height: 100%; 
@@ -306,7 +305,6 @@
             to { opacity: 1; transform: translate(-50%, -150%) scale(1); }
         }
         
-        /* --- REVERTED: Card hands restored to original absolute positioning --- */
         #card-hand {
             position: absolute; bottom: -250px; left: 50%; transform: translateX(-50%);
             width: 1100px; display: flex; justify-content: center;
@@ -679,6 +677,12 @@
         }
         
         @media (max-width: 768px) {
+            #mini-player {
+                bottom: auto;
+                top: 20px;
+                right: 20px;
+            }
+            
             #card-hand .card:not(:first-child),
             #opponent-card-hand .opponent-card:not(:first-child) {
                 margin-left: -10px;
@@ -761,6 +765,7 @@
 </head>
 <body>
     <div id="loader">The Forest is Waking Up...</div>
+
     <div id="main-container">
         <div id="sidebar">
             <div id="setup-controls">
@@ -1120,7 +1125,7 @@
                     winnerText.remove();
                 }, 2500);
             },
-            handleColorChoice(color) { 
+            handleColorChoice(color) {
                 this.state.selectedPawnColor = color; this.elements.playerSprout.style.backgroundColor = color;
                 this.elements.colorPalette.classList.remove('visible');
                 if (window.innerWidth <= 1200) {
@@ -1218,11 +1223,6 @@
                         const newPos = this.spotCoordinates[newPosIndex];
                         this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
                         this.state.opponentPawnPosition = newPosIndex;
-                    }
-                    
-                    const landedRingIndex = Math.floor(newPosIndex / this.config.SPOTS_PER_RING);
-                    if(landedRingIndex === 1 || landedRingIndex === 3) {
-                        // This is where you would set a state for the AI if it also had to follow the black spot rule
                     }
 
                     setTimeout(() => this.nextStep(), 1500);
