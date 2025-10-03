@@ -45,6 +45,7 @@
             background-size: cover;
             background-position: center;
             transition: opacity 0.66s ease-out;
+text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         .welcome-overlay.fade-out {
@@ -141,7 +142,7 @@
         #game-board { position: relative; width: var(--board-size); height: var(--board-size); border-radius: 50%; border: 2px solid #D8D3CA; background: #EFEBE6; box-shadow: 0 10px 30px rgba(0,0,0,0.1), inset 0 0 15px rgba(0,0,0,0.1); transform: none; transition: width 0.3s ease, height 0.3s ease; z-index: 10; overflow: hidden; }
         #game-board::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url(https://littlesprout.ro/images/little-sprout-bg.png?q=80&w=2074&auto=format&fit=crop); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.55; z-index: -1; }
         #spots-container { position: absolute; top: 50%; left: 50%; width: 1px; height: 1px; }
-        .spot { position: absolute; width: 4vmin; height: 4vmin; min-width: 20px; min-height: 20px; max-width: 30px; max-height: 30px; top: calc(-2vmin); left: calc(-2vmin); border-radius: 50%; cursor: pointer; transition: box-shadow 0.3s ease, background-color 0.3s; display: flex; justify-content: center; align-items: center; background-color: #ffffff; color: var(--color-primary); font-size: clamp(0.6rem, 2vmin, 1rem); font-weight: 700; border: 1px solid #ccc; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .spot { position: absolute; width: 4vmin; height: 4vmin; min-width: 20px; min-height: 20px; max-width: 30px; max-height: 30px; top: calc(-2vmin); left: calc(-2vmin); border-radius: 50%; cursor: pointer; transition: box-shadow 0.3s ease, background-color 0.3s; display: flex; justify-content: center; align-items: center; background-color: #ffffff; color: var(--color-primary); font-size: clamp(0.6rem, 2vmin, 1rem); font-weight: 700; }
         #center-spot { background-color: #ffffff !important; pointer-events: none; }
         .sprout-pawn { position: absolute; top: calc(-1.75vmin); left: calc(-1.75vmin); width: 3.5vmin; height: 3.5vmin; min-width: 16px; min-height: 16px; max-width: 26px; max-height: 26px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 50; opacity: 0; transform: scale(0); transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s; }
         #opponent-sprout { background-color: #8E44AD; }
@@ -395,7 +396,7 @@
 
      <section id="game">
         <h2 class="mt-5">The Game</h2>
-<h3>I want to welcome you to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3>
+<h3>Welcome you to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3>
 <p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a small sprout named Little Sprout is about to embark on a great adventure, and you're invited to join in.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies of Romania.</p>
 <p>Each turn brings you a new discovery as you draw cards featuring Romania's most incredible natural wonders.</p>
 <div class="game-features mt-5">
