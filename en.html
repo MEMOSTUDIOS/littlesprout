@@ -13,13 +13,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap" rel="stylesheet">
-    
-    <style>
+        <style>
         /* 0. BASE STYLES (INCLUDING Z-INDEX FIX) */
         nav {
             z-index: 1000; /* Ensures nav is below popups */
         }
-
         /* 1. STYLES FOR INTEGRATION */
         #welcome {
             position: relative;
@@ -28,7 +26,6 @@
             overflow: hidden;
             background-color: #F8F5F2; /* Base background for the new light theme */
         }
-
         .welcome-overlay {
             position: absolute;
             top: 0;
@@ -44,15 +41,12 @@
             background-image: url('https://littlesprout.ro/images/littlesprout-bg.png');
             background-size: cover;
             background-position: center;
-            transition: opacity 0.66s ease-out;
-text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.66s ease-out;text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
-
         .welcome-overlay.fade-out {
             opacity: 0;
             pointer-events: none;
         }
-
         #integrated-game-container {
             position: absolute;
             top: 0;
@@ -61,7 +55,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             height: 100%;
             z-index: 1;
         }
-
 
         /* 2. UPDATED GAME STYLES */
         :root {
@@ -75,13 +68,10 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             --board-size: min(75vmin, 500px);
             --color-winner-glow: #feca57;
         }
-
         #integrated-game-container * { box-sizing: border-box; }
-        
         #integrated-game-container {
             color: #222; /* Default dark text for light backgrounds */
         }
-
         #main-container {
             font-family: var(--font-main);
             display: flex;
@@ -91,7 +81,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             height: 100%;
             overflow: hidden;
         }
-        
         #sidebar {
             width: 280px;
             height: 100%;
@@ -102,7 +91,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             color: var(--glow-color);
             z-index: 1111;
         }
-        
         #setup-controls { display: flex; flex-direction: column; align-items: center; gap: 20px; flex-grow: 1; }
         #sidebar h2 { font-weight: 700; font-size: 1.8rem; color: var(--glow-color); text-align: center; margin-bottom: 0; }
         #steps-list { list-style: none; padding: 0; width: 100%; text-align: left; counter-reset: steps; margin-bottom: 0; }
@@ -128,15 +116,15 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         #game-container { flex: 1; height: 100%; background-image: url(https://littlesprout.ro/images/board-game-little-sprout.png); position: relative; background-position: bottom; background-size: cover; display: flex; justify-content: center; align-items: center; }
         #game-title { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: clamp(1rem, 4vmin, 2rem); color: var(--color-primary); text-shadow: 0 1px 3px rgba(255,255,255,0.5); z-index: 45; white-space: nowrap; }
         #game-board-wrapper { position: relative; width: var(--board-size); height: var(--board-size); display: flex; justify-content: center; align-items: center; }
-        #game-board-frame { 
-            display: block; 
-            position: absolute;
+        #game-board-frame {
+             display: block;
+             position: absolute;
             width: calc(var(--board-size) + 40px);
             height: calc(var(--board-size) + 40px);
             background-color: #D2B48C; /* Fallback wood color */
             background-image: url(https://littlesprout.ro/images/board-game-little-sprout.png?q=80&w=2074&auto=format&fit=crop);
             border: 1px solid #D8D3CA; /* Darker wood border */
-            border-radius: 15px;            
+            border-radius: 15px;
             z-index: 5;
         }
         #game-board { position: relative; width: var(--board-size); height: var(--board-size); border-radius: 50%; border: 2px solid #D8D3CA; background: #EFEBE6; box-shadow: 0 10px 30px rgba(0,0,0,0.1), inset 0 0 15px rgba(0,0,0,0.1); transform: none; transition: width 0.3s ease, height 0.3s ease; z-index: 10; overflow: hidden; }
@@ -147,18 +135,27 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         .sprout-pawn { position: absolute; top: calc(-1.75vmin); left: calc(-1.75vmin); width: 3.5vmin; height: 3.5vmin; min-width: 16px; min-height: 16px; max-width: 26px; max-height: 26px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 50; opacity: 0; transform: scale(0); transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s; }
         #opponent-sprout { background-color: #8E44AD; }
         .glowing { animation: pulse-glow 1.5s infinite; }
-        @keyframes pulse-glow { 0% { box-shadow: 0 0 10px 3px var(--color-accent); } 50% { box-shadow: 0 0 20px 7px var(--color-accent); } 100% { box-shadow: 0 0 10px 3px var(--color-accent); } }
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 5px 2px rgba(127, 175, 100, 0.7), 0 0 15px 5px rgba(127, 175, 100, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 10px 4px rgba(127, 175, 100, 1), 0 0 25px 10px rgba(127, 175, 100, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 5px 2px rgba(127, 175, 100, 0.7), 0 0 15px 5px rgba(127, 175, 100, 0.5);
+            }
+        }
         .winning-pawn { animation: winning-glow 2.5s ease-in-out; z-index: 100 !important; }
         @keyframes winning-glow { 0% { transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.2); box-shadow: 0 0 20px 10px #fff, 0 0 30px 15px var(--color-winner-glow); border-color: var(--color-winner-glow); } 50% { transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.5); box-shadow: 0 0 40px 20px #fff, 0 0 50px 25px var(--color-winner-glow); border-color: #fff; } 100% { transform: translate(var(--translateX, 0), var(--translateY, 0)) scale(1.2); box-shadow: 0 0 20px 10px #fff, 0 0 30px 15px var(--color-winner-glow); border-color: var(--color-winner-glow); } }
         .winner-text { position: absolute; left: 0; top: 0; transform: translate(-50%, -150%); font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: #DAA520; text-shadow: 0 0 5px white, 0 0 15px #DAA520; z-index: 101; pointer-events: none; white-space: nowrap; animation: fade-in-scale 1s ease-out forwards; }
         @keyframes fade-in-scale { from { opacity: 0; transform: translate(-50%, -150%) scale(0.5); } to { opacity: 1; transform: translate(-50%, -150%) scale(1); } }
-        #card-hand { position: absolute; bottom: -250px; left: 50%; transform: translateX(-50%); width: 1100px; display: flex; justify-content: center; transition: bottom 1s cubic-bezier(0.65, 0, 0.35, 1); z-index: 5; }
+        #card-hand { position: absolute; bottom: -250px; left: 50%; transform: translateX(-50%); width: 1100px; display: flex; justify-content: center; transition: bottom 0.5s cubic-bezier(0.65, 0, 0.35, 1); z-index: 5; }
         #card-hand.visible { bottom: -60px; }
-        #opponent-card-hand { position: absolute; top: -250px; left: 50%; transform: translateX(-50%); width: 1100px; display: flex; justify-content: center; transition: top 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s; z-index: 5; opacity: 0.3; pointer-events: none; }
+        #opponent-card-hand { position: absolute; top: -250px; left: 50%; transform: translateX(-50%); width: 1100px; display: flex; justify-content: center; transition: top 0.5s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s; z-index: 5; opacity: 0.3; pointer-events: none; }
         #opponent-card-hand.visible { top: -70px; }
         #opponent-card-hand.active { opacity: 1; }
         .hand-active { z-index: 15; }
-        
         /* === SCOPED GAME CARD STYLES === */
         #card-hand .card, #opponent-card-hand .opponent-card { width: clamp(95px, 12vw, 150px); height: clamp(150px, 18vw, 220px); position: relative; display: flex; flex-direction: column; justify-content: flex-start; padding: clamp(5px, 1vw, 10px); border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); --rotation: 0deg; transform: rotate(var(--rotation)); transition: transform 0.3s ease, opacity 0.3s ease; flex-shrink: 0; }
         #card-hand .card { background-color: var(--color-secondary); border: 2px solid var(--color-accent); }
@@ -170,7 +167,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         #card-hand .card-actions { width: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center; }
         #card-hand .card-image-placeholder { width: 100%; height: clamp(50px, 8vw, 80px); display: flex; align-items: center; justify-content: center; border-radius: 5px; overflow: hidden; background: none; margin-top: 0px; }
         #card-hand .card-image-placeholder img { width: 100%; height: 100%; object-fit: cover; }
-        
         .action-dot { width: clamp(20px, 3vw, 30px); height: clamp(20px, 3vw, 30px); font-size: clamp(0.7rem, 1vw, 0.9rem); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; position: relative; pointer-events: none; transition: box-shadow 0.3s, opacity 0.3s; }
         .action-dot.white { background-color: #fff; color: #333; border: 1px solid #ccc; }
         .action-dot.black { background-color: #333; color: #fff; }
@@ -178,10 +174,19 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         .action-dot::after { content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; white-space: nowrap; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .action-dot:hover::after { opacity: 1; }
         .glowing-action { animation: pulse-glow-action 1.5s infinite; }
-        @keyframes pulse-glow-action { 0% { box-shadow: 0 0 12px 3px var(--color-accent); } 50% { box-shadow: 0 0 20px 6px var(--color-accent); } 100% { box-shadow: 0 0 12px 3px var(--color-accent); } }
+        @keyframes pulse-glow-action {
+            0% {
+                box-shadow: 0 0 4px 1px rgba(127, 175, 100, 0.7), 0 0 12px 3px rgba(127, 175, 100, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 8px 3px rgba(127, 175, 100, 1), 0 0 20px 6px rgba(127, 175, 100, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 4px 1px rgba(127, 175, 100, 0.7), 0 0 12px 3px rgba(127, 175, 100, 0.5);
+            }
+        }
         .floating-text { position: fixed; font-size: 1.5rem; font-weight: bold; color: #ffca28; text-shadow: 0 0 5px black; pointer-events: none; animation: float-up 1s ease-out forwards; z-index: 9999; }
         @keyframes float-up { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-50px); opacity: 0; } }
-        
         /* --- REVEAL & MODAL STYLES (THEME ALIGNED) --- */
         #reveal-section { position: fixed; top:0; left:0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 1s ease, visibility 0s 1s; z-index: 10001; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); padding: 40px 0; }
         #reveal-section.visible { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
@@ -203,7 +208,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         .subscribe-form input::placeholder { color: #ccc; }
         #subscription-alert { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: var(--color-accent); color: white; padding: 12px 24px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10001; display: flex; align-items: center; gap: 10px; opacity: 0; visibility: hidden; transition: opacity 0.5s, transform 0.5s, visibility 0.5s; }
         #subscription-alert.visible { opacity: 1; visibility: visible; transform: translate(-50%, 10px); }
-        
         .modal { position: fixed; inset: 0; z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s 0.3s; }
         .modal.visible { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
         .modal-overlay { position: absolute; inset: 0; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
@@ -220,7 +224,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         .modal-body button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(127, 175, 100, 0.6); background: #94c379; }
         #confirmation-message { display: none; text-align: center; padding: 2rem; }
         #confirmation-message svg { margin: 0 auto 1rem; }
-        
         /* === EXACT STYLES FOR INFORMATIONAL CARDS === */
         #cards .cards-grid {
             display: grid;
@@ -272,7 +275,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             font-size: 0.9rem;
             color: #555;
             margin: 0 0 1rem 0;
-            padding-top: 10px;            
+            padding-top: 10px;
             font-weight: 700;
         }
         #cards .card .category .card-category {
@@ -292,8 +295,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             text-align: left;
             margin: 0;
         }
-        
-        @media (max-width: 1200px) { #main-container { flex-direction: column; position: relative; } #sidebar { width: 100%; height: auto; max-height: 110px; flex-shrink: 0; flex-direction: column; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; z-index: 500; background: rgba(61, 85, 61, 0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); } #sidebar h2, #steps-list { display: none; } #setup-controls { flex-direction: column; gap: 15px; width: 100%; } #narration-box { margin-top: 0; width: 100%; order: -1; padding: 15px 0px; } #interactive-controls-container { min-height: auto; } #game-container { width: 100%; } #game-title { display: none; } #card-hand, #opponent-card-hand { max-width: 90vw; } #card-hand .card:not(:first-child), #opponent-card-hand .opponent-card:not(:first-child) { margin-left: -15px; } }
+        @media (max-width: 1200px) { #main-container { flex-direction: column; position: relative; } #sidebar { width: 100%; height: auto; min-height: 110px; max-height: 110px; flex-shrink: 0; flex-direction: column; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; z-index: 500; background: rgba(61, 85, 61, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); } #sidebar h2, #steps-list { display: none; } #setup-controls { flex-direction: column; gap: 15px; width: 100%; } #narration-box { margin-top: 0px; width: 100%; order: -1; padding: 25px 0px 0px; } #interactive-controls-container { min-height: auto; } #game-container { width: 100%; } #game-title { display: none; } #card-hand, #opponent-card-hand { max-width: 90vw; } #card-hand .card:not(:first-child), #opponent-card-hand .opponent-card:not(:first-child) { margin-left: -15px; } }
         @media (max-width: 768px) { #card-hand .card:not(:first-child), #opponent-card-hand .opponent-card:not(:first-child) { margin-left: -10px; } #reveal-section { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 120px 20px; display: block; height: 100%; box-sizing: border-box; justify-content: flex-start; } #reveal-title { font-size: 2rem; margin-top: 0; margin-bottom: 40px; padding-bottom: 0; text-align: center; } #product-container { display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 0; margin: 0; overflow: visible; } .product-box { width: 100%; max-width: 350px; padding-bottom: 0; scroll-snap-align: none; } .product-expansion, .product-collector { display: none; } #reveal-footer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 50px; padding: 0; } #replay-button { position: static; transform: none; width: 100%; max-width: 350px; } .subscribe-form { display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%; max-width: 350px; padding: 20px; border-radius: 15px; background: rgba(0, 0, 0, 0.1); } .subscribe-form input, .subscribe-form button { width: 100%; } }
     </style>
 </head>
@@ -312,8 +314,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             </ul>
         </div>
     </nav>
-    
-    <section id="welcome">
+        <section id="welcome">
         <div id="integrated-game-container">
             <div id="main-container">
                 <div id="sidebar">
@@ -334,7 +335,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                     </div>
                     <div id="narration-box"><p id="narration-text"></p></div>
                 </div>
-                
                 <div id="game-container">
                     <h1 id="game-title">Little Sprout: Adventure in Nature</h1>
                     <div id="game-board-wrapper">
@@ -345,7 +345,6 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                     </div>
                     <div id="opponent-card-hand"></div>
                     <div id="card-hand"></div>
-                    
                     <div id="reveal-section">
                         <h1 id="reveal-title">Play the Adventure Home</h1>
                         <div id="product-container">
@@ -386,96 +385,55 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                 </div>
             </div>
         </div>
-        
         <div class="welcome-overlay">
             <h3 class="mt-5">Little Sprout</h3>
             <h1>Adventure in Nature</h1>
             <a class="cta-button" href="#game">Start Your Journey</a>
         </div>
     </section>
-
      <section id="game">
-        <h2 class="mt-5">The Game</h2>
-<h3>Welcome you to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3>
-<p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a small sprout named Little Sprout is about to embark on a great adventure, and you're invited to join in.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies of Romania.</p>
-<p>Each turn brings you a new discovery as you draw cards featuring Romania's most incredible natural wonders.</p>
-<div class="game-features mt-5">
-            <div class="product-img feature">
-<h3 class="game-dot1">+1</h3>
+        <h2 class="mt-5">The Game</h2><h3>Welcome you to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3><p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a small sprout named Little Sprout is about to embark on a great adventure, and you're invited to join in.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies of Romania.</p><p>Each turn brings you a new discovery as you draw cards featuring Romania's most incredible natural wonders.</p><div class="game-features mt-5">
+            <div class="product-img feature"><h3 class="game-dot1">+1</h3>
                 <h1>Drawing</h1>
-                <p>Bring nature to life through your art</p>
-<p><br/>Sometimes you will become an artist, sketching beautiful creatures for your friends to guess.</p>
+                <p>Bring nature to life through your art</p><p><br/>Sometimes you will become an artist, sketching beautiful creatures for your friends to guess.</p>
             </div>
-            <div class="product-img feature">
-<h3 class="game-dot2">+2</h3>
+            <div class="product-img feature"><h3 class="game-dot2">+2</h3>
                 <h1>Memorizing</h1>
-                <p>Share two fascinating facts you have learned about Romania's wildlife</p>
-<p><br/>Other times, you will put on your thinking cap to remember interesting facts about the plants and animals you have met along the way.</p>
+                <p>Share two fascinating facts you have learned about Romania's wildlife</p><p><br/>Other times, you will put on your thinking cap to remember interesting facts about the plants and animals you have met along the way.</p>
             </div>
-            <div class="product-img feature">
-<h3 class="game-dot1">+1</h3>
+            <div class="product-img feature"><h3 class="game-dot1">+1</h3>
                 <h1>Interpretation</h1>
-                <p>Describe the wonders of nature in your own words</p>
-<p><br/>And when you are feeling clever, you can describe these amazing creatures using only your words—as if you are telling a magical story about nature!</p>
+                <p>Describe the wonders of nature in your own words</p><p><br/>And when you are feeling clever, you can describe these amazing creatures using only your words—as if you are telling a magical story about nature!</p>
             </div>
-        </div>
-<p class="mt-5">Every time you complete these fun challenges, you will earn special points that help your own tree of knowledge grow taller and stronger.</p>
-<p>The more you play, the more you learn, and the more your tree blooms—just like Little Sprout!</p>
-<p><br/>This heartwarming adventure will help your mind flourish in so many ways:<br/>
-🌱 Your imagination will soar as you create artwork and tell stories<br/>
-🌱 Your memory will grow stronger as you learn fascinating facts about nature<br/>
-🌱 Your friendships will bloom as you work together with other players<br/>
-🌱 Your love for nature will deepen as you discover Romania's amazing wildlife</p>
+        </div><p class="mt-5">Every time you complete these fun challenges, you will earn special points that help your own tree of knowledge grow taller and stronger.</p><p>The more you play, the more you learn, and the more your tree blooms—just like Little Sprout!</p><p><br/>This heartwarming adventure will help your mind flourish in so many ways:<br/>🌱 Your imagination will soar as you create artwork and tell stories<br/>🌱 Your memory will grow stronger as you learn fascinating facts about nature<br/>🌱 Your friendships will bloom as you work together with other players<br/>🌱 Your love for nature will deepen as you discover Romania's amazing wildlife</p>
     </section>
-
     <section id="rules">
         <div class="rules-container">
             <h2 class="mt-5">How to Play</h2>
             <div class="rules-content">
                 <h3>Game setup: 2-10 players</h3>
-
 <p>1. First, choose your pawn.</p>
-                <p>2. You will start with 6 cards from the pack.</p>
-<p>3. Roll the dice and place your pawn on the number you get.</p>
-  <p>4. Choose an option and play a card: you can draw, memorize, or interpret.</p>
-<p>5. You will advance 1 or 2 points if someone guesses correctly.</p>
-<p>6. The player who guessed right also moves forward 1 point.</p>
-<p>7. The card you played goes back in the deck to be shuffled.</p>
-<p>8. You will draw a new card at the end of your turn.</p>
-<p>9. You will play the color option you landed on.</p>
-
+                <p>2. You will start with 6 cards from the pack.</p><p>3. Roll the dice and place your pawn on the number you get.</p>  <p>4. Choose an option and play a card: you can draw, memorize, or interpret.</p><p>5. You will advance 1 or 2 points if someone guesses correctly.</p><p>6. The player who guessed right also moves forward 1 point.</p><p>7. The card you played goes back in the deck to be shuffled.</p><p>8. You will draw a new card at the end of your turn.</p><p>9. You will play the color option you landed on.</p>
 
                 <h3>Gameplay</h3>
-                <p>You and the other players will take turns playing cards to build your knowledge tree.</p>
-<p>Choose one of these options to play:</p>
-<p>1. Drawing (+1 point)</p>
-<p>2. Memorizing 2 facts (+2 points)</p>
-<p>3. Interpretation (+1 point)</p>
-<p>The first player to guess correctly wins 1 point.</p>
+                <p>You and the other players will take turns playing cards to build your knowledge tree.</p><p>Choose one of these options to play:</p><p>1. Drawing (+1 point)</p><p>2. Memorizing 2 facts (+2 points)</p><p>3. Interpretation (+1 point)</p><p>The first player to guess correctly wins 1 point.</p>
                 <h3>Winning</h3>
-                <p>The first player to reach the "Little Sprout" level wins! But wait, there is more!</p>
-<p>After you reach the "Little Sprout" level, you can keep playing from the beginning or team up with other players. You can form teams with a maximum of 2-3 players.</p>
+                <p>The first player to reach the "Little Sprout" level wins! But wait, there is more!</p><p>After you reach the "Little Sprout" level, you can keep playing from the beginning or team up with other players. You can form teams with a maximum of 2-3 players.</p>
             </div>
         </div>
     </section>
-
     <section id="cards">
         <h2 class="mt-5">Cards</h2>
         <div class="search-filter">
             <input type="text" id="cardSearch" placeholder="Search for a card...">
         </div>
-
         <div class="cards-grid" id="cardsGrid">
-            </div>
-<p class="mt-3"><strong>Note:</strong> The facts on the actual cards might be different.</p>
+            </div><p class="mt-3"><strong>Note:</strong> The facts on the actual cards might be different.</p>
     </section>
-
     <section id="shop">
     <h2 class="mt-5">Shop</h2>
     <div class="products-grid">
-
-        <div class="product product-img2">
-<img
+        <div class="product product-img2"><img
         class="product-img"
         src="images/standard.jpg"
         alt="Family Adventure Set"
@@ -492,8 +450,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             </p>
             <button>COMING SOON</button>
         </div>
-        <div class="product product-img2">
-<img
+        <div class="product product-img2"><img
         class="product-img"
         src="images/expansion.jpg"
         alt="Family Adventure Set"
@@ -510,8 +467,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             </p>
             <button>COMING SOON</button>
         </div>
-        <div class="product product-img2 full-width">
-<img
+        <div class="product product-img2 full-width"><img
         class="product-img"
         src="images/collector-edition.jpg"
         alt="Family Adventure Set"
@@ -536,22 +492,17 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             </p>
             <button>COMING SOON</button>
         </div>
-    </div>
-</section>
-
-    <footer>
-<div class="language-switcher">
+    </div></section>
+    <footer><div class="language-switcher">
     <a href="index.html" id="ro-link" title="Romanian">RO</a>
     <span class="divider">|</span>
-    <a href="en.html" id="en-link" class="active2" title="English">EN</a>
-</div>
+    <a href="en.html" id="en-link" class="active2" title="English">EN</a></div>
         <p>&copy; Little Sprout. All rights reserved.</p>
         <div class="footer-links">
             <a href="index.html">Home</a> |
             <a href="terms-of-service.html">Terms of Service</a> |
             <a href="/cdn-cgi/l/email-protection#c1adb4a2a8a0afefaca0afa6b481a6aca0a8adefa2aeac">Contact</a>
         </div>
-
     </footer>
     <script>
         const game = {
@@ -582,11 +533,11 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.resetGame(true); },
             cacheElements() {
                 const requiredIds = ['sidebar','narration-text','reveal-section','replay-button','spots-container','dice-container','color-palette','card-hand','opponent-card-hand','game-container','steps-list','game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
-                requiredIds.forEach(id => { 
-                    const element = document.getElementById(id);
-                    if (!element) console.error(`Critical element not found: #${id}`); 
-                    this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element; 
-                });
+                requiredIds.forEach(id => {
+                     const element = document.getElementById(id);
+                    if (!element) console.error(`Critical element not found: #${id}`);
+                     this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element;
+                 });
                 this.elements.dice = this.elements.diceContainer.querySelectorAll('.dice');
                 this.elements.preorderModal.overlay = this.elements.preorderModal.querySelector('.modal-overlay');
                 this.elements.preorderModal.closeBtn = this.elements.preorderModal.querySelector('.modal-close-btn');
@@ -686,7 +637,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                 this.elements.dice.forEach(d => this.updateDieFace(d, 1));
                 this.elements.cardHand.classList.remove('hand-active'); this.elements.colorPalette.classList.remove('visible'); this.elements.diceContainer.classList.remove('visible');
                 if (window.innerWidth <= 1200) { this.elements.colorPalette.style.display = 'none'; this.elements.diceContainer.style.display = 'none'; }
-                setTimeout(() => { this.elements.cardHand.classList.add('visible'); this.elements.opponentCardHand.classList.add('visible'); this.nextStep(); }, isInitialStart ? 500 : 1500); // Added slight delay on initial start for smoother feel
+                setTimeout(() => { this.elements.cardHand.classList.add('visible'); this.elements.opponentCardHand.classList.add('visible'); this.nextStep(); }, isInitialStart ? 500 : 750); // Speed up replay animation
             },
             updateStepsUI(stepNumber) { this.elements.stepsList.querySelectorAll('li').forEach((step, index) => { step.classList.toggle('step-active', index + 1 === stepNumber); }); },
             promptColor() { this.updateStepsUI(1); this.elements.diceContainer.classList.remove('visible'); this.elements.colorPalette.classList.add('visible'); if (window.innerWidth <= 1200) { this.elements.diceContainer.style.display = 'none'; this.elements.colorPalette.style.display = 'flex'; } },
@@ -729,13 +680,11 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             openPreorderModal() { this.elements.preorderModal.form.reset(); this.elements.preorderModal.formContainer.style.display = 'block'; this.elements.preorderModal.confirmationMsg.style.display = 'none'; this.elements.preorderModal.classList.add('visible'); },
             closePreorderModal() { this.elements.preorderModal.classList.remove('visible'); }
         };
-        
         document.addEventListener('DOMContentLoaded', () => {
              setTimeout(() => game.init(), 100);
         });
     </script>
-    
-    <script>
+        <script>
         document.addEventListener('DOMContentLoaded', function() {
             // --- Overlay Fade Trigger ---
             const startButton = document.querySelector('#welcome .cta-button');
@@ -747,17 +696,14 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                     welcomeOverlay.classList.add('fade-out');
                 });
             }
-
             // --- Card Display Script ---
             const cards = [ { name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>', image: 'images/card-black-woodpecker.png', category_text: 'Birds', category_icon: 'images/birds.png', description: '1. It has a distinctive all-black plumage with a red crown.<br>2. It provides vital shelter for many forest species.<br/>3. You can typically find it in pairs or small family groups.<br/>4. It uses a loud drumming sound to communicate.<br/>5. It prefers mature, old-growth forests.' }, { name: 'European Praying Mantis<br><span class="small">(Mantis religiosa)</span>', image: 'images/card-praying-mantis.png', category_text: 'Insects', category_icon: 'images/insects.png', description: '1. The female lives 6-8 months, while the male lives for 4-6 months.<br/>2. It feeds on insects and honey.<br/>3. These are ambush predators, so they sit and wait for their prey.<br/>4. They mate during the spring and summer months.<br/>5. It has 3 life stages: egg, nymph, and adult.' }, { name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>', image: 'images/card-clouded-yellow.png', category_text: 'Butterflies', category_icon: 'images/butterflies.png', description: '1. Its wings have a yellow coloration with black margins.<br/>2. It is known for its strong migratory behavior.<br/>3. It plays a role in the local ecosystem\'s biodiversity.<br/>4. They are strong and fast fliers, and they fly close to the ground.<br/>5. Seeing one is a delight for any butterfly enthusiast.' }, { name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>', image: 'images/card-bear.png', category_text: 'Animals', category_icon: 'images/animals.png', description: '1. It is the largest land carnivore after the polar bear.<br/>2. Its color can vary from blonde to nearly black.<br/>3. They are apex predators in their habitats.<br/>4. They have complex problem-solving skills.<br/>5. They have a remarkable sense of smell and high intelligence.' }, { name: 'Zander<br/><span class="small">(Sander lucioperca)</span>', image: 'images/card-zander.png', category_text: 'Fish', category_icon: 'images/fish.png', description: '1. This is an apex predator in its ecosystem.<br/>2. It prefers clear waters with a moderate current.<br/>3. You can find it in large rivers, lakes, and reservoirs.<br/>4. It is carnivorous, feeding primarily on smaller fish.<br/>5. It has sharp vision that is adapted to low-light conditions.' }, { name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>', image: 'images/card-romanian-peony.png', category_text: 'Flowers', category_icon: 'images/flowers.png', description: '1. This is the national flower of Romania.<br/>2. It symbolizes beauty and resilience.<br/>3. It blooms in vibrant pink and white colors.<br/>4. It is important in traditional Romanian culture.<br/>5. You can see it bloom in late spring to early summer.' } ];
-            
             const cardSearch = document.getElementById('cardSearch');
             if (cardSearch) { cardSearch.addEventListener('input', function(e) { const searchTerm = e.target.value.toLowerCase(); const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm)); displayCards(filteredCards); }); }
-            
-            function displayCards(cardsToShow) { 
-                const cardsGrid = document.getElementById('cardsGrid'); 
-                if (cardsGrid) { 
-                    cardsGrid.innerHTML = cardsToShow.map(card => `
+            function displayCards(cardsToShow) {
+                 const cardsGrid = document.getElementById('cardsGrid');
+                 if (cardsGrid) {
+                     cardsGrid.innerHTML = cardsToShow.map(card => `
                         <div class="card">
                             <h3 class="tcenter">${card.name}</h3>
                             <img class="product-img-card" src="${card.image}">
@@ -766,28 +712,24 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                                 <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
                             </p>
                             <p>${card.description}</p>
-                        </div>`).join(''); 
-                } 
-            }
-            
+                        </div>`).join('');
+                 }
+             }
             displayCards(cards);
-            
             // --- Nav and Scroll Logic ---
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('nav a');
             const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(link => link.classList.remove('active')); const activeLink = document.querySelector(`nav a[href="#${entry.target.id}"]`); if (activeLink) { activeLink.classList.add('active'); } } }); }, { root: null, rootMargin: '-50% 0px', threshold: 0 });
             sections.forEach(section => { if (section) { observer.observe(section); } });
             navLinks.forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const targetId = this.getAttribute('href'); const targetSection = document.querySelector(targetId); if (targetSection) { navLinks.forEach(link => link.classList.remove('active')); this.classList.add('active'); targetSection.scrollIntoView({ behavior: 'smooth' }); } }); });
-            
             // --- Language Switcher Logic ---
-            const enLink = document.getElementById('en-link'); 
-            const roLink = document.getElementById('ro-link'); 
-            const currentPath = window.location.pathname; 
-            const currentFile = currentPath.split('/').pop() || 'index.html';
+            const enLink = document.getElementById('en-link');
+             const roLink = document.getElementById('ro-link');
+             const currentPath = window.location.pathname;
+             const currentFile = currentPath.split('/').pop() || 'index.html';
             if (currentFile === 'index.html' || currentFile === '') { roLink.classList.add('active2'); enLink.classList.remove('active2'); } else if (currentFile === 'en.html') { enLink.classList.add('active2'); roLink.classList.remove('active2'); }
-            enLink.href = 'en.html'; 
-            roLink.href = 'index.html';
+            enLink.href = 'en.html';
+             roLink.href = 'index.html';
         });
-    </script>
-</body>
+    </script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"3a54c548c7f745f0a19c86a8a6c5af6d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script></body>
 </html>
