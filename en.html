@@ -571,10 +571,10 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
                 OUTER_RING_COLORS: ['#f7a732','#f0c340','#92c045','#55b64c','#29b9e6','#2b77c8','#4a4aa8','#684196','#9e2a8f','#e53935','#d82b45']
             },
             tutorialSteps: [
-                { text: "First, pick a color for your very own Little Sprout.", action: 'promptColor', stepNumber: 1 },
-                { text: "Next, roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
-                { text: () => `You rolled a ${game.state.diceSum}! Click the glowing ${game.state.diceSum} to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
-                { text: "Now, choose an action from any card in your hand.", action: 'promptPlayerTurn' },
+                { text: "First, pick a color for your very own pawn.", action: 'promptColor', stepNumber: 1 },
+                { text: "Roll the dice to find your starting spot.", action: 'promptDiceRoll', stepNumber: 2 },
+                { text: () => `Click the glowing ${game.state.diceSum} to pop up!`, action: 'promptPlacePawn', stepNumber: 3 },
+                { text: "Choose an action from any card in your hand.", action: 'promptPlayerTurn' },
                 { text: "Well done! Now it is your friend's turn...", action: 'opponentTurn' },
                 { text: "Good. It is your turn again!", action: 'promptPlayerTurn' },
                 { text: "You made it to the heart of the forest!", action: 'endGameSuccess' }
@@ -694,7 +694,7 @@ text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             promptPlacePawn() { this.updateStepsUI(3); document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing'); },
             promptPlayerTurn() {
                 this.updateStepsUI(0); this.elements.cardHand.classList.add('hand-active'); this.elements.opponentCardHand.classList.add('active'); document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
-                if (this.state.forceMemorize) { this.elements.narrationText.textContent = "You landed on a murky spot. You must 'Memorize' (+2) to advance."; this.setHandInteractable(true); this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => { if (action.dataset.move === '2') { action.classList.add('glowing-action'); action.style.pointerEvents = 'auto'; action.style.opacity = '1'; } else { action.style.pointerEvents = 'none'; action.style.opacity = '0.4'; } });
+                if (this.state.forceMemorize) { this.elements.narrationText.textContent = "You landed on a murky spot. 'Memorize' (+2) to advance."; this.setHandInteractable(true); this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => { if (action.dataset.move === '2') { action.classList.add('glowing-action'); action.style.pointerEvents = 'auto'; action.style.opacity = '1'; } else { action.style.pointerEvents = 'none'; action.style.opacity = '0.4'; } });
                 } else { this.elements.narrationText.textContent = "It's your turn. Choose an action from your hand."; this.setHandInteractable(true); const thirdCardAction = this.elements.cardHand.querySelectorAll('.card')[2].querySelector('.action-dot'); if(thirdCardAction) thirdCardAction.classList.add('glowing-action'); }
             },
             opponentTurn() { this.handleOpponentTurn(); },
