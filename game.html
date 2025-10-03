@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Little Sprout - The Adventure Begins</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
@@ -35,14 +34,6 @@
             overflow: hidden;
         }
         
-        #loader {
-            font-family: var(--font-main); font-size: 1.5rem; color: var(--glow-color); position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%; background: var(--color-background);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000; transition: opacity 0.5s ease-out;
-        }
-        #loader.hidden { opacity: 0; pointer-events: none; }
-
         #sidebar {
             width: 280px;
             height: 90vh;
@@ -344,9 +335,9 @@
         }
 
         .card {
-             background-color: var(--color-secondary);
-             border: 2px solid #1eb973;
-        }
+              background-color: var(--color-secondary);
+              border: 2px solid #1eb973;
+          }
         .opponent-card {
             background: linear-gradient(45deg, #1B4965, #0D1B2A);
             border: 2px solid #5fa8d3;
@@ -764,8 +755,6 @@
     </style>
 </head>
 <body>
-    <div id="loader">The Forest is Waking Up...</div>
-
     <div id="main-container">
         <div id="sidebar">
             <div id="setup-controls">
@@ -805,11 +794,11 @@
                       <div class="product-box product-collector"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art"><h3>Collector's Edition</h3><p>The ultimate treasure, with exclusive hand-painted miniatures.</p><button class="preorder-btn">Pre-order Now</button></div>
                  </div>
                  <div id="reveal-footer">
-                        <button id="replay-button">Replay demo</button>
-                        <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
-                            <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
-                            <button type="submit">Subscribe</button>
-                        </form>
+                          <button id="replay-button">Replay demo</button>
+                          <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
+                               <input type="email" id="subscribe-email" placeholder="Enter your email for news...">
+                               <button type="submit">Subscribe</button>
+                          </form>
                  </div>
             </div>
         </div>
@@ -880,9 +869,9 @@
                 { text: "Good. It is your turn again!", action: 'promptPlayerTurn' },
                 { text: "You made it to the heart of the forest!", action: 'endGameSuccess' }
             ],
-            init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.elements.loader.classList.add('hidden'); this.resetGame(true); },
+            init() { this.cacheElements(); this.createDynamicElements(); this.createBoardLayout(); this.createColorPalette(); this.attachEventListeners(); this.resetGame(true); },
             cacheElements() {
-                const requiredIds = ['loader','sidebar','narration-text','reveal-section','replay-button','spots-container','dice-container','color-palette','card-hand','opponent-card-hand','game-container','steps-list','game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
+                const requiredIds = ['sidebar','narration-text','reveal-section','replay-button','spots-container','dice-container','color-palette','card-hand','opponent-card-hand','game-container','steps-list','game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
                 requiredIds.forEach(id => { 
                     const element = document.getElementById(id);
                     if (!element) console.error(`Critical element not found: #${id}`); 
