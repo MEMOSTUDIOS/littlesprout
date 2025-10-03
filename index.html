@@ -645,8 +645,8 @@
             promptPlacePawn() { this.updateStepsUI(3); document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing'); },
             promptPlayerTurn() {
                 this.updateStepsUI(0); this.elements.cardHand.classList.add('hand-active'); this.elements.opponentCardHand.classList.add('active'); document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
-                if (this.state.forceMemorize) { this.elements.narrationText.textContent = "Ai aterizat pe un loc noroios. Alege 'Memorează' (+2) pentru a avansa."; this.setHandInteractable(true); this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => { if (action.dataset.move === '2') { action.classList.add('glowing-action'); action.style.pointerEvents = 'auto'; action.style.opacity = '1'; } else { action.style.pointerEvents = 'none'; action.style.opacity = '0.4'; } });
-                } else { this.elements.narrationText.textContent = "Este rândul tău. Alege o acțiune de pe o carte."; this.setHandInteractable(true); const thirdCardAction = this.elements.cardHand.querySelectorAll('.card')[2].querySelector('.action-dot'); if(thirdCardAction) thirdCardAction.classList.add('glowing-action'); }
+                if (this.state.forceMemorize) { this.elements.narrationText.textContent = "'Memorează' (+2) pentru a avansa."; this.setHandInteractable(true); this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => { if (action.dataset.move === '2') { action.classList.add('glowing-action'); action.style.pointerEvents = 'auto'; action.style.opacity = '1'; } else { action.style.pointerEvents = 'none'; action.style.opacity = '0.4'; } });
+                } else { this.elements.narrationText.textContent = "Alege o acțiune de pe o carte."; this.setHandInteractable(true); const thirdCardAction = this.elements.cardHand.querySelectorAll('.card')[2].querySelector('.action-dot'); if(thirdCardAction) thirdCardAction.classList.add('glowing-action'); }
             },
             opponentTurn() { this.handleOpponentTurn(); },
             endGameSuccess() {
