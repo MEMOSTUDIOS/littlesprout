@@ -707,7 +707,7 @@ color: white;
             border-right: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px;
-            z-index: 500;
+            z-index: 1001; /* UPDATED: Ensures game controls are above the nav bar */
             background: rgba(61, 85, 61, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -793,7 +793,7 @@ color: white;
             flex-shrink: 0;
         }
         :root {
-             --board-size: min(100%, 250px); /* Make board smaller */
+             --board-size: min(100%, 220px); /* UPDATED: Made board smaller */
         }
         #opponent-card-hand.visible {
             top: -60px; /* Adjust for landscape cards */
