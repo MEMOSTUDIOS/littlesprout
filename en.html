@@ -51,7 +51,7 @@
         }
 
         .played-card-animation .card-title {
-            font-size: 0.8em;
+            font-size: 0.6em;
         }
         
         /* CSS for hover tooltips positioned at the bottom */
@@ -94,12 +94,8 @@
             bottom: -18px; 
             padding: 1px 4px; 
         }
-
-        .played-card-animation .card-title {
-            font-size: 0.65em;
-        }
         
-        /* MODIFIED: Removed the gray background color */
+        /* Style for video element inside the card */
         .card-video-placeholder,
         .card-image-placeholder {
              width: 100%;
@@ -155,12 +151,10 @@
         /* Media query for mobile-specific played card size */
         @media (max-width: 768px) {
             
-            /* REVERTED: Padding is back to 0.5rem */
             .played-card-animation {
                 padding: 0.5rem;
             }
 
-            /* REVERTED: Scale is back to previous value */
             @keyframes play-card-effect {
                 0% {
                     transform: scale(1);
@@ -444,7 +438,7 @@
                     "https://littlesprout.ro/images/card-clouded-yellow.png"
                 ],
                 CARD_VIDEOS: [
-                    "https://v.ftcdn.net/16/51/62/15/700_F_1651621571_nFT9exVpeymKC0erpiBM49sOg1F2sw3H_ST.mp4", // MODIFIED: Woodpecker video URL
+                    "https://v.ftcdn.net/16/51/62/15/700_F_1651621571_nFT9exVpeymKC0erpiBM49sOg1F2sw3H_ST.mp4", // Woodpecker
                     "https://v.ftcdn.net/03/67/87/11/700_F_367871115_21gyclO5LJtz9DcnwmlVd5b8cH96ouph_ST.mp4", // Praying Mantis
                     "https://v.ftcdn.net/01/95/17/74/700_F_195177417_YQ2rr0T5KqpLTZLNqqMA9lEkS26TLHkj_ST.mp4", // Zander
                     "https://v.ftcdn.net/01/63/30/52/700_F_163305230_XR6J9TkcK4LLpgALh8qEsKcEKlzPn00A_ST.mp4", // Brown Bear
@@ -835,11 +829,16 @@
                 }
                 cardElement.style.opacity = '0';
                 cardElement.style.pointerEvents = 'none';
-                const gameBoardRect = this.elements.gameBoard.getBoundingClientRect();
-                const gameBoardCenterX = gameBoardRect.left + gameBoardRect.width / 2;
-                const gameBoardCenterY = gameBoardRect.top + gameBoardRect.height / 2;
-                const translateX = gameBoardCenterX - cardRect.left - (cardRect.width / 2);
-                const translateY = gameBoardCenterY - cardRect.top - (cardRect.height / 2) + (window.innerHeight * 0.20);
+
+                // FIXED: Replaced the old positioning logic with a more reliable method
+                // that centers the card on the viewport for both mobile and desktop.
+                const screenCenterX = window.innerWidth / 2;
+                const screenCenterY = window.innerHeight / 2;
+                const cardCenterX = cardRect.left + cardRect.width / 2;
+                const cardCenterY = cardRect.top + cardRect.height / 2;
+                const translateX = screenCenterX - cardCenterX;
+                const translateY = screenCenterY - cardCenterY;
+                
                 clone.style.top = `${cardRect.top}px`;
                 clone.style.left = `${cardRect.left}px`;
                 clone.style.width = `${cardRect.width}px`;
@@ -847,7 +846,6 @@
                 clone.style.setProperty('--translateX', `${translateX}px`);
                 clone.style.setProperty('--translateY', `${translateY}px`);
                 
-                // REVERTED: Mobile scale is back to its previous value
                 if (window.innerWidth <= 768) {
                     clone.style.setProperty('--played-card-scale', '2.5');
                     clone.style.setProperty('--played-card-scale-fade', '2.7');

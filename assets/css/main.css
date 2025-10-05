@@ -656,7 +656,7 @@ color: white;
     #replay-button { background: var(--glow-color); color: var(--color-primary); border: 2px solid var(--glow-color); }
     #replay-button:hover { background: #e0e0e0; border-color: #e0e0e0; }
     #reveal-footer { display: flex; justify-content: center; align-items: center; gap: 20px; width: 100%; margin-top: 20px; }
-    .subscribe-form { display: flex; gap: 10px; align-items: center; display: none;}
+    .subscribe-form { display: flex; gap: 10px; align-items: center; display: none!important;}
     .subscribe-form input { padding: 12px 20px; border-radius: 50px; border: 2px solid var(--color-accent); background-color: rgba(255,255,255,0.1); color: var(--glow-color); font-size: 1rem; }
     .subscribe-form input::placeholder { color: #ccc; }
     #subscription-alert { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: var(--color-accent); color: white; padding: 12px 24px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10001; display: flex; align-items: center; gap: 10px; opacity: 0; visibility: hidden; transition: opacity 0.5s, transform 0.5s, visibility 0.5s; }
