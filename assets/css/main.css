@@ -745,9 +745,9 @@ margin-top: 100px;
         #opponent-card-hand .opponent-card:not(:first-child) {
             margin-left: -45px; /* More overlap for opponent cards */
         }
-        /* NEW: Less overlap specifically for player cards on mobile */
+        /** UPDATED: Increased space between player cards on mobile by reducing overlap **/
         #card-hand .card:not(:first-child) {
-            margin-left: -25px; 
+            margin-left: -15px; /* Was -25px, reduced overlap for better visibility */
         }
 #game-board-frame, #game-board {margin-top: 0px;}
         /* Reveal section adjustments for mobile */
@@ -764,8 +764,7 @@ margin-top: 100px;
 
     /* LANDSCAPE MOBILE - very short height */
     @media (orientation: landscape) and (max-height: 500px) {
-        #sidebar { display: none; } /* Hide top bar to save space */
-        #game-container { height: 100vh; gap: 5px; padding: 5px 0; }
+        /** UPDATED: Removed rule that hid the sidebar so the game is playable **/
         :root {
              --board-size: min(100%, 250px); /* Make board smaller */
         }
