@@ -758,7 +758,7 @@ color: white;
         .product-expansion, .product-collector { display: none; }
         #reveal-footer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 50px; padding: 0; }
         #replay-button { position: static; transform: none; width: 100%; max-width: 350px; }
-        .subscribe-form { display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%; max-width: 350px; padding: 20px; border-radius: 15px; background: rgba(0, 0, 0, 0.1); }
+        .subscribe-form { display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%; max-width: 350px; padding: 20px; border-radius: 15px; background: rgba(0, 0, 0, 0.1); display: none;}
         .subscribe-form input, .subscribe-form button { width: 100%; }
     }
 
