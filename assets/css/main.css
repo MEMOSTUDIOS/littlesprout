@@ -53,7 +53,7 @@ letter-spacing: 0.66px;
         nav ul {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 0.5rem;
         }
 
         nav a {
@@ -63,6 +63,7 @@ letter-spacing: 0.66px;
             transition: all 0.3s;
             padding: 0.5rem 1rem;
             border-radius: 8px 0 8px 0;
+white-space: nowrap;
         }
 
         nav a:hover {
@@ -327,7 +328,9 @@ padding: 10px 5px;}
 .language-switcher {
     display: inline-flex;
     align-items: center;
-    margin-left: 20px;
+    background: rgba(0,0,0,0.23);
+padding: 5px;
+border-radius:8px 0 8px 0;
 }
 
 .language-switcher a {
