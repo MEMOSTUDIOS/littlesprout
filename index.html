@@ -424,50 +424,61 @@ const game = {
             reveal() { this.elements.gameBoard.classList.add('reveal'); this.elements.revealSection.classList.add('visible'); const finalNarrationIndex = this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess'); this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text; },
             updateDieFace(dieElement, value) { dieElement.dataset.value = value; let dots = ''; for (let i = 0; i < value; i++) dots += '<div class="dot"></div>'; dieElement.innerHTML = dots; },
             setHandInteractable(isInteractable) { if (isInteractable) { this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => { action.style.pointerEvents = ''; action.style.opacity = ''; }); } this.elements.cardHand.classList.toggle('hand-interactable', isInteractable); this.elements.cardHand.querySelectorAll('.card').forEach(card => { card.classList.toggle('inactive', !isInteractable); }); },
-            // REPLACE the old handleSubscription function with this one
+
+// REPLACE the old handleSubscription function in your HTML file with this new one.
 
 handleSubscription(event) {
     event.preventDefault();
+    const form = event.target;
     const emailInput = this.elements.subscribeEmail;
     const alert = this.elements.subscriptionAlert;
 
     // --- Start of data submission logic ---
-    const emailValue = emailInput.value;
+    const formData = new FormData(form);
+    
+    // ▼▼▼ PASTE YOUR UNIQUE FORMPSREE URL HERE ▼▼▼
+    const formspreeEndpoint = 'https://formspree.io/f/mblzkopq'; 
+    // ▲▲▲ PASTE YOUR UNIQUE FORMPSREE URL HERE ▲▲▲
 
-    // Basic validation on the frontend
-    if (!emailValue || !emailValue.includes('@')) {
-        emailInput.style.borderColor = '#ff6b6b';
-        setTimeout(() => { emailInput.style.borderColor = 'var(--color-accent)'; }, 2000);
+    // Check if the endpoint has been set
+    if (formspreeEndpoint === 'https://formspree.io/f/mblzkopq') {
+        console.error("Formspree endpoint is not set. Please paste your URL from formspree.io.");
+        alert.textContent = 'Form not configured.';
+        alert.style.backgroundColor = '#ff6b6b';
+        alert.classList.add('visible');
+        setTimeout(() => { alert.classList.remove('visible'); }, 3000);
         return;
     }
 
-    fetch('/subscribe.php', { // <-- Points to your new PHP file
+    fetch(formspreeEndpoint, {
         method: 'POST',
+        body: formData,
         headers: {
-            'Content-Type': 'application/json',
             'Accept': 'application/json'
-        },
-        body: JSON.stringify({ email: emailValue }) // Send data as JSON
+        }
     }).then(response => {
         if (response.ok) {
             // Success! Show the "Thank you" message
+            alert.textContent = 'Thank you for subscribing!';
+            alert.style.backgroundColor = ''; // Reset color
             alert.classList.add('visible');
             setTimeout(() => {
                 alert.classList.remove('visible');
             }, 3000);
             emailInput.value = ''; // Clear the input field
         } else {
-            // Handle server errors
-            throw new Error('Server responded with an error.');
+            // Handle server errors from Formspree
+            throw new Error('Failed to submit form.');
         }
     }).catch(error => {
-        // Handle network or server errors
+        // Handle network errors or submission failures
         console.error('Subscription form error:', error);
         alert.textContent = 'Oops! Something went wrong.';
         alert.style.backgroundColor = '#ff6b6b';
         alert.classList.add('visible');
         setTimeout(() => {
             alert.classList.remove('visible');
+            // Reset text and color for the next attempt
             alert.textContent = 'Thank you for subscribing!';
             alert.style.backgroundColor = '';
         }, 4000);
