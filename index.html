@@ -204,9 +204,52 @@
             <a href="mailto:lucian.mangu@gmail.com">Contact</a>
         </div>
     </footer>
-
-    <script>
-        const game = {
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+            // --- Overlay Fade Trigger ---
+            const startButton = document.querySelector('#welcome .cta-button');
+            const welcomeOverlay = document.querySelector('.welcome-overlay');
+            if (startButton && welcomeOverlay) {    startButton.addEventListener('click', function(e) {        e.preventDefault();        welcomeOverlay.classList.add('fade-out');        // Add this line to make the game container visible
+        document.getElementById('integrated-game-container').classList.add('visible');    });}
+            // --- Card Display Script ---
+            const cards = [ { name: 'Ciocănitoare Neagră<br><span class="small">(Dryocopus martius)</span>', image: 'images/card-black-woodpecker.png', category_text: 'Păsări', category_icon: 'images/birds.png', description: '1. Are un penaj complet negru, cu o creastă roșie.<br>2. Oferă adăpost vital pentru multe specii din pădure.<br/>3. Poate fi găsită în perechi sau grupuri familiale mici.<br/>4. Folosește un sunet puternic de tobă pentru a comunica.<br/>5. Preferă pădurile mature și bătrâne.' }, { name: 'Călugărița<br><span class="small">(Mantis religiosa)</span>', image: 'images/card-praying-mantis.png', category_text: 'Insecte', category_icon: 'images/insects.png', description: '1. Femela trăiește 6-8 luni, iar masculul 4-6 luni.<br/>2. Se hrănește cu insecte și miere.<br/>3. Este un prădător de ambuscadă, așteptându-și prada.<br/>4. Se împerechează primăvara și vara.<br/>5. Are 3 etape de viață: ou, nimfă și adult.' }, { name: 'Fluturele Galben<br/><span class="small">(Colias croceus)</span>', image: 'images/card-clouded-yellow.png', category_text: 'Fluturi', category_icon: 'images/butterflies.png', description: '1. Aripile sale sunt galbene cu margini negre.<br/>2. Este cunoscut pentru comportamentul său migrator.<br/>3. Contribuie la biodiversitatea ecosistemului local.<br/>4. Zboară rapid și aproape de sol.<br/>5. Este o bucurie pentru orice pasionat de fluturi.' }, { name: 'Ursul Brun<br/><span class="small">(Ursus arctos)</span>', image: 'images/card-bear.png', category_text: 'Animale', category_icon: 'images/animals.png', description: '1. Este cel mai mare carnivor terestru după ursul polar.<br/>2. Culoarea sa variază de la blond la aproape negru.<br/>3. Este un prădător de top în habitatul său.<br/>4. Are abilități complexe de rezolvare a problemelor.<br/>5. Are un simț al mirosului remarcabil și o inteligență ridicată.' }, { name: 'Șalăul<br/><span class="small">(Sander lucioperca)</span>', image: 'images/card-zander.png', category_text: 'Pești', category_icon: 'images/fish.png', description: '1. Este un prădător de top în ecosistemul său.<br/>2. Preferă apele limpezi cu un curent moderat.<br/>3. Se găsește în râuri mari, lacuri și rezervoare.<br/>4. Este carnivor, hrănindu-se cu pești mai mici.<br/>5. Are o vedere ageră, adaptată la lumină slabă.' }, { name: 'Bujorul Românesc<br/><span class="small">(Paeonia peregrina)</span>', image: 'images/card-romanian-peony.png', category_text: 'Flori', category_icon: 'images/flowers.png', description: '1. Este floarea națională a României.<br/>2. Simbolizează frumusețea și rezistența.<br/>3. Înflorește în culori vibrante de roz și alb.<br/>4. Este importantă în cultura tradițională românească.<br/>5. Înflorește la sfârșitul primăverii și începutul verii.' } ];
+            const cardSearch = document.getElementById('cardSearch');
+            if (cardSearch) { cardSearch.addEventListener('input', function(e) { const searchTerm = e.target.value.toLowerCase(); const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm)); displayCards(filteredCards); }); }
+            function displayCards(cardsToShow) { 
+                 const cardsGrid = document.getElementById('cardsGrid');
+                 if (cardsGrid) {
+                     cardsGrid.innerHTML = cardsToShow.map(card => `
+                        <div class="card">
+                            <h3 class="tcenter">${card.name}</h3>
+                            <img class="product-img-card" src="${card.image}">
+                            <p class="category">
+                                <span><img class="card-category" src="${card.category_icon}" alt="${card.category_text}"> ${card.category_text}</span>
+                                <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
+                            </p>
+                            <p>${card.description}</p>
+                        </div>`).join('');
+                 } 
+             }
+            displayCards(cards);
+            // --- Nav and Scroll Logic ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(link => link.classList.remove('active')); const activeLink = document.querySelector(`nav a[href="#${entry.target.id}"]`); if (activeLink) { activeLink.classList.add('active'); } } }); }, { root: null, rootMargin: '-50% 0px', threshold: 0 });
+            sections.forEach(section => { if (section) { observer.observe(section); } });
+            navLinks.forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const targetId = this.getAttribute('href'); const targetSection = document.querySelector(targetId); if (targetSection) { navLinks.forEach(link => link.classList.remove('active')); this.classList.add('active'); targetSection.scrollIntoView({ behavior: 'smooth' }); } }); });
+            // --- Language Switcher Logic ---
+            const enLink = document.getElementById('en-link'); 
+            const roLink = document.getElementById('ro-link'); 
+            const currentPath = window.location.pathname; 
+            const currentFile = currentPath.split('/').pop() || 'index.html';
+            if (currentFile === 'index.html' || currentFile === '') { roLink.classList.add('active2'); enLink.classList.remove('active2'); } else if (currentFile === 'en.html') { enLink.classList.add('active2'); roLink.classList.remove('active2'); }
+            enLink.href = 'en.html'; 
+            roLink.href = 'index.html';
+        });
+</script>
+<script>
+const game = {
             elements: {}, state: {}, spotCoordinates: [],
             config: {
                 SPOTS_PER_RING: 11,
@@ -384,49 +427,5 @@
         document.addEventListener('DOMContentLoaded', () => { 
              setTimeout(() => game.init(), 100);
         });
-    </script>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Overlay Fade Trigger ---
-            const startButton = document.querySelector('#welcome .cta-button');
-            const welcomeOverlay = document.querySelector('.welcome-overlay');
-            if (startButton && welcomeOverlay) {    startButton.addEventListener('click', function(e) {        e.preventDefault();        welcomeOverlay.classList.add('fade-out');        // Add this line to make the game container visible
-        document.getElementById('integrated-game-container').classList.add('visible');    });}
-            // --- Card Display Script ---
-            const cards = [ { name: 'Ciocănitoare Neagră<br><span class="small">(Dryocopus martius)</span>', image: 'images/card-black-woodpecker.png', category_text: 'Păsări', category_icon: 'images/birds.png', description: '1. Are un penaj complet negru, cu o creastă roșie.<br>2. Oferă adăpost vital pentru multe specii din pădure.<br/>3. Poate fi găsită în perechi sau grupuri familiale mici.<br/>4. Folosește un sunet puternic de tobă pentru a comunica.<br/>5. Preferă pădurile mature și bătrâne.' }, { name: 'Călugărița<br><span class="small">(Mantis religiosa)</span>', image: 'images/card-praying-mantis.png', category_text: 'Insecte', category_icon: 'images/insects.png', description: '1. Femela trăiește 6-8 luni, iar masculul 4-6 luni.<br/>2. Se hrănește cu insecte și miere.<br/>3. Este un prădător de ambuscadă, așteptându-și prada.<br/>4. Se împerechează primăvara și vara.<br/>5. Are 3 etape de viață: ou, nimfă și adult.' }, { name: 'Fluturele Galben<br/><span class="small">(Colias croceus)</span>', image: 'images/card-clouded-yellow.png', category_text: 'Fluturi', category_icon: 'images/butterflies.png', description: '1. Aripile sale sunt galbene cu margini negre.<br/>2. Este cunoscut pentru comportamentul său migrator.<br/>3. Contribuie la biodiversitatea ecosistemului local.<br/>4. Zboară rapid și aproape de sol.<br/>5. Este o bucurie pentru orice pasionat de fluturi.' }, { name: 'Ursul Brun<br/><span class="small">(Ursus arctos)</span>', image: 'images/card-bear.png', category_text: 'Animale', category_icon: 'images/animals.png', description: '1. Este cel mai mare carnivor terestru după ursul polar.<br/>2. Culoarea sa variază de la blond la aproape negru.<br/>3. Este un prădător de top în habitatul său.<br/>4. Are abilități complexe de rezolvare a problemelor.<br/>5. Are un simț al mirosului remarcabil și o inteligență ridicată.' }, { name: 'Șalăul<br/><span class="small">(Sander lucioperca)</span>', image: 'images/card-zander.png', category_text: 'Pești', category_icon: 'images/fish.png', description: '1. Este un prădător de top în ecosistemul său.<br/>2. Preferă apele limpezi cu un curent moderat.<br/>3. Se găsește în râuri mari, lacuri și rezervoare.<br/>4. Este carnivor, hrănindu-se cu pești mai mici.<br/>5. Are o vedere ageră, adaptată la lumină slabă.' }, { name: 'Bujorul Românesc<br/><span class="small">(Paeonia peregrina)</span>', image: 'images/card-romanian-peony.png', category_text: 'Flori', category_icon: 'images/flowers.png', description: '1. Este floarea națională a României.<br/>2. Simbolizează frumusețea și rezistența.<br/>3. Înflorește în culori vibrante de roz și alb.<br/>4. Este importantă în cultura tradițională românească.<br/>5. Înflorește la sfârșitul primăverii și începutul verii.' } ];
-            const cardSearch = document.getElementById('cardSearch');
-            if (cardSearch) { cardSearch.addEventListener('input', function(e) { const searchTerm = e.target.value.toLowerCase(); const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm)); displayCards(filteredCards); }); }
-            function displayCards(cardsToShow) { 
-                 const cardsGrid = document.getElementById('cardsGrid');
-                 if (cardsGrid) {
-                     cardsGrid.innerHTML = cardsToShow.map(card => `
-                        <div class="card">
-                            <h3 class="tcenter">${card.name}</h3>
-                            <img class="product-img-card" src="${card.image}">
-                            <p class="category">
-                                <span><img class="card-category" src="${card.category_icon}" alt="${card.category_text}"> ${card.category_text}</span>
-                                <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
-                            </p>
-                            <p>${card.description}</p>
-                        </div>`).join('');
-                 } 
-             }
-            displayCards(cards);
-            // --- Nav and Scroll Logic ---
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav a');
-            const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(link => link.classList.remove('active')); const activeLink = document.querySelector(`nav a[href="#${entry.target.id}"]`); if (activeLink) { activeLink.classList.add('active'); } } }); }, { root: null, rootMargin: '-50% 0px', threshold: 0 });
-            sections.forEach(section => { if (section) { observer.observe(section); } });
-            navLinks.forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const targetId = this.getAttribute('href'); const targetSection = document.querySelector(targetId); if (targetSection) { navLinks.forEach(link => link.classList.remove('active')); this.classList.add('active'); targetSection.scrollIntoView({ behavior: 'smooth' }); } }); });
-            // --- Language Switcher Logic ---
-            const enLink = document.getElementById('en-link'); 
-            const roLink = document.getElementById('ro-link'); 
-            const currentPath = window.location.pathname; 
-            const currentFile = currentPath.split('/').pop() || 'index.html';
-            if (currentFile === 'index.html' || currentFile === '') { roLink.classList.add('active2'); enLink.classList.remove('active2'); } else if (currentFile === 'en.html') { enLink.classList.add('active2'); roLink.classList.remove('active2'); }
-            enLink.href = 'en.html'; 
-            roLink.href = 'index.html';
-        });
-    </script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"3a54c548c7f745f0a19c86a8a6c5af6d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
+</script>
 </html>
