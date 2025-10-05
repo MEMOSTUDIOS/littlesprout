@@ -696,6 +696,9 @@ color: white;
     
     /* LAPTOP & TABLET */
     @media (max-width: 1200px) {
+        :root {
+            --board-size: min(100%, 420px); /* UPDATED: Set board size for tablets (20% > mobile) */
+        }
         #main-container { flex-direction: column; position: relative; }
         #sidebar {
             width: 100%;
@@ -707,7 +710,7 @@ color: white;
             border-right: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px;
-            z-index: 1001; /* UPDATED: Ensures game controls are above the nav bar */
+            z-index: 1001; /* Fix for Safari: Ensures game controls are above the nav bar */
             background: rgba(61, 85, 61, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -793,7 +796,7 @@ color: white;
             flex-shrink: 0;
         }
         :root {
-             --board-size: min(100%, 220px); /* UPDATED: Made board smaller */
+             --board-size: min(100%, 220px); /* Make board smaller for landscape */
         }
         #opponent-card-hand.visible {
             top: -60px; /* Adjust for landscape cards */
