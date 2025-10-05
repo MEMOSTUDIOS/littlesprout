@@ -680,7 +680,7 @@ color: white;
     
     /* === EXACT STYLES FOR INFORMATIONAL CARDS === */
     #cards .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
-    #cards .card { background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding: 1rem; display: flex; flex-direction: column; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    #cards .card { background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; max-width: 380px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding: 1rem; display: flex; flex-direction: column; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     #cards .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
     #cards .card h3 { color: #333; font-size: 1.1rem; font-weight: 700; margin: 0; line-height: 1.4; min-height: 45px; }
     #cards .card h3 .small { display: block; font-size: 0.85rem; color: #666; font-weight: 500; margin-top: 2px; }
