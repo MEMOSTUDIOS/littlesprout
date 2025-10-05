@@ -104,7 +104,7 @@ z-index: 9999;
              border-radius: 8px;
              overflow: hidden;
              background-color: transparent;
-z-index: 111;
+z-index: 10;
          }
 
         .played-card-animation video {
@@ -112,7 +112,7 @@ z-index: 111;
              height: 100%;
              object-fit: cover;
 min-height:50px;
-z-index: 122;
+z-index: 50;
          }
         
         .card-actions {
@@ -139,15 +139,15 @@ z-index: 122;
                 opacity: 1;
             }
             8% { 
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 3.5));
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2));
                 opacity: 1;
             }
             92% {
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 4.5));
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
                 opacity: 1;
             }
             100% {
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3.7));
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
                 opacity: 0;
             }
         }
@@ -167,15 +167,15 @@ z-index: 122;
                     opacity: 1;
                 }
                 8% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 3.5));
+                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
                     opacity: 1;
                 }
                 92% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 4.5));
+                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
                     opacity: 1;
                 }
                 100% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3.7));
+                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
                     opacity: 0;
                 }
             }
