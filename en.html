@@ -132,6 +132,9 @@ z-index: 50;
             height: 100%;
             object-fit: cover;
         }
+.played-card-animation .action-dot {
+    font-size: 0.6em; /* Makes advance options smaller on the big card */
+}
         
         @keyframes play-card-effect {
             0% {
@@ -808,97 +811,98 @@ z-index: 50;
                 }
             },
             animateAndReplaceCard(cardElement, moveAmount, playedActionIndex) {
-                const cardRect = cardElement.getBoundingClientRect();
-                const clone = cardElement.cloneNode(true);
-                const cardTitle = clone.querySelector('.card-title').textContent;
-                const cardIndex = this.config.CARD_TITLES.indexOf(cardTitle);
-                const videoUrl = (cardIndex > -1 && this.config.CARD_VIDEOS[cardIndex]) ? this.config.CARD_VIDEOS[cardIndex] : null;
-                if (videoUrl) {
-                    const placeholder = clone.querySelector('.card-image-placeholder');
-                    if (placeholder) {
-                        const video = document.createElement('video');
-                        video.src = videoUrl;
-                        video.autoplay = true;
-                        video.muted = true;
-                        video.loop = true;
-                        video.playsInline = true;
-                        placeholder.innerHTML = '';
-                        placeholder.appendChild(video);
-                        placeholder.classList.replace('card-image-placeholder', 'card-video-placeholder');
-                    }
-                }
-                if (playedActionIndex > -1) {
-                    const playedActionDot = clone.querySelectorAll('.action-dot')[playedActionIndex];
-                    if (playedActionDot) {
-                        playedActionDot.classList.add('is-played-action');
-                    }
-                }
-                cardElement.style.opacity = '0';
-                cardElement.style.pointerEvents = 'none';
+    const cardRect = cardElement.getBoundingClientRect();
+    const clone = cardElement.cloneNode(true);
+    const cardTitle = clone.querySelector('.card-title').textContent;
+    const cardIndex = this.config.CARD_TITLES.indexOf(cardTitle);
+    const videoUrl = (cardIndex > -1 && this.config.CARD_VIDEOS[cardIndex]) ? this.config.CARD_VIDEOS[cardIndex] : null;
+    if (videoUrl) {
+        const placeholder = clone.querySelector('.card-image-placeholder');
+        if (placeholder) {
+            const video = document.createElement('video');
+            video.src = videoUrl;
+            video.autoplay = true;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            placeholder.innerHTML = '';
+            placeholder.appendChild(video);
+            placeholder.classList.replace('card-image-placeholder', 'card-video-placeholder');
+        }
+    }
+    if (playedActionIndex > -1) {
+        const playedActionDot = clone.querySelectorAll('.action-dot')[playedActionIndex];
+        if (playedActionDot) {
+            playedActionDot.classList.add('is-played-action');
+        }
+    }
+    cardElement.style.opacity = '0';
+    cardElement.style.pointerEvents = 'none';
 
-                // FIXED: Replaced the old positioning logic with a more reliable method
-                // that centers the card on the viewport for both mobile and desktop.
-                const screenCenterX = window.innerWidth / 2;
-                const screenCenterY = window.innerHeight / 2;
-                const cardCenterX = cardRect.left + cardRect.width / 2;
-                const cardCenterY = cardRect.top + cardRect.height / 2;
-                const translateX = screenCenterX - cardCenterX;
-                const translateY = screenCenterY - cardCenterY;
-                
-                clone.style.top = `${cardRect.top}px`;
-                clone.style.left = `${cardRect.left}px`;
-                clone.style.width = `${cardRect.width}px`;
-                clone.style.height = `${cardRect.height}px`;
-                clone.style.setProperty('--translateX', `${translateX}px`);
-                clone.style.setProperty('--translateY', `${translateY}px`);
-                
-                if (window.innerWidth <= 768) {
-                    clone.style.setProperty('--played-card-scale', '2.5');
-                    clone.style.setProperty('--played-card-scale-fade', '2.7');
-                } else {
-                    clone.style.setProperty('--played-card-scale', '1.98');
-                    clone.style.setProperty('--played-card-scale-fade', '2.1');
-                }
+    // UPDATED POSITIONING LOGIC
+    const screenCenterX = window.innerWidth / 2;
+    // Set the target Y position lower on the screen (e.g., add 15% of the viewport height)
+    const targetY = (window.innerHeight / 2) + (window.innerHeight * 0.15);
+    const cardCenterX = cardRect.left + cardRect.width / 2;
+    const cardCenterY = cardRect.top + cardRect.height / 2;
+    const translateX = screenCenterX - cardCenterX;
+    const translateY = targetY - cardCenterY;
 
-                clone.classList.add('played-card-animation');
-                document.body.appendChild(clone);
-                setTimeout(() => {
-                    clone.remove();
-                    const newCardIndex = Math.floor(Math.random() * this.config.CARD_TITLES.length);
-                    const newCard = document.createElement('div');
-                    newCard.className = 'card';
-                    newCard.style.setProperty('--rotation', cardElement.style.getPropertyValue('--rotation'));
-                    newCard.innerHTML = `<p class="card-title">${this.config.CARD_TITLES[newCardIndex]}</p><div class="card-actions"><div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div><div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div><div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div></div><div class="card-image-placeholder"><img src="${this.config.CARD_IMAGES[newCardIndex]}" alt="${this.config.CARD_TITLES[newCardIndex]}"></div>`;
-                    newCard.querySelectorAll('.action-dot').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            this.handleActionChoice(parseInt(btn.dataset.move), e.target);
-                        });
-                    });
-                    cardElement.parentElement.replaceChild(newCard, cardElement);
-                    let newSpotIndex = this.state.playerPawnPosition + (this.config.SPOTS_PER_RING * moveAmount);
-                    const centerSpotIndex = this.spotCoordinates.length - 1;
-                    if (newSpotIndex >= centerSpotIndex) {
-                        newSpotIndex = centerSpotIndex;
-                        this.state.reachedCenter = true;
-                    }
-                    if (newSpotIndex !== this.state.playerPawnPosition) {
-                        const pos = this.spotCoordinates[newSpotIndex];
-                        this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-                        this.state.playerPawnPosition = newSpotIndex;
-                    }
-                    if (this.state.forceMemorize && moveAmount === 2) {
-                        this.state.forceMemorize = false;
-                    }
-                    const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
-                    if (ringIndex === 1 || ringIndex === 3) {
-                        this.state.forceMemorize = true;
-                    }
-                    let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
-                    this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
-                    setTimeout(() => this.nextStep(), 1500);
-                }, 6000);
-            },
+    clone.style.top = `${cardRect.top}px`;
+    clone.style.left = `${cardRect.left}px`;
+    clone.style.width = `${cardRect.width}px`;
+    clone.style.height = `${cardRect.height}px`;
+    clone.style.setProperty('--translateX', `${translateX}px`);
+    clone.style.setProperty('--translateY', `${translateY}px`);
+
+    // UPDATED SIZE VALUES (Increased by 20%)
+    if (window.innerWidth <= 768) {
+        clone.style.setProperty('--played-card-scale', '3.0');
+        clone.style.setProperty('--played-card-scale-fade', '3.24');
+    } else {
+        clone.style.setProperty('--played-card-scale', '2.38');
+        clone.style.setProperty('--played-card-scale-fade', '2.52');
+    }
+
+    clone.classList.add('played-card-animation');
+    document.body.appendChild(clone);
+    setTimeout(() => {
+        clone.remove();
+        const newCardIndex = Math.floor(Math.random() * this.config.CARD_TITLES.length);
+        const newCard = document.createElement('div');
+        newCard.className = 'card';
+        newCard.style.setProperty('--rotation', cardElement.style.getPropertyValue('--rotation'));
+        newCard.innerHTML = `<p class="card-title">${this.config.CARD_TITLES[newCardIndex]}</p><div class="card-actions"><div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div><div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div><div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div></div><div class="card-image-placeholder"><img src="${this.config.CARD_IMAGES[newCardIndex]}" alt="${this.config.CARD_TITLES[newCardIndex]}"></div>`;
+        newCard.querySelectorAll('.action-dot').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.handleActionChoice(parseInt(btn.dataset.move), e.target);
+            });
+        });
+        cardElement.parentElement.replaceChild(newCard, cardElement);
+        let newSpotIndex = this.state.playerPawnPosition + (this.config.SPOTS_PER_RING * moveAmount);
+        const centerSpotIndex = this.spotCoordinates.length - 1;
+        if (newSpotIndex >= centerSpotIndex) {
+            newSpotIndex = centerSpotIndex;
+            this.state.reachedCenter = true;
+        }
+        if (newSpotIndex !== this.state.playerPawnPosition) {
+            const pos = this.spotCoordinates[newSpotIndex];
+            this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+            this.state.playerPawnPosition = newSpotIndex;
+        }
+        if (this.state.forceMemorize && moveAmount === 2) {
+            this.state.forceMemorize = false;
+        }
+        const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
+        if (ringIndex === 1 || ringIndex === 3) {
+            this.state.forceMemorize = true;
+        }
+        let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
+        this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
+        setTimeout(() => this.nextStep(), 1500);
+    }, 6000);
+},
             handleOpponentTurn() {
                 setTimeout(() => {
                     const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
