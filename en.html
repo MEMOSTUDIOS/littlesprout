@@ -1167,51 +1167,44 @@ font-size: 0.25rem;
                 });
             }
             // --- Card Display Script ---
-            const cards = [{
-                name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>',
-                image: 'images/card-black-woodpecker.png',
-                category_text: 'Birds',
-                category_icon: 'images/birds.png',
-                description: '1. It has a distinctive all-black plumage with a red crown.<br>2. It provides vital shelter for many forest species.<br/>3. You can typically find it in pairs or small family groups.<br/>4. It uses a loud drumming sound to communicate.<br/>5. It prefers mature, old-growth forests.'
-            }, {
-                name: 'European Praying Mantis<br><span class="small">(Mantis religiosa)</span>',
-                image: 'images/card-praying-mantis.png',
-                category_text: 'Insects',
-                category_icon: 'images/insects.png',
-                description: '1. The female lives 6-8 months, while the male lives for 4-6 months.<br/>2. It feeds on insects and honey.<br/>3. These are ambush predators, so they sit and wait for their prey.<br/>4. They mate during the spring and summer months.<br/>5. It has 3 life stages: egg, nymph, and adult.'
-            }, {
-                name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>',
-                image: 'images/card-clouded-yellow.png',
-                category_text: 'Butterflies',
-                category_icon: 'images/butterflies.png',
-                description: '1. Its wings have a yellow coloration with black margins.<br/>2. It is known for its strong migratory behavior.<br/>3. It plays a role in the local ecosystem\'s biodiversity.<br/>4. They are strong and fast fliers, and they fly close to the ground.<br/>5. Seeing one is a delight for any butterfly enthusiast.'
-            }, {
-                name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>',
-                image: 'images/card-bear.png',
-                category_text: 'Animals',
-                category_icon: 'images/animals.png',
-                description: '1. It is the largest land carnivore after the polar bear.<br/>2. Its color can vary from blonde to nearly black.<br/>3. They are apex predators in their habitats.<br/>4. They have complex problem-solving skills.<br/>5. They have a remarkable sense of smell and high intelligence.'
-            }, {
-                name: 'Zander<br/><span class="small">(Sander lucioperca)</span>',
-                image: 'images/card-zander.png',
-                category_text: 'Fish',
-                category_icon: 'images/fish.png',
-                description: '1. This is an apex predator in its ecosystem.<br/>2. It prefers clear waters with a moderate current.<br/>3. You can find it in large rivers, lakes, and reservoirs.<br/>4. It is carnivorous, feeding primarily on smaller fish.<br/>5. It has sharp vision that is adapted to low-light conditions.'
-            }, {
-                name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>',
-                image: 'images/card-romanian-peony.png',
-                category_text: 'Flowers',
-                category_icon: 'images/flowers.png',
-                description: '1. This is the national flower of Romania.<br/>2. It symbolizes beauty and resilience.<br/>3. It blooms in vibrant pink and white colors.<br/>4. It is important in traditional Romanian culture.<br/>5. You can see it bloom in late spring to early summer.'
-            }];
-            const cardSearch = document.getElementById('cardSearch');
-            if (cardSearch) {
-                cardSearch.addEventListener('input', function(e) {
-                    const searchTerm = e.target.value.toLowerCase();
-                    const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm));
-                    displayCards(filteredCards);
-                });
-            }
+
+const cards = [{
+    name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>',
+    image: 'images/card-black-woodpecker.png',
+    category_text: 'Birds',
+    category_icon: 'images/birds.png',
+    description: 'With a bright red cap and feathers black,<br/>He drums on a tree with a RAT-TAT-TACK!<br/>His cozy old holes, dug deep in the wood,<br/>Make homes for friends in the neighborhood.'
+}, {
+    name: 'Praying Mantis<br><span class="small">(Mantis religiosa)</span>',
+    image: 'images/card-praying-mantis.png',
+    category_text: 'Insects',
+    category_icon: 'images/insects.png',
+    description: 'A sneaky hunter, green and grand,<br/>Is born from an egg to rule the land.<br/>The girl lives longer than the boy,<br/>And fills her days with bug filled joy!'
+}, {
+    name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>',
+    image: 'images/card-clouded-yellow.png',
+    category_text: 'Butterflies',
+    category_icon: 'images/butterflies.png',
+    description: 'With wings of yellow, edged in black,<br/>On a long trip, it won\'t turn back.<br/>It flies so fast and very low,<br/>A sunny streak and just watch it go!'
+}, {
+    name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>',
+    image: 'images/card-bear.png',
+    category_text: 'Animals',
+    category_icon: 'images/animals.png',
+    description: 'The big brown bear, a king so grand,<br/>Is the smartest hunter in the land.<br/>With his super nose, he follows a trail,<br/>This clever bear will never fail!'
+}, {
+    name: 'Zander<br/><span class="small">(Sander lucioperca)</span>',
+    image: 'images/card-zander.png',
+    category_text: 'Fish',
+    category_icon: 'images/fish.png',
+    description: 'The Zander fish, a river king,<br/>Makes all the little currents sing.<br/>He rules his home with eyes so bright,<br/>And watches over it all night.'
+}, {
+    name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>',
+    image: 'images/card-romanian-peony.png',
+    category_text: 'Flowers',
+    category_icon: 'images/flowers.png',
+    description: 'In fields of green, a flower grows,<br/>The prettiest pink that you could know.<br/>It is strong and beautiful and grand,<br/>The favorite flower in the land!'
+}];
 
             function displayCards(cardsToShow) {
                 const cardsGrid = document.getElementById('cardsGrid');
