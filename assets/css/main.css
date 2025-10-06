@@ -765,7 +765,7 @@ color: white;
     /* LANDSCAPE MOBILE - very short height */
     @media (orientation: landscape) and (max-height: 500px) {
         nav {
-            display: none; /* Hide main nav to make game controls visible */
+            height: 70px;  /* Hide main nav to make game controls visible */
         }
         #sidebar {
             min-height: 60px; /* Make game control bar more compact */
