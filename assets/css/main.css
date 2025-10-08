@@ -688,7 +688,7 @@ color: white;
     #cards .card .category { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: #555; margin: 0 0 1rem 0; padding-top: 10px; font-weight: 700; }
     #cards .card .category .card-category { width: 20px; height: 20px; vertical-align: middle; margin-right: 8px; }
     #cards .card .category .card-img { width: 20px; height: 20px; }
-    #cards .card p:not(.category) { font-size: 0.95rem; line-height: 1.5; color: #555; text-align: left; margin: 0;}
+    #cards .card p:not(.category) { font-size: 0.85rem; line-height: 1.5; color: #555; text-align: left; margin: 0;}
     
     /* === RESPONSIVE MEDIA QUERIES === */
     
