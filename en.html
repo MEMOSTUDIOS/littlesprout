@@ -39,7 +39,7 @@
             margin: 0;
             box-sizing: border-box;
             background-color: #fff;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
             padding: 0.75rem;
             display: flex;
@@ -51,7 +51,7 @@
         }
 
         .played-card-animation .card-title {
-            font-size: 0.75em;
+            font-size: 0.8em;
         }
         
         /* CSS for hover tooltips positioned at the bottom */
@@ -68,12 +68,12 @@
             transform: translateX(-50%);
             background-color: #333;
             color: #fff;
-            padding: 2px 4px;
+            padding: 3px 6px;
             border-radius: 4px;
             /* Smaller tooltip font */
-            font-size: 0.55rem;
+            font-size: 0.65rem;
             white-space: nowrap;
-            z-index: 1001; /* Ensure tooltip is above card */
+            z-index: 11; /* Ensure tooltip is above card */
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -92,27 +92,20 @@
             visibility: visible;
             font-size: 0.5rem; 
             bottom: -18px; 
-            padding: 1px 4px;
-z-index: 9999; 
+            padding: 1px 4px; 
+        }
+
+        .played-card-animation .card-title {
+            font-size: 0.65em;
         }
         
-        /* Style for video element inside the card */
-        .card-video-placeholder,
+        /* MODIFIED: Removed the .card-video-placeholder selector */
         .card-image-placeholder {
              width: 100%;
              flex-grow: 1;
              border-radius: 8px;
              overflow: hidden;
              background-color: transparent;
-z-index: 10;
-         }
-
-        .played-card-animation video {
-             width: 100%;
-             height: 100%;
-             object-fit: cover;
-min-height:50px;
-z-index: 50;
          }
         
         .card-actions {
@@ -132,34 +125,29 @@ z-index: 50;
             height: 100%;
             object-fit: cover;
         }
-.played-card-animation .action-dot {
-    font-size: 0.6em; /* Makes advance options smaller on the big card */
-}
         
-       @keyframes play-card-effect {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    8% {
-        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);
-        opacity: 1;
-    }
-    92% {
-        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);
-        opacity: 0;
-    }
-}
+        @keyframes play-card-effect {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            8% { 
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1.98));
+                opacity: 1;
+            }
+            92% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1.98));
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 2.1));
+                opacity: 0;
+            }
+        }
 
         /* Media query for mobile-specific played card size */
         @media (max-width: 768px) {
-            .played-card-animation .card-title {
-            font-size: 0.5em;
-        }
+            
             .played-card-animation {
                 padding: 0.5rem;
             }
@@ -170,7 +158,7 @@ z-index: 50;
                     opacity: 1;
                 }
                 8% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
+                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
                     opacity: 1;
                 }
                 92% {
@@ -178,110 +166,48 @@ z-index: 50;
                     opacity: 1;
                 }
                 100% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
+                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 2.7));
                     opacity: 0;
                 }
             }
         }
-/* Ensure cards have a stacking context for tooltips */
-#card-hand .card {
-    position: relative;
-    z-index: 1;
-    transition: z-index 0s 0.2s; /* Delay z-index change to prevent flicker */
-}
-#card-hand .card:hover {
-    z-index: 10; /* Bring hovered card to the front */
-    transition: z-index 0s;
-    overflow: visible; /* Allow tooltip to show on small cards */
-}
 
-/* CSS for hover tooltips positioned at the bottom */
-.action-dot {
-    position: relative;
-    cursor: pointer;
-}
-.action-dot[data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -22px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-size: 0.55rem;
-    white-space: nowrap;
-    z-index: 1001;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.2s, visibility 0.2s;
-}
-.action-dot[data-tooltip]:hover::after,
-.action-dot[data-tooltip]:focus::after {
-    opacity: 1;
-    visibility: visible;
-}
+        /* Card Enlargement & Interaction Styles */
+        #card-hand .card {
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease;
+        }
 
-/* Card Enlargement & Interaction Styles */
-#card-hand .card {
-    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease;
-}
+        #card-hand .card:not(.is-enlarged):hover {
+            transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
 
-#card-hand .card:not(.is-enlarged):hover {
-    transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
+        #card-hand .card.is-enlarged {
+            transform: translateY(-110px) scale(2) rotate(var(--rotation));
+            z-index: 20;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+        }
 
-#card-hand .card.is-enlarged,
-#card-hand .card.is-enlarged:hover {
-    transform: translateY(-110px) scale(var(--desktop-card-scale)) rotate(var(--rotation));
-    z-index: 20;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-    cursor: pointer;
-}
+        #card-hand .card.is-enlarged:hover {
+            transform: translateY(-110px) scale(2) rotate(var(--rotation));
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+        }
 
-#card-hand .card.is-enlarged {
-    overflow: visible;
-}
+        #card-hand.has-enlarged-card .card:not(.is-enlarged) {
+            opacity: 0.6;
+            transform: translateY(10px) rotate(var(--rotation));
+        }
 
-/* Make tooltips on enlarged cards smaller, like labels */
-#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {
-    font-size: 0.35rem;
-    padding: 1px 3px;
-    bottom: -16px;
-    border-radius: 2px;
-}
+        #card-hand .card.is-enlarged .action-dot.show-tooltip::after {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
 
-#card-hand.has-enlarged-card .card:not(.is-enlarged) {
-    opacity: 0.6;
-    transform: translateY(10px) rotate(var(--rotation));
-}
-
-#card-hand .card.is-enlarged .action-dot.show-tooltip::after {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s;
-}
-
-#card-hand .card.is-enlarged .action-dot {
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    #card-hand .card.is-enlarged,
-    #card-hand .card.is-enlarged:hover {
-        /* Use new mobile scale and move down 100px from center */
-        transform: translateY(calc(-25vh + 100px)) scale(var(--mobile-enlarged-scale)) rotate(0);
-    }
-#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {
-font-size: 0.25rem;
-    padding: 1px 3px;
-    bottom: -16px;
-    border-radius: 2px;
-}
-}
+        #card-hand .card.is-enlarged .action-dot {
+            cursor: pointer;
+        }
     </style>
     </head>
 
@@ -400,7 +326,7 @@ font-size: 0.25rem;
     </section>
     <section id="game">
         <h2 class="mt-5">The Game</h2>
-        <h3>Welcome to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3>
+        <h3>Welcome you to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3>
         <p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a small sprout named Little Sprout is about to embark on a great adventure, and you're invited to join in.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies of Romania.</p>
         <p>Each turn brings you a new discovery as you draw cards featuring Romania's most incredible natural wonders.</p>
         <div class="game-features mt-5">
@@ -529,626 +455,609 @@ font-size: 0.25rem;
         </div>
     </footer>
     <script>
-       const game = {
-    elements: {},
-    state: {},
-    spotCoordinates: [],
-    config: {
-        SPOTS_PER_RING: 11,
-        PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
-        CARD_TITLES: ["Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
-        CARD_IMAGES: [
-            "https://littlesprout.ro/images/card-black-woodpecker.png",
-            "https://littlesprout.ro/images/card-praying-mantis.png",
-            "https://littlesprout.ro/images/card-zander.png",
-            "https://littlesprout.ro/images/card-bear.png",
-            "https://littlesprout.ro/images/card-romanian-peony.png",
-            "https://littlesprout.ro/images/card-clouded-yellow.png"
-        ],
-        CARD_VIDEOS: [
-            "https://v.ftcdn.net/16/51/62/15/700_F_1651621571_nFT9exVpeymKC0erpiBM49sOg1F2sw3H_ST.mp4", // Woodpecker
-            "https://v.ftcdn.net/06/02/21/24/700_F_602212403_Do8H6Pem41lJipebvvrNLYwWPKpKoaQ1_ST.mp4", // Praying Mantis
-            "https://v.ftcdn.net/03/00/93/53/700_F_300935386_2WoQKo1tAF2hRIMt76wiE5BGcZzTTP9M_ST.mp4", // Zander
-            "https://v.ftcdn.net/04/64/88/69/700_F_464886957_B0DgAxbpnFF3eEmr7L7Q8JrjIPESTCEY_ST.mp4", // Brown Bear
-            "https://v.ftcdn.net/06/08/35/39/700_F_608353970_xUELfqv0lr8bjQQQJbWH8sUQ9s6StfQQ_ST.mp4", // Romanian Peony
-            "https://v.ftcdn.net/05/22/09/56/700_F_522095686_njvuYy1gm4b1eKPQSJ8xmnhUip6hZKm7_ST.mp4" // Clouded Yellow
-        ],
-        OUTER_RING_COLORS: ['#f7a732', '#f0c340', '#92c045', '#55b64c', '#29b9e6', '#2b77c8', '#4a4aa8', '#684196', '#9e2a8f', '#e53935', '#d82b45']
-    },
-    tutorialSteps: [{
-        text: "First, pick a color for your very own pawn.",
-        action: 'promptColor',
-        stepNumber: 1
-    }, {
-        text: "Roll the dice to find your starting spot.",
-        action: 'promptDiceRoll',
-        stepNumber: 2
-    }, {
-        text: () => `Click the glowing ${game.state.diceSum} to pop up!`,
-        action: 'promptPlacePawn',
-        stepNumber: 3
-    }, {
-        text: "Tap a card to enlarge it, or click an action to play it directly.",
-        action: 'promptPlayerTurn'
-    }, {
-        text: "Well done! Now it is your friend's turn...",
-        action: 'opponentTurn'
-    }, {
-        text: "Good. It is your turn again!",
-        action: 'promptPlayerTurn'
-    }, {
-        text: "You made it to the heart of the forest!",
-        action: 'endGameSuccess'
-    }],
-    init() {
-    this.cacheElements();
-    this.createPawns();
-    this.createBoardLayout();
-    this.createColorPalette();
-    this.attachEventListeners();
+        const game = {
+            elements: {},
+            state: {},
+            spotCoordinates: [],
+            config: {
+                SPOTS_PER_RING: 11,
+                PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
+                CARD_TITLES: ["Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
+                CARD_IMAGES: [
+                    "https://littlesprout.ro/images/card-black-woodpecker.png",
+                    "https://littlesprout.ro/images/card-praying-mantis.png",
+                    "https://littlesprout.ro/images/card-zander.png",
+                    "https://littlesprout.ro/images/card-bear.png",
+                    "https://littlesprout.ro/images/card-romanian-peony.png",
+                    "https://littlesprout.ro/images/card-clouded-yellow.png"
+                ],
+                // MODIFIED: Removed the CARD_VIDEOS array
+                OUTER_RING_COLORS: ['#f7a732', '#f0c340', '#92c045', '#55b64c', '#29b9e6', '#2b77c8', '#4a4aa8', '#684196', '#9e2a8f', '#e53935', '#d82b45']
+            },
+            tutorialSteps: [{
+                text: "First, pick a color for your very own pawn.",
+                action: 'promptColor',
+                stepNumber: 1
+            }, {
+                text: "Roll the dice to find your starting spot.",
+                action: 'promptDiceRoll',
+                stepNumber: 2
+            }, {
+                text: () => `Click the glowing ${game.state.diceSum} to pop up!`,
+                action: 'promptPlacePawn',
+                stepNumber: 3
+            }, {
+                text: "Tap a card to enlarge it, or click an action to play it directly.",
+                action: 'promptPlayerTurn'
+            }, {
+                text: "Well done! Now it is your friend's turn...",
+                action: 'opponentTurn'
+            }, {
+                text: "Good. It is your turn again!",
+                action: 'promptPlayerTurn'
+            }, {
+                text: "You made it to the heart of the forest!",
+                action: 'endGameSuccess'
+            }],
+            init() {
+                this.cacheElements();
+                this.createPawns();
+                this.createBoardLayout();
+                this.createColorPalette();
+                this.attachEventListeners();
+                this.resetGame(true);
+            },
+            cacheElements() {
+                const requiredIds = ['sidebar', 'narration-text', 'reveal-section', 'replay-button', 'spots-container', 'dice-container', 'color-palette', 'card-hand', 'opponent-card-hand', 'game-container', 'steps-list', 'game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
+                requiredIds.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (!element) console.error(`Critical element not found: #${id}`);
+                    this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element;
+                });
+                this.elements.dice = this.elements.diceContainer.querySelectorAll('.dice');
+                this.elements.preorderModal.overlay = this.elements.preorderModal.querySelector('.modal-overlay');
+                this.elements.preorderModal.closeBtn = this.elements.preorderModal.querySelector('.modal-close-btn');
+                this.elements.preorderModal.form = this.elements.preorderModal.querySelector('#preorder-form');
+                this.elements.preorderModal.formContainer = this.elements.preorderModal.querySelector('#preorder-form-container');
+                this.elements.preorderModal.confirmationMsg = this.elements.preorderModal.querySelector('#confirmation-message');
+                this.elements.preorderModal.closeConfirmationBtn = this.elements.preorderModal.querySelector('#close-confirmation-btn');
+            },
+            createPawns() {
+                this.elements.playerSprout = this.createPawn('player-sprout');
+                this.elements.opponentSprout = this.createPawn('opponent-sprout');
+                this.elements.opponentSprout.style.backgroundColor = '#8E44AD';
+            },
+            createPlayerCard(cardIndex, rotation) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.setProperty('--rotation', `${rotation}deg`);
+                card.innerHTML = `<p class="card-title">${this.config.CARD_TITLES[cardIndex] || 'New Card'}</p><div class="card-actions"><div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div><div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div><div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div></div><div class="card-image-placeholder"><img src="${this.config.CARD_IMAGES[cardIndex]}" alt="${this.config.CARD_TITLES[cardIndex]}"></div>`;
 
-    // Set unified scale factors as CSS variables
-    const desktopScale = 1.8; // Decreased from 2.38
-    const mobileScale = 3.0;
-    const mobileEnlargedScale = 1.5;
-    document.documentElement.style.setProperty('--desktop-card-scale', desktopScale);
-    document.documentElement.style.setProperty('--mobile-card-scale', mobileScale);
-    document.documentElement.style.setProperty('--mobile-enlarged-scale', mobileEnlargedScale);
+                // Main listener for tap-to-enlarge/shrink
+                card.addEventListener('click', (e) => this.handleCardTap(e, card));
 
-    this.resetGame(true);
-},
-    cacheElements() {
-        const requiredIds = ['sidebar', 'narration-text', 'reveal-section', 'replay-button', 'spots-container', 'dice-container', 'color-palette', 'card-hand', 'opponent-card-hand', 'game-container', 'steps-list', 'game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
-        requiredIds.forEach(id => {
-            const element = document.getElementById(id);
-            if (!element) console.error(`Critical element not found: #${id}`);
-            this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element;
-        });
-        this.elements.dice = this.elements.diceContainer.querySelectorAll('.dice');
-        this.elements.preorderModal.overlay = this.elements.preorderModal.querySelector('.modal-overlay');
-        this.elements.preorderModal.closeBtn = this.elements.preorderModal.querySelector('.modal-close-btn');
-        this.elements.preorderModal.form = this.elements.preorderModal.querySelector('#preorder-form');
-        this.elements.preorderModal.formContainer = this.elements.preorderModal.querySelector('#preorder-form-container');
-        this.elements.preorderModal.confirmationMsg = this.elements.preorderModal.querySelector('#confirmation-message');
-        this.elements.preorderModal.closeConfirmationBtn = this.elements.preorderModal.querySelector('#close-confirmation-btn');
-    },
-    createPawns() {
-        this.elements.playerSprout = this.createPawn('player-sprout');
-        this.elements.opponentSprout = this.createPawn('opponent-sprout');
-        this.elements.opponentSprout.style.backgroundColor = '#8E44AD';
-    },
-    createPlayerCard(cardIndex, rotation) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.setProperty('--rotation', `${rotation}deg`);
-        card.innerHTML = `<p class="card-title">${this.config.CARD_TITLES[cardIndex] || 'New Card'}</p><div class="card-actions"><div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div><div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div><div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div></div><div class="card-image-placeholder"><img src="${this.config.CARD_IMAGES[cardIndex]}" alt="${this.config.CARD_TITLES[cardIndex]}"></div>`;
-
-        card.addEventListener('click', (e) => this.handleCardTap(e, card));
-
-        card.querySelectorAll('.action-dot').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.handleActionChoice(parseInt(btn.dataset.move), e.target);
-            });
-        });
-        return card;
-    },
-    buildCardHands() {
-        const isMobile = window.innerWidth <= 768;
-        const cardCount = isMobile ? 5 : 6;
-        const rotationMultiplier = isMobile ? 4 : 5;
-        const centerIndex = (cardCount - 1) / 2;
-        const playerCardFragment = document.createDocumentFragment();
-        this.elements.cardHand.innerHTML = '';
-        for (let i = 0; i < cardCount; i++) {
-            const rotation = (i - centerIndex) * rotationMultiplier;
-            const card = this.createPlayerCard(i, rotation);
-            playerCardFragment.appendChild(card);
-        }
-        this.elements.cardHand.appendChild(playerCardFragment);
-        const opponentCardFragment = document.createDocumentFragment();
-        this.elements.opponentCardHand.innerHTML = '';
-        for (let i = 0; i < cardCount; i++) {
-            const card = document.createElement('div');
-            card.className = 'opponent-card';
-            const rotation = (i - centerIndex) * -rotationMultiplier;
-            card.style.setProperty('--rotation', `${rotation}deg`);
-            opponentCardFragment.appendChild(card);
-        }
-        this.elements.opponentCardHand.appendChild(opponentCardFragment);
-    },
-    createPawn(id) {
-        const pawn = document.createElement('div');
-        pawn.id = id;
-        pawn.className = 'sprout-pawn';
-        return pawn;
-    },
-    createBoardLayout() {
-        this.elements.spotsContainer.innerHTML = '';
-        this.spotCoordinates = [];
-        let spotCounter = 0;
-        const rings = [{ numSpots: this.config.SPOTS_PER_RING, radius: 0.46 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.37 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.28 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.19 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.09 }, { numSpots: 1, radius: 0 }];
-        const boardWidth = this.elements.gameBoard.getBoundingClientRect().width;
-        if (boardWidth === 0) {
-            requestAnimationFrame(() => this.createBoardLayout());
-            return;
-        }
-        rings.forEach((ring, ringIndex) => {
-            for (let i = 0; i < ring.numSpots; i++) {
-                const angle = (i / ring.numSpots) * 2 * Math.PI - (Math.PI / 2);
-                const x = Math.cos(angle) * ring.radius * boardWidth;
-                const y = Math.sin(angle) * ring.radius * boardWidth;
-                this.spotCoordinates.push({ x, y });
-                const spot = document.createElement('div');
-                spot.className = 'spot';
-                spot.id = `spot-${spotCounter}`;
-                spot.style.zIndex = rings.length - ringIndex;
-                if (ring.radius === 0) {
-                    spot.id = 'center-spot';
-                } else if (ringIndex === 0) {
-                    spot.innerHTML = `<span>${i + 2}</span>`;
-                    spot.addEventListener('click', () => this.handleSpotClick(i));
-                } else if (ringIndex === 1 || ringIndex === 3) {
-                    spot.style.backgroundColor = '#BDB7AB';
-                    spot.style.border = '1px solid #aaa';
+                // Listeners for action dots, which stop propagation to prevent tap-to-enlarge
+                card.querySelectorAll('.action-dot').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.handleActionChoice(parseInt(btn.dataset.move), e.target);
+                    });
+                });
+                return card;
+            },
+            buildCardHands() {
+                const isMobile = window.innerWidth <= 768;
+                const cardCount = isMobile ? 5 : 6;
+                const rotationMultiplier = isMobile ? 4 : 5;
+                const centerIndex = (cardCount - 1) / 2;
+                const playerCardFragment = document.createDocumentFragment();
+                this.elements.cardHand.innerHTML = '';
+                for (let i = 0; i < cardCount; i++) {
+                    const rotation = (i - centerIndex) * rotationMultiplier;
+                    const card = this.createPlayerCard(i, rotation);
+                    playerCardFragment.appendChild(card);
                 }
-                spot.style.transform = `translate(${x}px, ${y}px)`;
-                this.elements.spotsContainer.appendChild(spot);
-                spotCounter++;
-            }
-        });
-        this.elements.spotsContainer.appendChild(this.elements.playerSprout);
-        this.elements.spotsContainer.appendChild(this.elements.opponentSprout);
-        if (this.state && this.state.playerPawnPosition > -1) {
-            const playerPos = this.spotCoordinates[this.state.playerPawnPosition];
-            this.elements.playerSprout.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px) scale(1)`;
-        }
-        if (this.state && this.state.opponentPawnPosition > -1) {
-            const opponentPos = this.spotCoordinates[this.state.opponentPawnPosition];
-            this.elements.opponentSprout.style.transform = `translate(${opponentPos.x}px, ${opponentPos.y}px) scale(1)`;
-        }
-    },
-    createColorPalette() {
-        this.elements.colorPalette.innerHTML = '';
-        this.config.PAWN_COLORS.forEach(color => {
-            const swatch = document.createElement('div');
-            swatch.className = 'color-swatch';
-            swatch.innerHTML = `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16,4 C12.69,4 10,6.69,10,10 C10,13.31 12.69,16 16,16 C19.31,16 22,13.31 22,10 C22,6.69 19.31,4 16,4 Z M16,17 C13,17 11,19 11,22 L21,22 C21,19 19,17 16,17 Z M9,23 L23,23 L23,26 L9,26 Z M7,27 L25,27 L25,29 L7,29 Z" fill="${color}" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
-            swatch.addEventListener('click', () => this.handleColorChoice(color));
-            this.elements.colorPalette.appendChild(swatch);
-        });
-    },
-    attachEventListeners() {
-        this.elements.replayButton.addEventListener('click', () => this.resetGame());
-        this.elements.preorderModal.overlay.addEventListener('click', () => this.closePreorderModal());
-        this.elements.preorderModal.closeBtn.addEventListener('click', () => this.closePreorderModal());
-        this.elements.preorderModal.closeConfirmationBtn.addEventListener('click', () => this.closePreorderModal());
-        this.elements.preorderModal.form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.elements.preorderModal.formContainer.style.display = 'none';
-            this.elements.preorderModal.confirmationMsg.style.display = 'block';
-        });
-        window.addEventListener('resize', () => this.createBoardLayout());
-    },
-    nextStep() {
-        this.state.currentStep++;
-        if (this.state.currentStep < this.tutorialSteps.length) {
-            const step = this.tutorialSteps[this.state.currentStep];
-            if (step) {
-                this.elements.narrationText.textContent = typeof step.text === 'function' ? step.text() : step.text;
-                this.updateStepsUI(step.stepNumber);
-                this[step.action]();
-            }
-        }
-    },
-    resetGame(isInitialStart = false) {
-        if (!isInitialStart) {
-            this.elements.gameBoard.classList.remove('reveal');
-            this.elements.revealSection.classList.remove('visible');
-        }
-        this.buildCardHands();
-        this.state = {
-            currentStep: -1,
-            diceSum: 0,
-            playerPawnPosition: -1,
-            opponentPawnPosition: -1,
-            selectedPawnColor: this.config.PAWN_COLORS[0],
-            turn: 1,
-            reachedCenter: false,
-            forceMemorize: false,
-            enlargedCard: null
-        };
-        this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
-        [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => {
-            pawn.style.transition = 'opacity 0s, transform 0s';
-            pawn.style.opacity = '0';
-            pawn.style.transform = `scale(0)`;
-        });
-        this.elements.playerSprout.classList.remove('winning-pawn');
-        const existingWinnerText = this.elements.spotsContainer.querySelector('.winner-text');
-        if (existingWinnerText) existingWinnerText.remove();
-        document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
-        this.elements.cardHand.classList.remove('visible', 'has-enlarged-card');
-        this.elements.opponentCardHand.classList.remove('visible');
-        this.setHandInteractable(false);
-        this.elements.dice.forEach(d => this.updateDieFace(d, 1));
-        this.elements.cardHand.classList.remove('hand-active');
-        this.elements.colorPalette.classList.remove('visible');
-        this.elements.diceContainer.classList.remove('visible');
-        if (window.innerWidth <= 1200) {
-            this.elements.colorPalette.style.display = 'none';
-            this.elements.diceContainer.style.display = 'none';
-        }
-        setTimeout(() => {
-            this.elements.cardHand.classList.add('visible');
-            this.elements.opponentCardHand.classList.add('visible');
-            this.nextStep();
-        }, isInitialStart ? 500 : 750);
-    },
-    updateStepsUI(stepNumber) {
-        this.elements.stepsList.querySelectorAll('li').forEach((step, index) => {
-            step.classList.toggle('step-active', index + 1 === stepNumber);
-        });
-    },
-    promptColor() {
-        this.updateStepsUI(1);
-        this.elements.diceContainer.classList.remove('visible');
-        this.elements.colorPalette.classList.add('visible');
-        if (window.innerWidth <= 1200) {
-            this.elements.diceContainer.style.display = 'none';
-            this.elements.colorPalette.style.display = 'flex';
-        }
-    },
-    promptDiceRoll() {
-        this.updateStepsUI(2);
-        this.elements.colorPalette.classList.remove('visible');
-        this.elements.diceContainer.classList.add('visible', 'selectable');
-        if (window.innerWidth <= 1200) {
-            this.elements.colorPalette.style.display = 'none';
-            this.elements.diceContainer.style.display = 'flex';
-        }
-        this.elements.diceContainer.addEventListener('click', () => this.handleDiceRoll(), { once: true });
-    },
-    promptPlacePawn() {
-        this.updateStepsUI(3);
-        document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing');
-    },
-    promptPlayerTurn() {
-        this.updateStepsUI(0);
-        this.elements.cardHand.classList.add('hand-active');
-        this.elements.opponentCardHand.classList.add('active');
-        document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
-        if (this.state.forceMemorize) {
-            this.elements.narrationText.textContent = "'Memorize' (+2) to advance.";
-            this.setHandInteractable(true);
-            this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
-                if (action.dataset.move === '2') {
-                    action.classList.add('glowing-action');
-                    action.style.pointerEvents = 'auto';
-                    action.style.opacity = '1';
+                this.elements.cardHand.appendChild(playerCardFragment);
+                const opponentCardFragment = document.createDocumentFragment();
+                this.elements.opponentCardHand.innerHTML = '';
+                for (let i = 0; i < cardCount; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'opponent-card';
+                    const rotation = (i - centerIndex) * -rotationMultiplier;
+                    card.style.setProperty('--rotation', `${rotation}deg`);
+                    opponentCardFragment.appendChild(card);
+                }
+                this.elements.opponentCardHand.appendChild(opponentCardFragment);
+            },
+            createPawn(id) {
+                const pawn = document.createElement('div');
+                pawn.id = id;
+                pawn.className = 'sprout-pawn';
+                return pawn;
+            },
+            createBoardLayout() {
+                this.elements.spotsContainer.innerHTML = '';
+                this.spotCoordinates = [];
+                let spotCounter = 0;
+                const rings = [{
+                    numSpots: this.config.SPOTS_PER_RING,
+                    radius: 0.46
+                }, {
+                    numSpots: this.config.SPOTS_PER_RING,
+                    radius: 0.37
+                }, {
+                    numSpots: this.config.SPOTS_PER_RING,
+                    radius: 0.28
+                }, {
+                    numSpots: this.config.SPOTS_PER_RING,
+                    radius: 0.19
+                }, {
+                    numSpots: this.config.SPOTS_PER_RING,
+                    radius: 0.09
+                }, {
+                    numSpots: 1,
+                    radius: 0
+                }];
+                const boardWidth = this.elements.gameBoard.getBoundingClientRect().width;
+                if (boardWidth === 0) {
+                    requestAnimationFrame(() => this.createBoardLayout());
+                    return;
+                }
+                rings.forEach((ring, ringIndex) => {
+                    for (let i = 0; i < ring.numSpots; i++) {
+                        const angle = (i / ring.numSpots) * 2 * Math.PI - (Math.PI / 2);
+                        const x = Math.cos(angle) * ring.radius * boardWidth;
+                        const y = Math.sin(angle) * ring.radius * boardWidth;
+                        this.spotCoordinates.push({
+                            x,
+                            y
+                        });
+                        const spot = document.createElement('div');
+                        spot.className = 'spot';
+                        spot.id = `spot-${spotCounter}`;
+                        spot.style.zIndex = rings.length - ringIndex;
+                        if (ring.radius === 0) {
+                            spot.id = 'center-spot';
+                        } else if (ringIndex === 0) {
+                            spot.innerHTML = `<span>${i + 2}</span>`;
+                            spot.addEventListener('click', () => this.handleSpotClick(i));
+                        } else if (ringIndex === 1 || ringIndex === 3) {
+                            spot.style.backgroundColor = '#BDB7AB';
+                            spot.style.border = '1px solid #aaa';
+                        }
+                        spot.style.transform = `translate(${x}px, ${y}px)`;
+                        this.elements.spotsContainer.appendChild(spot);
+                        spotCounter++;
+                    }
+                });
+                this.elements.spotsContainer.appendChild(this.elements.playerSprout);
+                this.elements.spotsContainer.appendChild(this.elements.opponentSprout);
+                if (this.state && this.state.playerPawnPosition > -1) {
+                    const playerPos = this.spotCoordinates[this.state.playerPawnPosition];
+                    this.elements.playerSprout.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px) scale(1)`;
+                }
+                if (this.state && this.state.opponentPawnPosition > -1) {
+                    const opponentPos = this.spotCoordinates[this.state.opponentPawnPosition];
+                    this.elements.opponentSprout.style.transform = `translate(${opponentPos.x}px, ${opponentPos.y}px) scale(1)`;
+                }
+            },
+            createColorPalette() {
+                this.elements.colorPalette.innerHTML = '';
+                this.config.PAWN_COLORS.forEach(color => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    swatch.innerHTML = `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16,4 C12.69,4 10,6.69,10,10 C10,13.31 12.69,16 16,16 C19.31,16 22,13.31 22,10 C22,6.69 19.31,4 16,4 Z M16,17 C13,17 11,19 11,22 L21,22 C21,19 19,17 16,17 Z M9,23 L23,23 L23,26 L9,26 Z M7,27 L25,27 L25,29 L7,29 Z" fill="${color}" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+                    swatch.addEventListener('click', () => this.handleColorChoice(color));
+                    this.elements.colorPalette.appendChild(swatch);
+                });
+            },
+            attachEventListeners() {
+                this.elements.replayButton.addEventListener('click', () => this.resetGame());
+                this.elements.preorderModal.overlay.addEventListener('click', () => this.closePreorderModal());
+                this.elements.preorderModal.closeBtn.addEventListener('click', () => this.closePreorderModal());
+                this.elements.preorderModal.closeConfirmationBtn.addEventListener('click', () => this.closePreorderModal());
+                this.elements.preorderModal.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.elements.preorderModal.formContainer.style.display = 'none';
+                    this.elements.preorderModal.confirmationMsg.style.display = 'block';
+                });
+                window.addEventListener('resize', () => this.createBoardLayout());
+            },
+            nextStep() {
+                this.state.currentStep++;
+                if (this.state.currentStep < this.tutorialSteps.length) {
+                    const step = this.tutorialSteps[this.state.currentStep];
+                    if (step) {
+                        this.elements.narrationText.textContent = typeof step.text === 'function' ? step.text() : step.text;
+                        this.updateStepsUI(step.stepNumber);
+                        this[step.action]();
+                    }
+                }
+            },
+            resetGame(isInitialStart = false) {
+                if (!isInitialStart) {
+                    this.elements.gameBoard.classList.remove('reveal');
+                    this.elements.revealSection.classList.remove('visible');
+                }
+                this.buildCardHands();
+                this.state = {
+                    currentStep: -1,
+                    diceSum: 0,
+                    playerPawnPosition: -1,
+                    opponentPawnPosition: -1,
+                    selectedPawnColor: this.config.PAWN_COLORS[0],
+                    turn: 1,
+                    reachedCenter: false,
+                    forceMemorize: false,
+                    enlargedCard: null
+                };
+                this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
+                [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => {
+                    pawn.style.transition = 'opacity 0s, transform 0s';
+                    pawn.style.opacity = '0';
+                    pawn.style.transform = `scale(0)`;
+                });
+                this.elements.playerSprout.classList.remove('winning-pawn');
+                const existingWinnerText = this.elements.spotsContainer.querySelector('.winner-text');
+                if (existingWinnerText) existingWinnerText.remove();
+                document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
+                this.elements.cardHand.classList.remove('visible');
+                this.elements.opponentCardHand.classList.remove('visible');
+                this.setHandInteractable(false);
+                this.elements.dice.forEach(d => this.updateDieFace(d, 1));
+                this.elements.cardHand.classList.remove('hand-active');
+                this.elements.colorPalette.classList.remove('visible');
+                this.elements.diceContainer.classList.remove('visible');
+                if (window.innerWidth <= 1200) {
+                    this.elements.colorPalette.style.display = 'none';
+                    this.elements.diceContainer.style.display = 'none';
+                }
+                setTimeout(() => {
+                    this.elements.cardHand.classList.add('visible');
+                    this.elements.opponentCardHand.classList.add('visible');
+                    this.nextStep();
+                }, isInitialStart ? 500 : 750);
+            },
+            updateStepsUI(stepNumber) {
+                this.elements.stepsList.querySelectorAll('li').forEach((step, index) => {
+                    step.classList.toggle('step-active', index + 1 === stepNumber);
+                });
+            },
+            promptColor() {
+                this.updateStepsUI(1);
+                this.elements.diceContainer.classList.remove('visible');
+                this.elements.colorPalette.classList.add('visible');
+                if (window.innerWidth <= 1200) {
+                    this.elements.diceContainer.style.display = 'none';
+                    this.elements.colorPalette.style.display = 'flex';
+                }
+            },
+            promptDiceRoll() {
+                this.updateStepsUI(2);
+                this.elements.colorPalette.classList.remove('visible');
+                this.elements.diceContainer.classList.add('visible', 'selectable');
+                if (window.innerWidth <= 1200) {
+                    this.elements.colorPalette.style.display = 'none';
+                    this.elements.diceContainer.style.display = 'flex';
+                }
+                this.elements.diceContainer.addEventListener('click', () => this.handleDiceRoll(), {
+                    once: true
+                });
+            },
+            promptPlacePawn() {
+                this.updateStepsUI(3);
+                document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing');
+            },
+            promptPlayerTurn() {
+                this.updateStepsUI(0);
+                this.elements.cardHand.classList.add('hand-active');
+                this.elements.opponentCardHand.classList.add('active');
+                document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
+                if (this.state.forceMemorize) {
+                    this.elements.narrationText.textContent = "'Memorize' (+2) to advance.";
+                    this.setHandInteractable(true);
+                    this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
+                        if (action.dataset.move === '2') {
+                            action.classList.add('glowing-action');
+                            action.style.pointerEvents = 'auto';
+                            action.style.opacity = '1';
+                        } else {
+                            action.style.pointerEvents = 'none';
+                            action.style.opacity = '0.4';
+                        }
+                    });
                 } else {
-                    action.style.pointerEvents = 'none';
-                    action.style.opacity = '0.4';
+                    this.elements.narrationText.textContent = "Tap a card to enlarge it, or click an action to play.";
+                    this.setHandInteractable(true);
                 }
-            });
-        } else {
-            this.elements.narrationText.textContent = "Tap a card to enlarge it, or click an action to play.";
-            this.setHandInteractable(true);
-        }
-    },
-    opponentTurn() {
-        this.handleOpponentTurn();
-    },
-    endGameSuccess() {
-        this.elements.playerSprout.classList.add('winning-pawn');
-        const winnerText = document.createElement('div');
-        winnerText.textContent = 'Winner';
-        winnerText.className = 'winner-text';
-        this.elements.spotsContainer.appendChild(winnerText);
-        setTimeout(() => {
-            this.reveal();
-            this.elements.playerSprout.classList.remove('winning-pawn');
-            winnerText.remove();
-        }, 2500);
-    },
-    handleColorChoice(color) {
-        this.state.selectedPawnColor = color;
-        this.elements.playerSprout.style.backgroundColor = color;
-        this.elements.colorPalette.classList.remove('visible');
-        if (window.innerWidth <= 1200) {
-            setTimeout(() => {
-                this.elements.colorPalette.style.display = 'none';
-            }, 500);
-        }
-        this.nextStep();
-    },
-    handleDiceRoll() {
-        this.elements.diceContainer.classList.remove('selectable');
-        let rollCount = 0;
-        const rollInterval = setInterval(() => {
-            rollCount++;
-            this.elements.dice.forEach(d => {
-                d.classList.add('rolling');
-                const randomValue = Math.ceil(Math.random() * 6);
-                this.updateDieFace(d, randomValue);
-            });
-            if (rollCount > 5) {
-                clearInterval(rollInterval);
-                const val1 = Math.ceil(Math.random() * 6), val2 = Math.ceil(Math.random() * 6);
-                this.updateDieFace(this.elements.dice[0], val1);
-                this.updateDieFace(this.elements.dice[1], val2);
-                this.state.diceSum = val1 + val2;
-                this.elements.dice.forEach(d => d.classList.remove('rolling'));
-                setTimeout(() => this.nextStep(), 500);
-            }
-        }, 100);
-    },
-    handleSpotClick(index) {
-        if (this.state.currentStep !== 2 || index !== this.state.diceSum - 2) return;
-        this.elements.diceContainer.classList.remove('visible');
-        if (window.innerWidth <= 1200) {
-            setTimeout(() => {
-                this.elements.diceContainer.style.display = 'none';
-            }, 500);
-        }
-        document.getElementById(`spot-${index}`).classList.remove('glowing');
-        this.updateStepsUI(0);
-        this.elements.playerSprout.style.transition = 'opacity 0.5s';
-        const pos = this.spotCoordinates[index];
-        this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-        requestAnimationFrame(() => {
-            this.elements.playerSprout.style.opacity = '1';
-            setTimeout(() => {
-                this.elements.playerSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
-                this.placeOpponentPawn(index);
+            },
+            opponentTurn() {
+                this.handleOpponentTurn();
+            },
+            endGameSuccess() {
+                this.elements.playerSprout.classList.add('winning-pawn');
+                const winnerText = document.createElement('div');
+                winnerText.textContent = 'Winner';
+                winnerText.className = 'winner-text';
+                this.elements.spotsContainer.appendChild(winnerText);
+                setTimeout(() => {
+                    this.reveal();
+                    this.elements.playerSprout.classList.remove('winning-pawn');
+                    winnerText.remove();
+                }, 2500);
+            },
+            handleColorChoice(color) {
+                this.state.selectedPawnColor = color;
+                this.elements.playerSprout.style.backgroundColor = color;
+                this.elements.colorPalette.classList.remove('visible');
+                if (window.innerWidth <= 1200) {
+                    setTimeout(() => {
+                        this.elements.colorPalette.style.display = 'none';
+                    }, 500);
+                }
                 this.nextStep();
-            }, 500);
-        });
-        this.state.playerPawnPosition = index;
-    },
-    placeOpponentPawn(playerStartIndex) {
-        const opponentStartIndex = (playerStartIndex + 4) % this.config.SPOTS_PER_RING;
-        this.state.opponentPawnPosition = opponentStartIndex;
-        const pos = this.spotCoordinates[opponentStartIndex];
-        this.elements.opponentSprout.style.transition = 'opacity 0.5s';
-        this.elements.opponentSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-        requestAnimationFrame(() => {
-            this.elements.opponentSprout.style.opacity = '1';
-            setTimeout(() => {
-                this.elements.opponentSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
-            }, 500);
-        });
-    },
-    handleCardTap(event, cardElement) {
-        if (!this.elements.cardHand.classList.contains('hand-interactable')) return;
-        if (this.state.enlargedCard && this.state.enlargedCard !== cardElement) {
-            this.state.enlargedCard.classList.remove('is-enlarged');
-        }
-        cardElement.classList.toggle('is-enlarged');
-        if (cardElement.classList.contains('is-enlarged')) {
-            this.state.enlargedCard = cardElement;
-            this.elements.cardHand.classList.add('has-enlarged-card');
-        } else {
-            this.state.enlargedCard = null;
-            this.elements.cardHand.classList.remove('has-enlarged-card');
-        }
-    },
-    handleActionChoice(moveAmount, clickedElement) {
-        this.setHandInteractable(false);
-        this.showGamificationText(`+${moveAmount}`, clickedElement);
-        this.elements.cardHand.classList.remove('hand-active', 'has-enlarged-card');
-        const cardToPlay = clickedElement.closest('.card');
-        const allDotsOnCard = Array.from(cardToPlay.querySelectorAll('.action-dot'));
-        const clickedIndex = allDotsOnCard.indexOf(clickedElement);
+            },
+            handleDiceRoll() {
+                this.elements.diceContainer.classList.remove('selectable');
+                let rollCount = 0;
+                const rollInterval = setInterval(() => {
+                    rollCount++;
+                    this.elements.dice.forEach(d => {
+                        d.classList.add('rolling');
+                        const randomValue = Math.ceil(Math.random() * 6);
+                        this.updateDieFace(d, randomValue);
+                    });
+                    if (rollCount > 5) {
+                        clearInterval(rollInterval);
+                        const val1 = Math.ceil(Math.random() * 6),
+                            val2 = Math.ceil(Math.random() * 6);
+                        this.updateDieFace(this.elements.dice[0], val1);
+                        this.updateDieFace(this.elements.dice[1], val2);
+                        this.state.diceSum = val1 + val2;
+                        this.elements.dice.forEach(d => d.classList.remove('rolling'));
+                        setTimeout(() => this.nextStep(), 500);
+                    }
+                }, 100);
+            },
+            handleSpotClick(index) {
+                if (this.state.currentStep !== 2 || index !== this.state.diceSum - 2) return;
+                this.elements.diceContainer.classList.remove('visible');
+                if (window.innerWidth <= 1200) {
+                    setTimeout(() => {
+                        this.elements.diceContainer.style.display = 'none';
+                    }, 500);
+                }
+                document.getElementById(`spot-${index}`).classList.remove('glowing');
+                this.updateStepsUI(0);
+                this.elements.playerSprout.style.transition = 'opacity 0.5s';
+                const pos = this.spotCoordinates[index];
+                this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+                requestAnimationFrame(() => {
+                    this.elements.playerSprout.style.opacity = '1';
+                    setTimeout(() => {
+                        this.elements.playerSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
+                        this.placeOpponentPawn(index);
+                        this.nextStep();
+                    }, 500);
+                });
+                this.state.playerPawnPosition = index;
+            },
+            placeOpponentPawn(playerStartIndex) {
+                const opponentStartIndex = (playerStartIndex + 4) % this.config.SPOTS_PER_RING;
+                this.state.opponentPawnPosition = opponentStartIndex;
+                const pos = this.spotCoordinates[opponentStartIndex];
+                this.elements.opponentSprout.style.transition = 'opacity 0.5s';
+                this.elements.opponentSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+                requestAnimationFrame(() => {
+                    this.elements.opponentSprout.style.opacity = '1';
+                    setTimeout(() => {
+                        this.elements.opponentSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
+                    }, 500);
+                });
+            },
+            handleCardTap(event, cardElement) {
+                if (!this.elements.cardHand.classList.contains('hand-interactable')) return;
+                if (this.state.enlargedCard && this.state.enlargedCard !== cardElement) {
+                    this.state.enlargedCard.classList.remove('is-enlarged');
+                }
+                cardElement.classList.toggle('is-enlarged');
+                if (cardElement.classList.contains('is-enlarged')) {
+                    this.state.enlargedCard = cardElement;
+                    this.elements.cardHand.classList.add('has-enlarged-card');
+                } else {
+                    this.state.enlargedCard = null;
+                    this.elements.cardHand.classList.remove('has-enlarged-card');
+                }
+            },
+            handleActionChoice(moveAmount, clickedElement) {
+                this.setHandInteractable(false);
+                this.showGamificationText(`+${moveAmount}`, clickedElement);
+                this.elements.cardHand.classList.remove('hand-active', 'has-enlarged-card');
+                const cardToPlay = clickedElement.closest('.card');
 
-        if (this.state.enlargedCard && this.state.enlargedCard !== cardToPlay) {
-            this.state.enlargedCard.classList.remove('is-enlarged');
-        }
-        this.state.enlargedCard = null;
+                // Hide any other enlarged card that wasn't the one played
+                if (this.state.enlargedCard && this.state.enlargedCard !== cardToPlay) {
+                    this.state.enlargedCard.classList.remove('is-enlarged');
+                }
+                this.state.enlargedCard = null;
 
-        if (cardToPlay) {
-            // NEW LOGIC: If card is enlarged, shrink it first, then play.
-            if (cardToPlay.classList.contains('is-enlarged')) {
-                cardToPlay.addEventListener('transitionend', () => {
+                if (cardToPlay) {
+                    const allDotsOnCard = Array.from(cardToPlay.querySelectorAll('.action-dot'));
+                    const clickedIndex = allDotsOnCard.indexOf(clickedElement);
+                    // This single function now handles both cases (playing from small or big)
                     this.animateAndReplaceCard(cardToPlay, moveAmount, clickedIndex);
-                }, { once: true });
-                cardToPlay.classList.remove('is-enlarged');
-            } else {
-                // Otherwise, play directly.
-                this.animateAndReplaceCard(cardToPlay, moveAmount, clickedIndex);
+                }
+            },
+            advancePlayer(moveAmount) {
+                let newSpotIndex = this.state.playerPawnPosition + (this.config.SPOTS_PER_RING * moveAmount);
+                const centerSpotIndex = this.spotCoordinates.length - 1;
+                if (newSpotIndex >= centerSpotIndex) {
+                    newSpotIndex = centerSpotIndex;
+                    this.state.reachedCenter = true;
+                }
+                if (newSpotIndex !== this.state.playerPawnPosition) {
+                    const pos = this.spotCoordinates[newSpotIndex];
+                    this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+                    this.state.playerPawnPosition = newSpotIndex;
+                }
+                if (this.state.forceMemorize && moveAmount === 2) {
+                    this.state.forceMemorize = false;
+                }
+                const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
+                if (ringIndex === 1 || ringIndex === 3) {
+                    this.state.forceMemorize = true;
+                }
+                let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
+                this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
+                setTimeout(() => this.nextStep(), 500);
+            },
+            // MODIFIED: Removed all video-swapping logic
+            animateAndReplaceCard(cardElement, moveAmount, playedActionIndex) {
+                const cardRect = cardElement.getBoundingClientRect(); // Gets current position and size
+                const clone = cardElement.cloneNode(true);
+
+                // Calculate the card's original base size to prevent "double scaling"
+                let baseWidth = cardRect.width;
+                let baseHeight = cardRect.height;
+                const isEnlarged = cardElement.classList.contains('is-enlarged');
+
+                if (isEnlarged) {
+                    // This scale factor must match the .is-enlarged CSS
+                    const scaleFactor = window.innerWidth > 768 ? 2 : 2; // Simplified from previous logic, as it was 2
+                    if (isEnlarged) {
+                        baseWidth /= scaleFactor;
+                        baseHeight /= scaleFactor;
+                    }
+                }
+
+                // Video logic has been removed. The clone now just shows the image.
+
+                if (playedActionIndex > -1) {
+                    const playedActionDot = clone.querySelectorAll('.action-dot')[playedActionIndex];
+                    if (playedActionDot) {
+                        playedActionDot.classList.add('is-played-action');
+                    }
+                }
+
+                cardElement.style.opacity = '0';
+                cardElement.style.pointerEvents = 'none';
+
+                const screenCenterX = window.innerWidth / 2;
+                let targetY;
+                if (window.innerWidth > 768) {
+                    const boardRect = this.elements.gameBoard.getBoundingClientRect();
+                    targetY = boardRect.top + (boardRect.height / 2);
+                } else {
+                    targetY = (window.innerHeight / 2) + (window.innerHeight * 0.15);
+                }
+                const cardCenterX = cardRect.left + cardRect.width / 2;
+                const cardCenterY = cardRect.top + cardRect.height / 2;
+                const translateX = screenCenterX - cardCenterX;
+                const translateY = targetY - cardCenterY;
+
+                clone.style.top = `${cardRect.top}px`;
+                clone.style.left = `${cardRect.left}px`;
+                // Use the corrected base size for the clone
+                clone.style.width = `${baseWidth}px`;
+                clone.style.height = `${baseHeight}px`;
+
+                clone.style.setProperty('--translateX', `${translateX}px`);
+                clone.style.setProperty('--translateY', `${translateY}px`);
+
+                if (window.innerWidth <= 768) {
+                    clone.style.setProperty('--played-card-scale', '3.0');
+                    clone.style.setProperty('--played-card-scale-fade', '3.24');
+                } else {
+                    clone.style.setProperty('--played-card-scale', '2.38');
+                    clone.style.setProperty('--played-card-scale-fade', '2.52');
+                }
+
+                clone.classList.add('played-card-animation');
+                document.body.appendChild(clone);
+
+                setTimeout(() => {
+                    clone.remove();
+                    const newCardIndex = Math.floor(Math.random() * this.config.CARD_TITLES.length);
+                    const newCard = this.createPlayerCard(newCardIndex, cardElement.style.getPropertyValue('--rotation').replace('deg', ''));
+                    cardElement.parentElement.replaceChild(newCard, cardElement);
+                    this.advancePlayer(moveAmount);
+                }, 6000);
+            },
+            handleOpponentTurn() {
+                setTimeout(() => {
+                    const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
+                    const moveRings = (currentRingIndex === 1 || currentRingIndex === 3) ? 2 : 1;
+                    const moveDistance = this.config.SPOTS_PER_RING * moveRings;
+                    const newPosIndex = this.state.opponentPawnPosition + moveDistance;
+                    if (newPosIndex < this.spotCoordinates.length - 1) {
+                        const newPos = this.spotCoordinates[newPosIndex];
+                        this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
+                        this.state.opponentPawnPosition = newPosIndex;
+                    }
+                    setTimeout(() => this.nextStep(), 1500);
+                }, 1000);
+            },
+            showGamificationText(text, targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                const el = document.createElement('div');
+                el.textContent = text;
+                el.className = 'floating-text';
+                el.style.left = `${rect.left + rect.width / 2}px`;
+                el.style.top = `${rect.top}px`;
+                el.style.transform = 'translateX(-50%)';
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => el.remove());
+            },
+            reveal() {
+                this.elements.gameBoard.classList.add('reveal');
+                this.elements.revealSection.classList.add('visible');
+                const finalNarrationIndex = this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess');
+                this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text;
+            },
+            updateDieFace(dieElement, value) {
+                dieElement.dataset.value = value;
+                let dots = '';
+                for (let i = 0; i < value; i++) dots += '<div class="dot"></div>';
+                dieElement.innerHTML = dots;
+            },
+            setHandInteractable(isInteractable) {
+                if (isInteractable) {
+                    this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
+                        action.style.pointerEvents = '';
+                        action.style.opacity = '';
+                    });
+                }
+                this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
+                this.elements.cardHand.querySelectorAll('.card').forEach(card => {
+                    card.classList.toggle('inactive', !isInteractable);
+                });
+            },
+            handleSubscription(event) {
+                event.preventDefault();
+                const emailInput = this.elements.subscribeEmail;
+                if (emailInput.value && emailInput.value.includes('@')) {
+                    this.elements.subscriptionAlert.classList.add('visible');
+                    setTimeout(() => {
+                        this.elements.subscriptionAlert.classList.remove('visible');
+                    }, 3000);
+                    emailInput.value = '';
+                } else {
+                    emailInput.style.borderColor = '#ff6b6b';
+                    setTimeout(() => {
+                        emailInput.style.borderColor = 'var(--color-accent)';
+                    }, 2000);
+                }
+            },
+            openPreorderModal() {
+                this.elements.preorderModal.form.reset();
+                this.elements.preorderModal.formContainer.style.display = 'block';
+                this.elements.preorderModal.confirmationMsg.style.display = 'none';
+                this.elements.preorderModal.classList.add('visible');
+            },
+            closePreorderModal() {
+                this.elements.preorderModal.classList.remove('visible');
             }
-        }
-    },
-    advancePlayer(moveAmount) {
-        let newSpotIndex = this.state.playerPawnPosition + (this.config.SPOTS_PER_RING * moveAmount);
-        const centerSpotIndex = this.spotCoordinates.length - 1;
-        if (newSpotIndex >= centerSpotIndex) {
-            newSpotIndex = centerSpotIndex;
-            this.state.reachedCenter = true;
-        }
-        if (newSpotIndex !== this.state.playerPawnPosition) {
-            const pos = this.spotCoordinates[newSpotIndex];
-            this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-            this.state.playerPawnPosition = newSpotIndex;
-        }
-        if (this.state.forceMemorize && moveAmount === 2) {
-            this.state.forceMemorize = false;
-        }
-        const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
-        if (ringIndex === 1 || ringIndex === 3) {
-            this.state.forceMemorize = true;
-        }
-        let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
-        this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
-        setTimeout(() => this.nextStep(), 500);
-    },
-    animateAndReplaceCard(cardElement, moveAmount, playedActionIndex) {
-    const cardRect = cardElement.getBoundingClientRect();
-    const clone = cardElement.cloneNode(true);
-
-    let baseWidth = cardRect.width;
-    let baseHeight = cardRect.height;
-    const isEnlarged = cardElement.classList.contains('is-enlarged');
-
-    if (isEnlarged) {
-        // Use the correct scale factor for reversal based on device
-        const scaleFactor = window.innerWidth > 768 ? 
-            getComputedStyle(document.documentElement).getPropertyValue('--desktop-card-scale') :
-            getComputedStyle(document.documentElement).getPropertyValue('--mobile-enlarged-scale');
-        
-        baseWidth /= parseFloat(scaleFactor);
-        baseHeight /= parseFloat(scaleFactor);
-    }
-
-    const cardTitle = clone.querySelector('.card-title').textContent;
-    const cardIndex = this.config.CARD_TITLES.indexOf(cardTitle);
-    const videoUrl = (cardIndex > -1 && this.config.CARD_VIDEOS[cardIndex]) ? this.config.CARD_VIDEOS[cardIndex] : null;
-
-    if (videoUrl) {
-        const placeholder = clone.querySelector('.card-image-placeholder');
-        if (placeholder) {
-            const video = document.createElement('video');
-            video.src = videoUrl;
-            video.autoplay = true;
-            video.muted = true;
-            video.loop = true;
-            video.playsInline = true;
-            placeholder.innerHTML = '';
-            placeholder.appendChild(video);
-            placeholder.classList.replace('card-image-placeholder', 'card-video-placeholder');
-        }
-    }
-    if (playedActionIndex > -1) {
-        const playedActionDot = clone.querySelectorAll('.action-dot')[playedActionIndex];
-        if (playedActionDot) {
-            playedActionDot.classList.add('is-played-action');
-        }
-    }
-
-    cardElement.style.opacity = '0';
-    cardElement.style.pointerEvents = 'none';
-
-    const screenCenterX = window.innerWidth / 2;
-    let targetY;
-
-    if (window.innerWidth > 768) {
-        const boardRect = this.elements.gameBoard.getBoundingClientRect();
-        targetY = boardRect.top + (boardRect.height / 2);
-    } else {
-        // MOBILE: Center vertically, then move down 100px
-        targetY = (window.innerHeight / 2) + 100;
-    }
-
-    const cardCenterX = cardRect.left + cardRect.width / 2;
-    const cardCenterY = cardRect.top + cardRect.height / 2;
-    const translateX = screenCenterX - cardCenterX;
-    const translateY = targetY - cardCenterY;
-
-    clone.style.top = `${cardRect.top}px`;
-    clone.style.left = `${cardRect.left}px`;
-    clone.style.width = `${baseWidth}px`;
-    clone.style.height = `${baseHeight}px`;
-
-    clone.style.setProperty('--translateX', `${translateX}px`);
-    clone.style.setProperty('--translateY', `${translateY}px`);
-
-    const desktopScale = getComputedStyle(document.documentElement).getPropertyValue('--desktop-card-scale');
-    const mobileScale = getComputedStyle(document.documentElement).getPropertyValue('--mobile-card-scale');
-
-    if (window.innerWidth <= 768) {
-        clone.style.setProperty('--played-card-scale', mobileScale);
-        clone.style.setProperty('--played-card-scale-fade', parseFloat(mobileScale) + 0.24);
-    } else {
-        clone.style.setProperty('--played-card-scale', desktopScale);
-        clone.style.setProperty('--played-card-scale-fade', parseFloat(desktopScale) + 0.14);
-    }
-
-    clone.classList.add('played-card-animation');
-    document.body.appendChild(clone);
-
-    setTimeout(() => {
-        clone.remove();
-        const newCardIndex = Math.floor(Math.random() * this.config.CARD_TITLES.length);
-        const newCard = this.createPlayerCard(newCardIndex, cardElement.style.getPropertyValue('--rotation').replace('deg', ''));
-        cardElement.parentElement.replaceChild(newCard, cardElement);
-        this.advancePlayer(moveAmount);
-    }, 6000);
-},
-    handleOpponentTurn() {
-        setTimeout(() => {
-            const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
-            const moveRings = (currentRingIndex === 1 || currentRingIndex === 3) ? 2 : 1;
-            const moveDistance = this.config.SPOTS_PER_RING * moveRings;
-            const newPosIndex = this.state.opponentPawnPosition + moveDistance;
-            if (newPosIndex < this.spotCoordinates.length - 1) {
-                const newPos = this.spotCoordinates[newPosIndex];
-                this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
-                this.state.opponentPawnPosition = newPosIndex;
-            }
-            setTimeout(() => this.nextStep(), 1500);
-        }, 1000);
-    },
-    showGamificationText(text, targetElement) {
-        const rect = targetElement.getBoundingClientRect();
-        const el = document.createElement('div');
-        el.textContent = text;
-        el.className = 'floating-text';
-        el.style.left = `${rect.left + rect.width / 2}px`;
-        el.style.top = `${rect.top}px`;
-        el.style.transform = 'translateX(-50%)';
-        document.body.appendChild(el);
-        el.addEventListener('animationend', () => el.remove());
-    },
-    reveal() {
-        this.elements.gameBoard.classList.add('reveal');
-        this.elements.revealSection.classList.add('visible');
-        const finalNarrationIndex = this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess');
-        this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text;
-    },
-    updateDieFace(dieElement, value) {
-        dieElement.dataset.value = value;
-        let dots = '';
-        for (let i = 0; i < value; i++) dots += '<div class="dot"></div>';
-        dieElement.innerHTML = dots;
-    },
-    setHandInteractable(isInteractable) {
-        if (isInteractable) {
-            this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
-                action.style.pointerEvents = '';
-                action.style.opacity = '';
-            });
-        }
-        this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
-        this.elements.cardHand.querySelectorAll('.card').forEach(card => {
-            card.classList.toggle('inactive', !isInteractable);
-        });
-    },
-    handleSubscription(event) {
-        event.preventDefault();
-        const emailInput = this.elements.subscribeEmail;
-        if (emailInput.value && emailInput.value.includes('@')) {
-            this.elements.subscriptionAlert.classList.add('visible');
-            setTimeout(() => {
-                this.elements.subscriptionAlert.classList.remove('visible');
-            }, 3000);
-            emailInput.value = '';
-        } else {
-            emailInput.style.borderColor = '#ff6b6b';
-            setTimeout(() => {
-                emailInput.style.borderColor = 'var(--color-accent)';
-            }, 2000);
-        }
-    },
-    openPreorderModal() {
-        this.elements.preorderModal.form.reset();
-        this.elements.preorderModal.formContainer.style.display = 'block';
-        this.elements.preorderModal.confirmationMsg.style.display = 'none';
-        this.elements.preorderModal.classList.add('visible');
-    },
-    closePreorderModal() {
-        this.elements.preorderModal.classList.remove('visible');
-    }
-};
+        };
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => game.init(), 100);
         });
@@ -1167,58 +1076,65 @@ font-size: 0.25rem;
                 });
             }
             // --- Card Display Script ---
-
-const cards = [{
-    name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>',
-    image: 'images/card-black-woodpecker.png',
-    category_text: 'Birds',
-    category_icon: 'images/birds.png',
-    description: '1. Distinctive all-black plumage with red crown.<br/>2. Provides vital shelter for many forest species.<br/>3. Typically found in pairs or small family groups.<br/>4. Loud drumming sound used in communication.<br/>5. Prefers mature, old-growth forests.'
-}, {
-    name: 'Praying Mantis<br><span class="small">(Mantis religiosa)</span>',
-    image: 'images/card-praying-mantis.png',
-    category_text: 'Insects',
-    category_icon: 'images/insects.png',
-    description: '1. Female lives 6-8 months, male for 4-6 months.<br/>2. Feeds on insects and honey.<br/>3. Ambush predators, sitting and waiting.<br/>4. Mates during the spring and summer months.<br/>5. Has 3 life stages: egg, nymph stage and adult.'
-}, {
-    name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>',
-    image: 'images/card-clouded-yellow.png',
-    category_text: 'Butterflies',
-    category_icon: 'images/butterflies.png',
-    description: '1. Wings with yellow coloration & black margins.<br/>2. Known for its strong migratory behavior.<br/>3. Plays a role in local ecosystem biodiversity.<br/>4. Strong and fast fliers, flying close to ground.<br/>5. Its sight is a delight for butterfly enthusiasts.'
-}, {
-    name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>',
-    image: 'images/card-bear.png',
-    category_text: 'Animals',
-    category_icon: 'images/animals.png',
-    description: '1. Largest terrestrial carnivore after polar bears.<br/>2. Color varies from blonde to nearly black.<br/>3. Apex predators in their habitats.<br/>4. Complex problem-solving skills.<br/>5. Remarkable sense of smell & high intelligence.'
-}, {
-    name: 'Zander<br/><span class="small">(Sander lucioperca)</span>',
-    image: 'images/card-zander.png',
-    category_text: 'Fish',
-    category_icon: 'images/fish.png',
-    description: '1. Apex predator in its ecosystem.<br/>2. Prefers clear waters with moderate current.<br/>3. Found in large rivers, lakes, and reservoirs.<br/>4. Carnivorous, feeding primarily on smaller fish.<br/>5. Sharp vision adapted to low-light conditions.'
-}, {
-    name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>',
-    image: 'images/card-romanian-peony.png',
-    category_text: 'Flowers',
-    category_icon: 'images/flowers.png',
-    description: '1. National flower of Romania.<br/>2. Symbolizes beauty and resilience.<br/>3. Blooms in vibrant pink and white colors.<br/>4. Important in traditional Romanian culture.<br/>5. Blooms in late spring to early summer.'
-}];
+            const cards = [{
+                name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>',
+                image: 'images/card-black-woodpecker.png',
+                category_text: 'Birds',
+                category_icon: 'images/birds.png',
+                description: '1. It has a distinctive all-black plumage with a red crown.<br>2. It provides vital shelter for many forest species.<br/>3. You can typically find it in pairs or small family groups.<br/>4. It uses a loud drumming sound to communicate.<br/>5. It prefers mature, old-growth forests.'
+            }, {
+                name: 'European Praying Mantis<br><span class="small">(Mantis religiosa)</span>',
+                image: 'images/card-praying-mantis.png',
+                category_text: 'Insects',
+                category_icon: 'images/insects.png',
+                description: '1. The female lives 6-8 months, while the male lives for 4-6 months.<br/>2. It feeds on insects and honey.<br/>3. These are ambush predators, so they sit and wait for their prey.<br/>4. They mate during the spring and summer months.<br/>5. It has 3 life stages: egg, nymph, and adult.'
+            }, {
+                name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>',
+                image: 'images/card-clouded-yellow.png',
+                category_text: 'Butterflies',
+                category_icon: 'images/butterflies.png',
+                description: '1. Its wings have a yellow coloration with black margins.<br/>2. It is known for its strong migratory behavior.<br/>3. It plays a role in the local ecosystem\'s biodiversity.<br/>4. They are strong and fast fliers, and they fly close to the ground.<br/>5. Seeing one is a delight for any butterfly enthusiast.'
+            }, {
+                name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>',
+                image: 'images/card-bear.png',
+                category_text: 'Animals',
+                category_icon: 'images/animals.png',
+                description: '1. It is the largest land carnivore after the polar bear.<br/>2. Its color can vary from blonde to nearly black.<br/>3. They are apex predators in their habitats.<br/>4. They have complex problem-solving skills.<br/>5. They have a remarkable sense of smell and high intelligence.'
+            }, {
+                name: 'Zander<br/><span class="small">(Sander lucioperca)</span>',
+                image: 'images/card-zander.png',
+                category_text: 'Fish',
+                category_icon: 'images/fish.png',
+                description: '1. This is an apex predator in its ecosystem.<br/>2. It prefers clear waters with a moderate current.<br/>3. You can find it in large rivers, lakes, and reservoirs.<br/>4. It is carnivorous, feeding primarily on smaller fish.<br/>5. It has sharp vision that is adapted to low-light conditions.'
+            }, {
+                name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>',
+                image: 'images/card-romanian-peony.png',
+                category_text: 'Flowers',
+                category_icon: 'images/flowers.png',
+                description: '1. This is the national flower of Romania.<br/>2. It symbolizes beauty and resilience.<br/>3. It blooms in vibrant pink and white colors.<br/>4. It is important in traditional Romanian culture.<br/>5. You can see it bloom in late spring to early summer.'
+            }];
+            const cardSearch = document.getElementById('cardSearch');
+            if (cardSearch) {
+                cardSearch.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm));
+                    displayCards(filteredCards);
+                });
+            }
 
             function displayCards(cardsToShow) {
                 const cardsGrid = document.getElementById('cardsGrid');
                 if (cardsGrid) {
                     cardsGrid.innerHTML = cardsToShow.map(card => `
-                                <div class="card">
-                                    <h3 class="tcenter">${card.name}</h3>
-                                    <img class="product-img-card" src="${card.image}">
-                                    <p class="category">
-                                        <span><img class="card-category" src="${card.category_icon}" alt="${card.category_text}"> ${card.category_text}</span>
-                                        <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
-                                    </p>
-                                    <p>${card.description}</p>
-                                </div>`).join('');
+                            <div class="card">
+                                <h3 class="tcenter">${card.name}</h3>
+                                <img class="product-img-card" src="${card.image}">
+                                <p class="category">
+                                    <span><img class="card-category" src="${card.category_icon}" alt="${card.category_text}"> ${card.category_text}</span>
+                                    <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
+                                </p>
+                                <p>${card.description}</p>
+                            </div>`).join('');
                 }
             }
             displayCards(cards);
