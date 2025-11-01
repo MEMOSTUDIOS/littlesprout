@@ -591,7 +591,7 @@ color: white;
     }
 
     #opponent-card-hand.visible {
-        top: -80px; /* Half-visible position */
+        top: -100px; /* Half-visible position */
         opacity: 0.3;
         pointer-events: auto;
     }
@@ -715,6 +715,7 @@ color: white;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+position:fixed;
         }
         #sidebar h2, #steps-list { display: none; }
         #setup-controls { flex-direction: column; gap: 15px; width: 100%; }
@@ -731,6 +732,7 @@ color: white;
         #card-hand .card:not(:first-child), #opponent-card-hand .opponent-card:not(:first-child) {
             margin-left: -35px; /* Increase overlap */
         }
+#opponent-card-hand.visible {top: -40px;}
     }
     
     /* MOBILE */
@@ -739,7 +741,7 @@ color: white;
              --board-size: min(100%, 350px); /* Adjust board size for mobile */
         }
         #opponent-card-hand.visible {
-             top: -90px; /* Adjust for smaller cards */
+             top: 0px; /* Adjust for smaller cards */
         }
         #card-hand .card, #opponent-card-hand .opponent-card {
             width: clamp(80px, 20vw, 100px);

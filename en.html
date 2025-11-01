@@ -19,2343 +19,1144 @@
         .card-image-placeholder {
             overflow: hidden;
         }
-       /* Ensure cards have a stacking context for tooltips */
+        /* Ensure cards have a stacking context for tooltips */
         #card-hand .card {
             position: relative;
             z-index: 1;
             transition: z-index 0s 0.2s; /* Delay z-index change to prevent flicker */
         }
-
-       #card-hand .card:hover {
-
+        #card-hand .card:hover {
             z-index: 10; /* Bring hovered card to the front */
-
             transition: z-index 0s;
-
         }
-
-
-
         /* Fully updated styles for the animated card */
-
         .played-card-animation {
-
             position: fixed;
-
             z-index: 1000;
-
             pointer-events: none;
-
             margin: 0;
-
             box-sizing: border-box;
-
             background-color: #fff;
-
-            border-radius: 12px;
-
+            border-radius: 8px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-
             padding: 0.75rem;
-
             display: flex;
-
             flex-direction: column;
-
             align-items: center;
-
             gap: 0.5rem;
-
             /* Animation duration is now 6s total */
-
             animation: play-card-effect 6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-
         }
-
-
-
         .played-card-animation .card-title {
-
-            font-size: 0.8em;
-
-        }
-
-        
-
-        /* CSS for hover tooltips positioned at the bottom */
-
+            font-size: 0.75em;
+        }                        /* CSS for hover tooltips positioned at the bottom */
         .action-dot {
-
             position: relative;
-
             cursor: pointer;
-
         }
-
-
-
         .action-dot[data-tooltip]::after {
-
             content: attr(data-tooltip);
-
             position: absolute;
-
             bottom: -22px; /* Position below the dot */
-
             left: 50%;
-
             transform: translateX(-50%);
-
             background-color: #333;
-
             color: #fff;
-
-            padding: 3px 6px;
-
+            padding: 2px 4px;
             border-radius: 4px;
-
             /* Smaller tooltip font */
-
-            font-size: 0.65rem;
-
+            font-size: 0.55rem;
             white-space: nowrap;
-
-            z-index: 11; /* Ensure tooltip is above card */
-
+            z-index: 1001; /* Ensure tooltip is above card */
             opacity: 0;
-
             visibility: hidden;
-
             pointer-events: none;
-
             transition: opacity 0.2s, visibility 0.2s;
-
         }
-
-
-
         .action-dot[data-tooltip]:hover::after,
-
         .action-dot[data-tooltip]:focus::after {
-
             opacity: 1;
-
             visibility: visible;
-
         }
-
-        
-
-        /* Force the played action's tooltip to be visible on the animated card */
-
-        .played-card-animation .is-played-action[data-tooltip]::after {
-
-            opacity: 1;
-
-            visibility: visible;
-
-            font-size: 0.5rem; 
-
-            bottom: -18px; 
-
-            padding: 1px 4px; 
-
-        }
-
-
-
-        .played-card-animation .card-title {
-
-            font-size: 0.65em;
-
-        }
-
-        
-
-        /* MODIFIED: Removed the .card-video-placeholder selector */
-
-        .card-image-placeholder {
-
-             width: 100%;
-
-             flex-grow: 1;
-
-             border-radius: 8px;
-
-             overflow: hidden;
-
-             background-color: transparent;
-
-         }
-
-        
-
-        .card-actions {
-
+        /* NEW: Styles for card facts - SCOPED TO #card-hand */
+        #card-hand .card-facts {
+            padding: 0 0.25rem;
+            margin-top: 0.1rem; /* Tighter margin */
             display: flex;
-
-            justify-content: space-around;
-
+            flex-direction: column;
+            justify-content: flex-start; /* Start from top */
+            overflow: hidden;
             width: 100%;
-
-            align-items: flex-start;
-
+            flex-grow: 1;/* Allows facts to take up space */
         }
-
-
-
-        .played-card-animation .card-actions {
-
-            width: 100%;
-
-            flex-shrink: 0;
-
+        #card-hand .card-fact {
+            font-size: 0.4rem; /* Very small to fit */
+            color: #333;
+            margin: 1px 0;
+            line-height: 1.2;
+            text-align: left;	letter-spacing: 0.3px;
         }
-
-
-
-        .played-card-animation .card-image-placeholder img {
-
-            width: 100%;
-
-            height: 100%;
-
-            object-fit: cover;
-
+        /* Adjust card layout to accommodate new text */
+        #card-hand .card {             /* Make card a flex column */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align from top */
+        }                /* SCOPED TO #card-hand */
+        #card-hand .card-image-placeholder {
+            flex-grow: 0; /* Don't let image grow */
+            flex-shrink: 0; /* Don't let image shrink */
+            height: 50%; /* Give image a fixed height */min-height: 75px;
         }
-
-        
-
-        @keyframes play-card-effect {
-
-            0% {
-
-                transform: scale(1);
-
-                opacity: 1;
-
-            }
-
-            8% { 
-
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1.98));
-
-                opacity: 1;
-
-            }
-
-            92% {
-
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1.98));
-
-                opacity: 1;
-
-            }
-
-            100% {
-
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 2.1));
-
-                opacity: 0;
-
-            }
-
+        /* SCOPED TO #card-hand */
+        #card-hand .card-actions {
+            flex-shrink: 0; /* Prevent actions from shrinking */
+            margin-top: auto; /* Push actions to the bottom */
+            padding-top: 0.2rem; /* Add a little space */
         }
-
-
-
-        /* Media query for mobile-specific played card size */
-
-        @media (max-width: 768px) {
-
-            
-
-            .played-card-animation {
-
-                padding: 0.5rem;
-
-            }
-
-
-
-            @keyframes play-card-effect {
-
-                0% {
-
-                    transform: scale(1);
-
-                    opacity: 1;
-
-                }
-
-                8% {
-
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
-
-                    opacity: 1;
-
-                }
-
-                92% {
-
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
-
-                    opacity: 1;
-
-                }
-
-                100% {
-
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 2.7));
-
-                    opacity: 0;
-
-                }
-
-            }
-
-        }
-
-
-
-        /* Card Enlargement & Interaction Styles */
-
-        #card-hand .card {
-
-            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease;
-
-        }
-
-
-
-        #card-hand .card:not(.is-enlarged):hover {
-
-            transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);
-
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-
-        }
-
-
-
-        #card-hand .card.is-enlarged {
-
-            transform: translateY(-110px) scale(2) rotate(var(--rotation));
-
-            z-index: 20;
-
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-
-            cursor: pointer;
-
-        }
-
-
-
-        #card-hand .card.is-enlarged:hover {
-
-            transform: translateY(-110px) scale(2) rotate(var(--rotation));
-
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-
-        }
-
-
-
-        #card-hand.has-enlarged-card .card:not(.is-enlarged) {
-
-            opacity: 0.6;
-
-            transform: translateY(10px) rotate(var(--rotation));
-
-        }
-
-
-
-        #card-hand .card.is-enlarged .action-dot.show-tooltip::after {
-
+        .card-title {
+            flex-shrink: 0; /* Prevent title from shrinking */
+        }                        /* Force the played action's tooltip to be visible on the animated card */
+        .played-card-animation .is-played-action[data-tooltip]::after {
             opacity: 1;
-
             visibility: visible;
-
-            transition-delay: 0s;
-
+            font-size: 0.5rem;             bottom: -18px;             padding: 1px 4px;z-index: 9999;         }                        /* This rule is now global, which is fine */
+        .card-image-placeholder {             width: 100%;             border-radius: 8px;             overflow: hidden;             background-color: transparent;z-index: 10;          }
+        /* This global rule is also fine */
+        .card-actions {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            align-items: flex-start;
+        }                /* These rules are for the animated card, which is correct */
+        .played-card-animation .card-actions {
+            width: 100%;
+            flex-shrink: 0;
         }
-
-
-
-        #card-hand .card.is-enlarged .action-dot {
-
-            cursor: pointer;
-
+        .played-card-animation .card-image-placeholder {
+            flex-grow: 1; /* Let the image fill space on the BIG card */
         }
-
-    </style>
-
-    </head>
-
-
-
+        .played-card-animation .card-image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;min-height: 72px;
+        }
+        .played-card-animation .card-facts {
+            flex-shrink: 0; /* Don't let facts grow on BIG card */
+        }
+        .played-card-animation .card-fact {             font-size: 0.42rem; /* Slightly larger on the big card */             text-align: left;        }
+        .played-card-animation .action-dot {
+            font-size: 0.6em; /* Makes advance options smaller on the big card */
+        }               @keyframes play-card-effect {    0% {        transform: scale(1);        opacity: 1;    }    8% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    92% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    100% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);        opacity: 0;    }}        /* Media query for mobile-specific played card size */
+        @media (max-width: 768px) {            .played-card-animation .card-title {            font-size: 0.5em;        }            .played-card-animation {                padding: 0.5rem;            }            @keyframes play-card-effect {                0% {                    transform: scale(1);                    opacity: 1;                }                8% {                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));                    opacity: 1;                }                92% {                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));                    opacity: 1;                }                100% {                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));                    opacity: 0;                }            }        }/* Ensure cards have a stacking context for tooltips */#card-hand .card {    position: relative;    z-index: 1;    transition: z-index 0s 0.2s, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease; /* Delay z-index change to prevent flicker */}#card-hand .card:hover {    z-index: 10; /* Bring hovered card to the front */    transition: z-index 0s;    overflow: visible; /* Allow tooltip to show on small cards */}/* CSS for hover tooltips positioned at the bottom */.action-dot {    position: relative;    cursor: pointer;}.action-dot[data-tooltip]::after {    content: attr(data-tooltip);    position: absolute;    bottom: -22px;    left: 50%;    transform: translateX(-50%);    background-color: #333;    color: #fff;    padding: 2px 4px;    border-radius: 4px;    font-size: 0.55rem;    white-space: nowrap;    z-index: 1001;    opacity: 0;    visibility: hidden;    pointer-events: none;    transition: opacity 0.2s, visibility 0.2s;}.action-dot[data-tooltip]:hover::after,.action-dot[data-tooltip]:focus::after {    opacity: 1;    visibility: visible;}/* Card Enlargement & Interaction Styles */#card-hand .card:not(.is-enlarged):hover {    transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);}#card-hand .card.is-enlarged,#card-hand .card.is-enlarged:hover {    transform: translateY(-110px) scale(var(--desktop-card-scale)) rotate(var(--rotation));    z-index: 20;    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);    cursor: pointer;}#card-hand .card.is-enlarged {    overflow: visible;}/* Make tooltips on enlarged cards smaller, like labels */#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {    font-size: 0.35rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}#card-hand.has-enlarged-card .card:not(.is-enlarged) {    opacity: 0.6;    transform: translateY(10px) rotate(var(--rotation));}#card-hand .card.is-enlarged .action-dot.show-tooltip::after {    opacity: 1;    visibility: visible;    transition-delay: 0s;}#card-hand .card.is-enlarged .action-dot {    cursor: pointer;}@media (max-width: 768px) {    #card-hand .card.is-enlarged,    #card-hand .card.is-enlarged:hover {        /* Use new mobile scale and move down 100px from center */        transform: translateY(calc(-25vh + 100px)) scale(var(--mobile-enlarged-scale)) rotate(0);    }#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {font-size: 0.25rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}}    </style>
+</head>
 <body>
-
     <nav>
-
         <div class="nav-container">
-
-            <a href="#welcome" class="logo" title="Logo Little Sprout">
-
+            <a href="#welcome" class="logo" title="Little Sprout Logo">
                 <img src="images/logo-little-sprout.png" alt="icon"><span>Little Sprout</span>
-
             </a>
-
             <ul>
-
                 <li><a href="#welcome" class="active">Welcome</a></li>
-
                 <li><a href="#game">Game</a></li>
-
                 <li><a href="#rules">Rules</a></li>
-
                 <li><a href="#cards">Cards</a></li>
-
                 <li><a href="#shop">Shop</a></li>
-
             </ul>
-
         </div>
-
     </nav>
-
     <section id="welcome">
-
         <h1 id="game-title"></h1>
-
         <div id="integrated-game-container">
-
             <div id="main-container">
-
                 <div id="sidebar">
-
                     <div id="setup-controls">
-
-                        <h2>Start Your Adventure</h2>
-
+                        <h2>Start the Adventure</h2>
                         <ol id="steps-list">
-
-                            <li id="step-1">Choose Your Color</li>
-
-                            <li id="step-2">Roll the Dice</li>
-
-                            <li id="step-3">Place Your Sprout</li>
-
+                            <li id="step-1">Choose your color</li>
+                            <li id="step-2">Roll the dice</li>
+                            <li id="step-3">Place your pawn</li>
                         </ol>
-
                         <div id="interactive-controls-container">
-
                             <div id="color-palette"></div>
-
                             <div id="dice-container">
-
                                 <div class="dice" data-value="1">
-
                                     <div class="dot"></div>
-
                                 </div>
-
                                 <div class="dice" data-value="1">
-
                                     <div class="dot"></div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                     <div id="narration-box">
-
                         <p id="narration-text"></p>
-
                     </div>
-
                 </div>
-
                 <div id="game-container">
-
                     <div id="game-board-wrapper">
-
                         <div id="game-board-frame"></div>
-
                         <div id="game-board">
-
                             <div id="spots-container"></div>
-
                         </div>
-
                     </div>
-
                     <div id="opponent-card-hand"></div>
-
                     <div id="card-hand"></div>
-
                     <div id="reveal-section">
-
-                        <h1 id="reveal-title">Play the Adventure Home</h1>
-
+                        <h1 id="reveal-title">Play the Adventure at Home</h1>
                         <div id="product-container">
-
                             <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art">
-
-                                <h3>Standard Edition</h3>
-
-                                <p>The complete core experience. Everything you need to begin.</p><button class="preorder-btn">Pre-order Now</button>
-
+                                <h3>Standard Game</h3>
+                                <p>The complete core experience. Everything you need to start the adventure.</p><button class="preorder-btn">Pre-order</button>
                             </div>
-
                             <div class="product-box product-expansion"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art">
-
-                                <h3>Game Expansion</h3>
-
-                                <p>New characters, and greater challenges.</p><button class="preorder-btn">Pre-order Now</button>
-
+                                <h3>Expansion Pack</h3>
+                                <p>New characters and greater challenges.</p><button class="preorder-btn">Pre-order</button>
                             </div>
-
                             <div class="product-box product-collector"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art">
-
                                 <h3>Collector's Edition</h3>
-
-                                <p>The ultimate treasure, with exclusive content.</p><button class="preorder-btn">Pre-order Now</button>
-
+                                <p>The ultimate treasure, with exclusive content.</p><button class="preorder-btn">Pre-order</button>
                             </div>
-
                         </div>
-
                         <div id="reveal-footer">
-
-                            <button id="replay-button">Replay demo</button>
-
+                            <button id="replay-button">Replay Demo</button>
                             <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
-
-                                <input type="email" id="subscribe-email" placeholder="Enter email for news...">
-
+                                <input type="email" id="subscribe-email" placeholder="Email for updates...">
                                 <button type="submit">Subscribe</button>
-
                             </form>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
-            <div id="subscription-alert"><span>Thank you for subscribing!</span></div>
-
+            <div id="subscription-alert"><span>Thanks for subscribing!</span></div>
             <div id="preorder-modal" class="modal">
-
                 <div class="modal-overlay"></div>
-
                 <div class="modal-content">
-
                     <div id="preorder-form-container">
-
                         <div class="modal-header">
-
                             <h3>Pre-order Little Sprout</h3><button class="modal-close-btn">&times;</button>
-
                         </div>
-
                         <form id="preorder-form" class="modal-body">
-
-                            <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" placeholder="Elara Vance" required></div>
-
-                            <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" placeholder="elara.vance@example.com" required></div>
-
-                            <div class="form-group"><label for="address">Shipping Address</label><textarea id="address" rows="3" placeholder="123 Mystic Lane, Spellbound City" required></textarea></div>
-
+                            <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" placeholder="John Doe" required></div>
+                            <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" placeholder="example@email.com" required></div>
+                            <div class="form-group"><label for="address">Shipping Address</label><textarea id="address" rows="3" placeholder="123 Example St, City" required></textarea></div>
                             <p style="font-size: 0.8rem; text-align: center; opacity: 0.7; margin-bottom: 1rem;">Note: This is a demo. No payment will be processed.</p>
-
-                            <button type="submit">Confirm Pre-order ($49.99)</button>
-
+                            <button type="submit">Confirm Pre-order</button>
                         </form>
-
                     </div>
-
                     <div id="confirmation-message">
-
-                        <h3 style="font-size: 1.8rem; color: var(--glow-color); margin-bottom: 0.5rem;">Pre-order Confirmed!</h3>
-
-                        <p>Thank you! A confirmation has been sent to your email. We'll notify you when your adventure ships.</p>
-
+                        <h3 style="font-size: 1.8rem; color: var(--glow-color); margin-bottom: 0.5rem;">Pre-order confirmed!</h3>
+                        <p>Thank you! A confirmation has been sent to your email. We'll notify you when the game ships.</p>
                         <button id="close-confirmation-btn" style="background: var(--color-accent); color: white; padding: 10px 20px; border-radius: 5px; margin-top: 1.5rem; border: none; cursor: pointer;">Close</button>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
         <div class="welcome-overlay">
-
             <h3 class="mt-5">Little Sprout</h3>
-
             <h1>Adventure in Nature</h1>
-
             <div class="language-switcher">
-
-                <a href="index.html" id="ro-link" title="Romanian">RO</a>
-
+                <a href="index.html" id="ro-link" title="Română">RO</a>
                 <span class="divider">|</span>
-
-                <a href="en.html" id="en-link" class="active2" title="English">EN</a>
-
+                <a href="en.html" id="en-link" class="active2" title="Engleză">EN</a>
             </div>
-
             <a class="cta-button" href="#game">Play demo</a>
-
         </div>
-
     </section>
-
     <section id="game">
-
         <h2 class="mt-5">The Game</h2>
-
-        <h3>Welcome you to the magical land of Romania, where nature is waiting for you in its most spectacular forms!</h3>
-
-        <p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a small sprout named Little Sprout is about to embark on a great adventure, and you're invited to join in.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies of Romania.</p>
-
-        <p>Each turn brings you a new discovery as you draw cards featuring Romania's most incredible natural wonders.</p>
-
+        <h3>Welcome to the magical land of Romania, where nature awaits you in its most spectacular forms!</h3>
+        <p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a little sprout named Little Sprout is about to embark on a great adventure, and you are invited to join.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies in Romania.</p>
+        <p>Each turn brings you a new discovery as you draw cards featuring the most incredible natural wonders of Romania.</p>
         <div class="game-features mt-5">
-
             <div class="product-img feature">
-
                 <h3 class="game-dot1">+1</h3>
-
-                <h1>Drawing</h1>
-
+                <h1>Draw</h1>
                 <p>(Bring nature to life through your art)</p>
-
-                <p><br/>Sketch beautiful creatures for your friends to guess.</p>
-
+                <p><br/>Draw beautiful creatures or plants for your friends to guess.</p>
             </div>
-
             <div class="product-img feature">
-
                 <h3 class="game-dot2">+2</h3>
-
-                <h1>Memorizing</h1>
-
-                <p>(Share two fascinating facts you have learned about Romania's wildlife)</p>
-
-                <p><br/>Remember interesting facts about the plants and animals you have met along the way.</p>
-
+                <h1>Memorize</h1>
+                <p>(Share two fascinating facts you've learned about Romania's wildlife)</p>
+                <p><br/>Recall interesting facts about the plants and animals you've encountered along the way.</p>
             </div>
-
             <div class="product-img feature">
-
                 <h3 class="game-dot1">+1</h3>
-
-                <h1>Interpretation</h1>
-
+                <h1>Interpret</h1>
                 <p>(Describe the wonders of nature in your own words)</p>
-
-                <p><br/>Describe these amazing creatures using only your words—as if you are telling a magical story about nature!</p>
-
+                <p><br/>Describe these amazing creatures using only your words—like telling a magical story about nature!</p>
             </div>
-
         </div>
-
-        <p class="mt-5">Every time you complete these fun challenges, you will earn special points that help your own tree of knowledge grow taller and stronger.</p>
-
-        <p>The more you play, the more you learn, and the more your tree blooms—just like Little Sprout!</p>
-
-        <p><br/>This heartwarming adventure will help your mind flourish in so many ways:<br/>🌱 Your imagination will soar as you create artwork and tell stories<br/>🌱 Your memory will grow stronger as you learn fascinating facts about nature<br/>🌱 Your friendships will bloom as you work together with other players<br/>🌱 Your love for nature will deepen as you discover Romania's amazing wildlife</p>
-
+        <p class="mt-5">Each time you complete these fun challenges, you'll earn special points that help your tree of knowledge grow taller and stronger.</p>
+        <p>The more you play, the more you learn, and your tree blossoms—just like Little Sprout!</p>
+        <p><br/>This heartwarming adventure will help your mind bloom in countless ways:<br/>🌱 Your imagination will soar as you create art and tell stories<br/>🌱 Your memory will get stronger as you learn fascinating facts about nature<br/>🌱 Your friendships will flourish as you work together with other players<br/>🌱 Your love for nature will deepen as you discover the amazing wildlife of Romania</p>
     </section>
-
     <section id="rules">
-
         <div class="rules-container">
-
             <h2 class="mt-5">How to Play</h2>
-
             <div class="rules-content">
-
-                <h3>Game setup: 2-10 players</h3>
-
+                <h3>Game Setup: 2-10 players</h3>
                 <p>1. First, choose your pawn.</p>
-
-                <p>2. You will start with 6 cards from the pack.</p>
-
-                <p>3. Roll the dice and place your pawn on the number you get.</p>
-
+                <p>2. You will start with 6 cards from the deck.</p>
+                <p>3. Roll the dice and place your pawn on the number obtained.</p>
                 <p>4. Choose an option and play a card: you can draw, memorize, or interpret.</p>
-
                 <p>5. You will advance 1 or 2 points if someone guesses correctly.</p>
-
-                <p>6. The player who guessed right also moves forward 1 point.</p>
-
-                <p>7. The card you played goes back in the deck to be shuffled.</p>
-
+                <p>6. The player who guessed correctly also advances 1 point.</p>
+                <p>7. The played card returns to the deck to be shuffled.</p>
                 <p>8. You will draw a new card at the end of your turn.</p>
-
                 <p>9. You will play the color option you landed on.</p>
-
                 <h3>Gameplay</h3>
-
-                <p>You and the other players will take turns playing cards to build your knowledge tree.</p>
-
+                <p>You and the other players will take turns playing cards to build your tree of knowledge.</p>
                 <p>Choose one of these options to play:</p>
-
-                <p>1. Drawing (+1 point)</p>
-
-                <p>2. Memorizing 2 facts (+2 points)</p>
-
-                <p>3. Interpretation (+1 point)</p>
-
+                <p>1. Draw (+1 point)</p>
+                <p>2. Memorize 2 facts (+2 points)</p>
+                <p>3. Interpret (+1 point)</p>
                 <p>The first player to guess correctly wins 1 point.</p>
-
-                <h3>Winning</h3>
-
-                <p>The first player to reach the "Little Sprout" level wins! But wait, there is more!</p>
-
-                <p>After you reach the "Little Sprout" level, you can keep playing from the beginning or team up with other players. You can form teams with a maximum of 2-3 players.</p>
-
+                <h3>Winning the Game</h3>
+                <p>The first player to reach the "Little Sprout" level wins! But wait, there's more!</p>
+                <p>After reaching the "Little Sprout" level, you can continue playing from the beginning or team up with other players. You can form teams of up to 2-3 players.</p>
             </div>
-
         </div>
-
     </section>
-
     <section id="cards">
-
-        <h2 class="mt-5">Cards</h2>
-
+        <h2 class="mt-5">Game Cards</h2>
         <div class="search-filter">
-
             <input type="text" id="cardSearch" placeholder="Search for a card...">
-
         </div>
-
         <div class="cards-grid" id="cardsGrid">
-
         </div>
-
-        <p class="mt-3"><strong>Note:</strong> The facts on the actual cards might be different.</p>
-
+        <p class="mt-3"><strong>Note:</strong> Information on the actual cards may differ.</p>
     </section>
-
     <section id="shop">
-
         <h2 class="mt-5">Shop</h2>
-
         <div class="products-grid">
-
             <div class="product product-img2"><img class="product-img" src="images/standard.jpg" alt="Family Adventure Set">
-
                 <h3>Family Adventure Set</h3>
-
-                <p>Kick off your game night with a magical journey that is simple for you to learn and fun to play.</p>
-
+                <p>Start your game night with a magical journey, simple to learn and fun to play.</p>
                 <p class="game-content">
-
-                    🌱 <strong>Story & Rules:</strong> I’ve included an engaging tale and easy-to-follow rules to spark your imagination.<br/>
-
-                    🌱 <strong>72 Discovery Cards:</strong> You'll uncover surprises and challenges on every turn.<br/>
-
-                    🌱 <strong>4 Seasonal Cards:</strong> Watch the game evolve with fun seasonal twists.<br/>
-
-                    🌱 <strong>Illustrated Game Board:</strong> A vibrant, detailed board that will transport you to a magical world.<br/>
-
-                    🌱 <strong>10 Colored Pawns & 2 Dice:</strong> You get all the classic components for a perfect start.<br/><br/>
-
-                    <strong>This is perfect for:</strong> Creating a cozy, interactive game night that brings your whole family together!
-
+                    🌱 <strong>Story and Rules:</strong> We've included a captivating story and easy-to-follow rules to spark your imagination.<br/>
+                    🌱 <strong>72 Discovery Cards:</strong> You'll find surprises and challenges at every step.<br/>
+                    🌱 <strong>4 Season Cards:</strong> See how the game evolves with seasonal twists.<br/>
+                    🌱 <strong>Illustrated Game Board:</strong> A vibrant and detailed board that will transport you to a magical world.<br/>
+                    🌱 <strong>10 colorful Pawns and 2 Dice:</strong> You get all the classic components for a perfect start.<br/><br/>
+                    <strong>Perfect for:</strong> Creating a cozy and interactive game night that brings the whole family together!
                 </p>
-
                 <button>COMING SOON</button>
-
             </div>
-
-            <div class="product product-img2"><img class="product-img" src="images/expansion.jpg" alt="Family Adventure Set">
-
-                <h3>Extra Challenge Pack</h3>
-
-                <p>If you crave an extra dose of adventure and creativity—this pack adds exciting layers to your game.</p>
-
-                <p>(Note: You will need the Family Adventure Set for this.)</p>
-
+            <div class="product product-img2"><img class="product-img" src="images/expansion.jpg" alt="Extra Challenges Pack">
+                <h3>Extra Challenges Pack</h3>
+                <p>If you want an extra dose of adventure and creativity—this pack adds interesting layers to your game.</p>
+                <p>(Note: You'll need the Family Adventure Set for this.)</p>
                 <p class="game-content">
-
-                    🌿 <strong>Expansion Story & New Rules:</strong> You can dive deeper into the adventure with fresh twists.<br/>
-
-                    🌿 <strong>54 Additional Discovery Cards:</strong> More challenges to keep every game session exciting for you.<br/>
-
-                    🌿 <strong>4 Extra Seasonal Cards:</strong> Additional surprises that change the game’s mood.<br/>
-
-                    🌿 <strong>Enhanced Game Board Elements:</strong> Extra details that boost the visual storytelling for you.<br/><br/>
-
-                    <strong>Here's a tip:</strong> You can bundle this with the Family Adventure Set to unlock an even richer gaming experience!
-
+                    🌿 <strong>Expanded Story and New Rules:</strong> You can deepen the adventure with fresh twists.<br/>
+                    🌿 <strong>54 Additional Discovery Cards:</strong> More challenges to keep every game session exciting.<br/>
+                    🌿 <strong>4 Additional Season Cards:</strong> Extra surprises that change the game's atmosphere.<br/>
+                    🌿 <strong>Enhanced Game Board Elements:</strong> Additional details that enhance the visual story.<br/><br/>
+                    <strong>Tip:</strong> You can combine this pack with the Family Adventure Set to unlock an even richer gaming experience!
                 </p>
-
                 <button>COMING SOON</button>
-
             </div>
-
-            <div class="product product-img2 full-width"><img class="product-img" src="images/collector-edition.jpg" alt="Family Adventure Set">
-
-                <h3>Family Adventure Bundle (Collector’s Edition)</h3>
-
-                <p>This is the ultimate package for a truly immersive game night! You can enjoy the complete adventure—combining the Family Adventure Set and the Extra Challenge Pack—plus I've included exclusive creative extras that make every moment special.</p>
-
+            <div class="product product-img2 full-width"><img class="product-img" src="images/collector-edition.jpg" alt="Collector's Edition Set">
+                <h3>Family Adventure Pack (Collector's Edition)</h3>
+                <p>This is the ultimate package for a truly captivating game night! You can enjoy the complete adventure—combining the Family Adventure Set and the Extra Challenges Pack—plus we've included exclusive creative extras that make every moment special.</p>
                 <p class="game-content">
-
-                    🌱 <strong>Complete Story & Rules:</strong> You will enjoy the full narrative and easy-to-grasp rules that guide your adventure.<br/>
-
-                    🌱 <strong>Total Discovery Cards:</strong> You get a whopping 126 cards (72 standard + 54 expansion) to spark endless fun.<br/>
-
-                    🌱 <strong>All Seasonal Cards:</strong> 8 cards in total (4 standard + 4 extra) for dynamic, ever-changing gameplay.<br/>
-
-                    🌱 <strong>Illustrated Game Board:</strong> An artfully designed board that will draw you and your family into the adventure.<br/>
-
-                    🌱 <strong>Family Tokens:</strong> 10 colored pawns and 2 dice to make every turn exciting for you.<br/>
-
-                    <br/><strong>Creative Extras I have included for you:</strong><br/>
-
-                    🌿 <strong>Art Supplies:</strong> Colored pencils, a multi-functional pencil (with an eraser & sharpener), and an A5 notebook—perfect for you to doodle or keep score!<br/>
-
-                    🌿 <strong>Bonus Treat:</strong> A charming Little Sprout sticker to remind you of nature’s magic.<br/>
-
-                    <br/><strong>Why You'll Love It:</strong><br/>
-
-                    🍀 <strong>Family Bonding:</strong> I designed it to be enjoyed by everyone, making it ideal for a memorable family game night.<br/>
-
-                    🍀 <strong>Screen-Free Fun:</strong> It encourages your creativity, teamwork, and storytelling away from screens.<br/>
-
-                    🍀 <strong>Easy to Learn:</strong> The simple rules mean you can jump right into the fun.<br/>
-
-                    🍀 <strong>Endless Replayability:</strong> With over 120 cards and changing seasonal surprises, every game will feel brand new to you.<br/>
-
-                    <br/><strong>I hope you enjoy countless magical moments together!</strong>
-
+                    🌱 <strong>Complete Story and Rules:</strong> You'll enjoy the full story and easy-to-understand rules that guide your adventure.<br/>
+                    🌱 <strong>Total Discovery Cards:</strong> You get a total of 126 cards (72 standard + 54 expansion) to spark endless fun.<br/>
+                    🌱 <strong>All Season Cards:</strong> 8 cards in total (4 standard + 4 extra) for a dynamic and ever-changing game.<br/>
+                    🌱 <strong>Illustrated Game Board:</strong>An artistically designed game board that will draw you and your family into the adventure.<br/>
+                    🌱 <strong>Family Pawns:</strong> 10 colorful pawns and 2 dice to make every turn exciting.<br/>
+                    <br/><strong>Creative Extras Included for You:</strong><br/>
+                    🌿 <strong>Art Supplies:</strong> Colored pencils, a multi-functional pencil (with eraser and sharpener), and an A5 notebook—perfect for drawing or keeping score!<br/>
+                    🌿 <strong>Bonus:</strong> A charming Little Sprout sticker to remind you of nature's magic.<br/>
+                    <br/><strong>Why you'll love it:</strong><br/>
+                    🍀 <strong>Family Bonding:</strong> We designed it to be enjoyed by everyone, making it ideal for a memorable family game night.<br/>
+                    🍀 <strong>Screen-Free Fun:</strong> Encourages creativity, teamwork, and storytelling, away from screens.<br/>
+                    🍀 <strong>Easy to Learn:</strong> Simple rules mean you can jump right into the fun.<br/>
+                    🍀 <strong>Infinite Replayability:</strong> With over 120 cards and changing seasonal surprises, every game will feel new.<br/>
+                    <br/><strong>Hope you enjoy countless magical moments together!</strong>
                 </p>
-
                 <button>COMING SOON</button>
-
             </div>
-
         </div>
-
     </section>
-
     <footer>
-
         <div class="language-switcher">
-
-            <a href="index.html" id="ro-link" title="Romanian">RO</a>
-
+            <a href="index.html" id="ro-link" title="Română">RO</a>
             <span class="divider">|</span>
-
             <a href="en.html" id="en-link" class="active2" title="English">EN</a>
-
         </div>
-
         <p>&copy; Little Sprout. All rights reserved.</p>
-
         <div class="footer-links">
-
-            <a href="index.html">Home</a> |
-
-            <a href="terms-of-service.html">Terms of Service</a> |
-
-            <a href="mailto:lucian.mangu@gmail.com">Contact</a>
-
+            <a href="en.html">Home</a> |
+            <a href="terms-of-service-en.html">Terms and Conditions</a> |
+            <a href="/cdn-cgi/l/email-protection#3f534a5c565e5111525e51584a7f58525e5653115c5052">Contact</a>
         </div>
-
     </footer>
-
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    
     <script>
-
-        const game = {
-
-            elements: {},
-
-            state: {},
-
-            spotCoordinates: [],
-
-            config: {
-
-                SPOTS_PER_RING: 11,
-
-                PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
-
-                CARD_TITLES: ["Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
-
-                CARD_IMAGES: [
-
-                    "https://littlesprout.ro/images/card-black-woodpecker.png",
-
-                    "https://littlesprout.ro/images/card-praying-mantis.png",
-
-                    "https://littlesprout.ro/images/card-zander.png",
-
-                    "https://littlesprout.ro/images/card-bear.png",
-
-                    "https://littlesprout.ro/images/card-romanian-peony.png",
-
-                    "https://littlesprout.ro/images/card-clouded-yellow.png"
-
-                ],
-
-                // MODIFIED: Removed the CARD_VIDEOS array
-
-                OUTER_RING_COLORS: ['#f7a732', '#f0c340', '#92c045', '#55b64c', '#29b9e6', '#2b77c8', '#4a4aa8', '#684196', '#9e2a8f', '#e53935', '#d82b45']
-
-            },
-
-            tutorialSteps: [{
-
-                text: "First, pick a color for your very own pawn.",
-
-                action: 'promptColor',
-
-                stepNumber: 1
-
-            }, {
-
-                text: "Roll the dice to find your starting spot.",
-
-                action: 'promptDiceRoll',
-
-                stepNumber: 2
-
-            }, {
-
-                text: () => `Click the glowing ${game.state.diceSum} to pop up!`,
-
-                action: 'promptPlacePawn',
-
-                stepNumber: 3
-
-            }, {
-
-                text: "Tap a card to enlarge it, or click an action to play it directly.",
-
-                action: 'promptPlayerTurn'
-
-            }, {
-
-                text: "Well done! Now it is your friend's turn...",
-
-                action: 'opponentTurn'
-
-            }, {
-
-                text: "Good. It is your turn again!",
-
-                action: 'promptPlayerTurn'
-
-            }, {
-
-                text: "You made it to the heart of the forest!",
-
-                action: 'endGameSuccess'
-
-            }],
-
-            init() {
-
-                this.cacheElements();
-
-                this.createPawns();
-
-                this.createBoardLayout();
-
-                this.createColorPalette();
-
-                this.attachEventListeners();
-
-                this.resetGame(true);
-
-            },
-
-            cacheElements() {
-
-                const requiredIds = ['sidebar', 'narration-text', 'reveal-section', 'replay-button', 'spots-container', 'dice-container', 'color-palette', 'card-hand', 'opponent-card-hand', 'game-container', 'steps-list', 'game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
-
-                requiredIds.forEach(id => {
-
-                    const element = document.getElementById(id);
-
-                    if (!element) console.error(`Critical element not found: #${id}`);
-
-                    this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element;
-
-                });
-
-                this.elements.dice = this.elements.diceContainer.querySelectorAll('.dice');
-
-                this.elements.preorderModal.overlay = this.elements.preorderModal.querySelector('.modal-overlay');
-
-                this.elements.preorderModal.closeBtn = this.elements.preorderModal.querySelector('.modal-close-btn');
-
-                this.elements.preorderModal.form = this.elements.preorderModal.querySelector('#preorder-form');
-
-                this.elements.preorderModal.formContainer = this.elements.preorderModal.querySelector('#preorder-form-container');
-
-                this.elements.preorderModal.confirmationMsg = this.elements.preorderModal.querySelector('#confirmation-message');
-
-                this.elements.preorderModal.closeConfirmationBtn = this.elements.preorderModal.querySelector('#close-confirmation-btn');
-
-            },
-
-            createPawns() {
-
-                this.elements.playerSprout = this.createPawn('player-sprout');
-
-                this.elements.opponentSprout = this.createPawn('opponent-sprout');
-
-                this.elements.opponentSprout.style.backgroundColor = '#8E44AD';
-
-            },
-
-            createPlayerCard(cardIndex, rotation) {
-
-                const card = document.createElement('div');
-
-                card.className = 'card';
-
-                card.style.setProperty('--rotation', `${rotation}deg`);
-
-                card.innerHTML = `<p class="card-title">${this.config.CARD_TITLES[cardIndex] || 'New Card'}</p><div class="card-actions"><div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div><div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div><div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div></div><div class="card-image-placeholder"><img src="${this.config.CARD_IMAGES[cardIndex]}" alt="${this.config.CARD_TITLES[cardIndex]}"></div>`;
-
-
-
-                // Main listener for tap-to-enlarge/shrink
-
-                card.addEventListener('click', (e) => this.handleCardTap(e, card));
-
-
-
-                // Listeners for action dots, which stop propagation to prevent tap-to-enlarge
-
-                card.querySelectorAll('.action-dot').forEach(btn => {
-
-                    btn.addEventListener('click', (e) => {
-
-                        e.stopPropagation();
-
-                        this.handleActionChoice(parseInt(btn.dataset.move), e.target);
-
-                    });
-
-                });
-
-                return card;
-
-            },
-
-            buildCardHands() {
-
-                const isMobile = window.innerWidth <= 768;
-
-                const cardCount = isMobile ? 5 : 6;
-
-                const rotationMultiplier = isMobile ? 4 : 5;
-
-                const centerIndex = (cardCount - 1) / 2;
-
-                const playerCardFragment = document.createDocumentFragment();
-
-                this.elements.cardHand.innerHTML = '';
-
-                for (let i = 0; i < cardCount; i++) {
-
-                    const rotation = (i - centerIndex) * rotationMultiplier;
-
-                    const card = this.createPlayerCard(i, rotation);
-
-                    playerCardFragment.appendChild(card);
-
-                }
-
-                this.elements.cardHand.appendChild(playerCardFragment);
-
-                const opponentCardFragment = document.createDocumentFragment();
-
-                this.elements.opponentCardHand.innerHTML = '';
-
-                for (let i = 0; i < cardCount; i++) {
-
-                    const card = document.createElement('div');
-
-                    card.className = 'opponent-card';
-
-                    const rotation = (i - centerIndex) * -rotationMultiplier;
-
-                    card.style.setProperty('--rotation', `${rotation}deg`);
-
-                    opponentCardFragment.appendChild(card);
-
-                }
-
-                this.elements.opponentCardHand.appendChild(opponentCardFragment);
-
-            },
-
-            createPawn(id) {
-
-                const pawn = document.createElement('div');
-
-                pawn.id = id;
-
-                pawn.className = 'sprout-pawn';
-
-                return pawn;
-
-            },
-
-            createBoardLayout() {
-
-                this.elements.spotsContainer.innerHTML = '';
-
-                this.spotCoordinates = [];
-
-                let spotCounter = 0;
-
-                const rings = [{
-
-                    numSpots: this.config.SPOTS_PER_RING,
-
-                    radius: 0.46
-
-                }, {
-
-                    numSpots: this.config.SPOTS_PER_RING,
-
-                    radius: 0.37
-
-                }, {
-
-                    numSpots: this.config.SPOTS_PER_RING,
-
-                    radius: 0.28
-
-                }, {
-
-                    numSpots: this.config.SPOTS_PER_RING,
-
-                    radius: 0.19
-
-                }, {
-
-                    numSpots: this.config.SPOTS_PER_RING,
-
-                    radius: 0.09
-
-                }, {
-
-                    numSpots: 1,
-
-                    radius: 0
-
-                }];
-
-                const boardWidth = this.elements.gameBoard.getBoundingClientRect().width;
-
-                if (boardWidth === 0) {
-
-                    requestAnimationFrame(() => this.createBoardLayout());
-
-                    return;
-
-                }
-
-                rings.forEach((ring, ringIndex) => {
-
-                    for (let i = 0; i < ring.numSpots; i++) {
-
-                        const angle = (i / ring.numSpots) * 2 * Math.PI - (Math.PI / 2);
-
-                        const x = Math.cos(angle) * ring.radius * boardWidth;
-
-                        const y = Math.sin(angle) * ring.radius * boardWidth;
-
-                        this.spotCoordinates.push({
-
-                            x,
-
-                            y
-
-                        });
-
-                        const spot = document.createElement('div');
-
-                        spot.className = 'spot';
-
-                        spot.id = `spot-${spotCounter}`;
-
-                        spot.style.zIndex = rings.length - ringIndex;
-
-                        if (ring.radius === 0) {
-
-                            spot.id = 'center-spot';
-
-                        } else if (ringIndex === 0) {
-
-                            spot.innerHTML = `<span>${i + 2}</span>`;
-
-                            spot.addEventListener('click', () => this.handleSpotClick(i));
-
-                        } else if (ringIndex === 1 || ringIndex === 3) {
-
-                            spot.style.backgroundColor = '#BDB7AB';
-
-                            spot.style.border = '1px solid #aaa';
-
-                        }
-
-                        spot.style.transform = `translate(${x}px, ${y}px)`;
-
-                        this.elements.spotsContainer.appendChild(spot);
-
-                        spotCounter++;
-
-                    }
-
-                });
-
-                this.elements.spotsContainer.appendChild(this.elements.playerSprout);
-
-                this.elements.spotsContainer.appendChild(this.elements.opponentSprout);
-
-                if (this.state && this.state.playerPawnPosition > -1) {
-
-                    const playerPos = this.spotCoordinates[this.state.playerPawnPosition];
-
-                    this.elements.playerSprout.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px) scale(1)`;
-
-                }
-
-                if (this.state && this.state.opponentPawnPosition > -1) {
-
-                    const opponentPos = this.spotCoordinates[this.state.opponentPawnPosition];
-
-                    this.elements.opponentSprout.style.transform = `translate(${opponentPos.x}px, ${opponentPos.y}px) scale(1)`;
-
-                }
-
-            },
-
-            createColorPalette() {
-
-                this.elements.colorPalette.innerHTML = '';
-
-                this.config.PAWN_COLORS.forEach(color => {
-
-                    const swatch = document.createElement('div');
-
-                    swatch.className = 'color-swatch';
-
-                    swatch.innerHTML = `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16,4 C12.69,4 10,6.69,10,10 C10,13.31 12.69,16 16,16 C19.31,16 22,13.31 22,10 C22,6.69 19.31,4 16,4 Z M16,17 C13,17 11,19 11,22 L21,22 C21,19 19,17 16,17 Z M9,23 L23,23 L23,26 L9,26 Z M7,27 L25,27 L25,29 L7,29 Z" fill="${color}" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
-
-                    swatch.addEventListener('click', () => this.handleColorChoice(color));
-
-                    this.elements.colorPalette.appendChild(swatch);
-
-                });
-
-            },
-
-            attachEventListeners() {
-
-                this.elements.replayButton.addEventListener('click', () => this.resetGame());
-
-                this.elements.preorderModal.overlay.addEventListener('click', () => this.closePreorderModal());
-
-                this.elements.preorderModal.closeBtn.addEventListener('click', () => this.closePreorderModal());
-
-                this.elements.preorderModal.closeConfirmationBtn.addEventListener('click', () => this.closePreorderModal());
-
-                this.elements.preorderModal.form.addEventListener('submit', (e) => {
-
-                    e.preventDefault();
-
-                    this.elements.preorderModal.formContainer.style.display = 'none';
-
-                    this.elements.preorderModal.confirmationMsg.style.display = 'block';
-
-                });
-
-                window.addEventListener('resize', () => this.createBoardLayout());
-
-            },
-
-            nextStep() {
-
-                this.state.currentStep++;
-
-                if (this.state.currentStep < this.tutorialSteps.length) {
-
-                    const step = this.tutorialSteps[this.state.currentStep];
-
-                    if (step) {
-
-                        this.elements.narrationText.textContent = typeof step.text === 'function' ? step.text() : step.text;
-
-                        this.updateStepsUI(step.stepNumber);
-
-                        this[step.action]();
-
-                    }
-
-                }
-
-            },
-
-            resetGame(isInitialStart = false) {
-
-                if (!isInitialStart) {
-
-                    this.elements.gameBoard.classList.remove('reveal');
-
-                    this.elements.revealSection.classList.remove('visible');
-
-                }
-
-                this.buildCardHands();
-
-                this.state = {
-
-                    currentStep: -1,
-
-                    diceSum: 0,
-
-                    playerPawnPosition: -1,
-
-                    opponentPawnPosition: -1,
-
-                    selectedPawnColor: this.config.PAWN_COLORS[0],
-
-                    turn: 1,
-
-                    reachedCenter: false,
-
-                    forceMemorize: false,
-
-                    enlargedCard: null
-
-                };
-
-                this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
-
-                [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => {
-
-                    pawn.style.transition = 'opacity 0s, transform 0s';
-
-                    pawn.style.opacity = '0';
-
-                    pawn.style.transform = `scale(0)`;
-
-                });
-
-                this.elements.playerSprout.classList.remove('winning-pawn');
-
-                const existingWinnerText = this.elements.spotsContainer.querySelector('.winner-text');
-
-                if (existingWinnerText) existingWinnerText.remove();
-
-                document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
-
-                this.elements.cardHand.classList.remove('visible');
-
-                this.elements.opponentCardHand.classList.remove('visible');
-
-                this.setHandInteractable(false);
-
-                this.elements.dice.forEach(d => this.updateDieFace(d, 1));
-
-                this.elements.cardHand.classList.remove('hand-active');
-
-                this.elements.colorPalette.classList.remove('visible');
-
-                this.elements.diceContainer.classList.remove('visible');
-
-                if (window.innerWidth <= 1200) {
-
-                    this.elements.colorPalette.style.display = 'none';
-
-                    this.elements.diceContainer.style.display = 'none';
-
-                }
-
-                setTimeout(() => {
-
-                    this.elements.cardHand.classList.add('visible');
-
-                    this.elements.opponentCardHand.classList.add('visible');
-
-                    this.nextStep();
-
-                }, isInitialStart ? 500 : 750);
-
-            },
-
-            updateStepsUI(stepNumber) {
-
-                this.elements.stepsList.querySelectorAll('li').forEach((step, index) => {
-
-                    step.classList.toggle('step-active', index + 1 === stepNumber);
-
-                });
-
-            },
-
-            promptColor() {
-
-                this.updateStepsUI(1);
-
-                this.elements.diceContainer.classList.remove('visible');
-
-                this.elements.colorPalette.classList.add('visible');
-
-                if (window.innerWidth <= 1200) {
-
-                    this.elements.diceContainer.style.display = 'none';
-
-                    this.elements.colorPalette.style.display = 'flex';
-
-                }
-
-            },
-
-            promptDiceRoll() {
-
-                this.updateStepsUI(2);
-
-                this.elements.colorPalette.classList.remove('visible');
-
-                this.elements.diceContainer.classList.add('visible', 'selectable');
-
-                if (window.innerWidth <= 1200) {
-
-                    this.elements.colorPalette.style.display = 'none';
-
-                    this.elements.diceContainer.style.display = 'flex';
-
-                }
-
-                this.elements.diceContainer.addEventListener('click', () => this.handleDiceRoll(), {
-
-                    once: true
-
-                });
-
-            },
-
-            promptPlacePawn() {
-
-                this.updateStepsUI(3);
-
-                document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing');
-
-            },
-
-            promptPlayerTurn() {
-
-                this.updateStepsUI(0);
-
-                this.elements.cardHand.classList.add('hand-active');
-
-                this.elements.opponentCardHand.classList.add('active');
-
-                document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
-
-                if (this.state.forceMemorize) {
-
-                    this.elements.narrationText.textContent = "'Memorize' (+2) to advance.";
-
-                    this.setHandInteractable(true);
-
-                    this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
-
-                        if (action.dataset.move === '2') {
-
-                            action.classList.add('glowing-action');
-
-                            action.style.pointerEvents = 'auto';
-
-                            action.style.opacity = '1';
-
-                        } else {
-
-                            action.style.pointerEvents = 'none';
-
-                            action.style.opacity = '0.4';
-
-                        }
-
-                    });
-
-                } else {
-
-                    this.elements.narrationText.textContent = "Tap a card to enlarge it, or click an action to play.";
-
-                    this.setHandInteractable(true);
-
-                }
-
-            },
-
-            opponentTurn() {
-
-                this.handleOpponentTurn();
-
-            },
-
-            endGameSuccess() {
-
-                this.elements.playerSprout.classList.add('winning-pawn');
-
-                const winnerText = document.createElement('div');
-
-                winnerText.textContent = 'Winner';
-
-                winnerText.className = 'winner-text';
-
-                this.elements.spotsContainer.appendChild(winnerText);
-
-                setTimeout(() => {
-
-                    this.reveal();
-
-                    this.elements.playerSprout.classList.remove('winning-pawn');
-
-                    winnerText.remove();
-
-                }, 2500);
-
-            },
-
-            handleColorChoice(color) {
-
-                this.state.selectedPawnColor = color;
-
-                this.elements.playerSprout.style.backgroundColor = color;
-
-                this.elements.colorPalette.classList.remove('visible');
-
-                if (window.innerWidth <= 1200) {
-
-                    setTimeout(() => {
-
-                        this.elements.colorPalette.style.display = 'none';
-
-                    }, 500);
-
-                }
-
-                this.nextStep();
-
-            },
-
-            handleDiceRoll() {
-
-                this.elements.diceContainer.classList.remove('selectable');
-
-                let rollCount = 0;
-
-                const rollInterval = setInterval(() => {
-
-                    rollCount++;
-
-                    this.elements.dice.forEach(d => {
-
-                        d.classList.add('rolling');
-
-                        const randomValue = Math.ceil(Math.random() * 6);
-
-                        this.updateDieFace(d, randomValue);
-
-                    });
-
-                    if (rollCount > 5) {
-
-                        clearInterval(rollInterval);
-
-                        const val1 = Math.ceil(Math.random() * 6),
-
-                            val2 = Math.ceil(Math.random() * 6);
-
-                        this.updateDieFace(this.elements.dice[0], val1);
-
-                        this.updateDieFace(this.elements.dice[1], val2);
-
-                        this.state.diceSum = val1 + val2;
-
-                        this.elements.dice.forEach(d => d.classList.remove('rolling'));
-
-                        setTimeout(() => this.nextStep(), 500);
-
-                    }
-
-                }, 100);
-
-            },
-
-            handleSpotClick(index) {
-
-                if (this.state.currentStep !== 2 || index !== this.state.diceSum - 2) return;
-
-                this.elements.diceContainer.classList.remove('visible');
-
-                if (window.innerWidth <= 1200) {
-
-                    setTimeout(() => {
-
-                        this.elements.diceContainer.style.display = 'none';
-
-                    }, 500);
-
-                }
-
-                document.getElementById(`spot-${index}`).classList.remove('glowing');
-
-                this.updateStepsUI(0);
-
-                this.elements.playerSprout.style.transition = 'opacity 0.5s';
-
-                const pos = this.spotCoordinates[index];
-
-                this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-
-                requestAnimationFrame(() => {
-
-                    this.elements.playerSprout.style.opacity = '1';
-
-                    setTimeout(() => {
-
-                        this.elements.playerSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
-
-                        this.placeOpponentPawn(index);
-
-                        this.nextStep();
-
-                    }, 500);
-
-                });
-
-                this.state.playerPawnPosition = index;
-
-            },
-
-            placeOpponentPawn(playerStartIndex) {
-
-                const opponentStartIndex = (playerStartIndex + 4) % this.config.SPOTS_PER_RING;
-
-                this.state.opponentPawnPosition = opponentStartIndex;
-
-                const pos = this.spotCoordinates[opponentStartIndex];
-
-                this.elements.opponentSprout.style.transition = 'opacity 0.5s';
-
-                this.elements.opponentSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-
-                requestAnimationFrame(() => {
-
-                    this.elements.opponentSprout.style.opacity = '1';
-
-                    setTimeout(() => {
-
-                        this.elements.opponentSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
-
-                    }, 500);
-
-                });
-
-            },
-
-            handleCardTap(event, cardElement) {
-
-                if (!this.elements.cardHand.classList.contains('hand-interactable')) return;
-
-                if (this.state.enlargedCard && this.state.enlargedCard !== cardElement) {
-
-                    this.state.enlargedCard.classList.remove('is-enlarged');
-
-                }
-
-                cardElement.classList.toggle('is-enlarged');
-
-                if (cardElement.classList.contains('is-enlarged')) {
-
-                    this.state.enlargedCard = cardElement;
-
-                    this.elements.cardHand.classList.add('has-enlarged-card');
-
-                } else {
-
-                    this.state.enlargedCard = null;
-
-                    this.elements.cardHand.classList.remove('has-enlarged-card');
-
-                }
-
-            },
-
-            handleActionChoice(moveAmount, clickedElement) {
-
-                this.setHandInteractable(false);
-
-                this.showGamificationText(`+${moveAmount}`, clickedElement);
-
-                this.elements.cardHand.classList.remove('hand-active', 'has-enlarged-card');
-
-                const cardToPlay = clickedElement.closest('.card');
-
-
-
-                // Hide any other enlarged card that wasn't the one played
-
-                if (this.state.enlargedCard && this.state.enlargedCard !== cardToPlay) {
-
-                    this.state.enlargedCard.classList.remove('is-enlarged');
-
-                }
-
-                this.state.enlargedCard = null;
-
-
-
-                if (cardToPlay) {
-
-                    const allDotsOnCard = Array.from(cardToPlay.querySelectorAll('.action-dot'));
-
-                    const clickedIndex = allDotsOnCard.indexOf(clickedElement);
-
-                    // This single function now handles both cases (playing from small or big)
-
-                    this.animateAndReplaceCard(cardToPlay, moveAmount, clickedIndex);
-
-                }
-
-            },
-
-            advancePlayer(moveAmount) {
-
-                let newSpotIndex = this.state.playerPawnPosition + (this.config.SPOTS_PER_RING * moveAmount);
-
-                const centerSpotIndex = this.spotCoordinates.length - 1;
-
-                if (newSpotIndex >= centerSpotIndex) {
-
-                    newSpotIndex = centerSpotIndex;
-
-                    this.state.reachedCenter = true;
-
-                }
-
-                if (newSpotIndex !== this.state.playerPawnPosition) {
-
-                    const pos = this.spotCoordinates[newSpotIndex];
-
-                    this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
-
-                    this.state.playerPawnPosition = newSpotIndex;
-
-                }
-
-                if (this.state.forceMemorize && moveAmount === 2) {
-
-                    this.state.forceMemorize = false;
-
-                }
-
-                const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
-
-                if (ringIndex === 1 || ringIndex === 3) {
-
-                    this.state.forceMemorize = true;
-
-                }
-
-                let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
-
-                this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
-
-                setTimeout(() => this.nextStep(), 500);
-
-            },
-
-            // MODIFIED: Removed all video-swapping logic
-
-            animateAndReplaceCard(cardElement, moveAmount, playedActionIndex) {
-
-                const cardRect = cardElement.getBoundingClientRect(); // Gets current position and size
-
-                const clone = cardElement.cloneNode(true);
-
-
-
-                // Calculate the card's original base size to prevent "double scaling"
-
-                let baseWidth = cardRect.width;
-
-                let baseHeight = cardRect.height;
-
-                const isEnlarged = cardElement.classList.contains('is-enlarged');
-
-
-
-                if (isEnlarged) {
-
-                    // This scale factor must match the .is-enlarged CSS
-
-                    const scaleFactor = window.innerWidth > 768 ? 2 : 2; // Simplified from previous logic, as it was 2
-
-                    if (isEnlarged) {
-
-                        baseWidth /= scaleFactor;
-
-                        baseHeight /= scaleFactor;
-
-                    }
-
-                }
-
-
-
-                // Video logic has been removed. The clone now just shows the image.
-
-
-
-                if (playedActionIndex > -1) {
-
-                    const playedActionDot = clone.querySelectorAll('.action-dot')[playedActionIndex];
-
-                    if (playedActionDot) {
-
-                        playedActionDot.classList.add('is-played-action');
-
-                    }
-
-                }
-
-
-
-                cardElement.style.opacity = '0';
-
-                cardElement.style.pointerEvents = 'none';
-
-
-
-                const screenCenterX = window.innerWidth / 2;
-
-                let targetY;
-
-                if (window.innerWidth > 768) {
-
-                    const boardRect = this.elements.gameBoard.getBoundingClientRect();
-
-                    targetY = boardRect.top + (boardRect.height / 2);
-
-                } else {
-
-                    targetY = (window.innerHeight / 2) + (window.innerHeight * 0.15);
-
-                }
-
-                const cardCenterX = cardRect.left + cardRect.width / 2;
-
-                const cardCenterY = cardRect.top + cardRect.height / 2;
-
-                const translateX = screenCenterX - cardCenterX;
-
-                const translateY = targetY - cardCenterY;
-
-
-
-                clone.style.top = `${cardRect.top}px`;
-
-                clone.style.left = `${cardRect.left}px`;
-
-                // Use the corrected base size for the clone
-
-                clone.style.width = `${baseWidth}px`;
-
-                clone.style.height = `${baseHeight}px`;
-
-
-
-                clone.style.setProperty('--translateX', `${translateX}px`);
-
-                clone.style.setProperty('--translateY', `${translateY}px`);
-
-
-
-                if (window.innerWidth <= 768) {
-
-                    clone.style.setProperty('--played-card-scale', '3.0');
-
-                    clone.style.setProperty('--played-card-scale-fade', '3.24');
-
-                } else {
-
-                    clone.style.setProperty('--played-card-scale', '2.38');
-
-                    clone.style.setProperty('--played-card-scale-fade', '2.52');
-
-                }
-
-
-
-                clone.classList.add('played-card-animation');
-
-                document.body.appendChild(clone);
-
-
-
-                setTimeout(() => {
-
-                    clone.remove();
-
-                    const newCardIndex = Math.floor(Math.random() * this.config.CARD_TITLES.length);
-
-                    const newCard = this.createPlayerCard(newCardIndex, cardElement.style.getPropertyValue('--rotation').replace('deg', ''));
-
-                    cardElement.parentElement.replaceChild(newCard, cardElement);
-
-                    this.advancePlayer(moveAmount);
-
-                }, 6000);
-
-            },
-
-            handleOpponentTurn() {
-
-                setTimeout(() => {
-
-                    const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
-
-                    const moveRings = (currentRingIndex === 1 || currentRingIndex === 3) ? 2 : 1;
-
-                    const moveDistance = this.config.SPOTS_PER_RING * moveRings;
-
-                    const newPosIndex = this.state.opponentPawnPosition + moveDistance;
-
-                    if (newPosIndex < this.spotCoordinates.length - 1) {
-
-                        const newPos = this.spotCoordinates[newPosIndex];
-
-                        this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
-
-                        this.state.opponentPawnPosition = newPosIndex;
-
-                    }
-
-                    setTimeout(() => this.nextStep(), 1500);
-
-                }, 1000);
-
-            },
-
-            showGamificationText(text, targetElement) {
-
-                const rect = targetElement.getBoundingClientRect();
-
-                const el = document.createElement('div');
-
-                el.textContent = text;
-
-                el.className = 'floating-text';
-
-                el.style.left = `${rect.left + rect.width / 2}px`;
-
-                el.style.top = `${rect.top}px`;
-
-                el.style.transform = 'translateX(-50%)';
-
-                document.body.appendChild(el);
-
-                el.addEventListener('animationend', () => el.remove());
-
-            },
-
-            reveal() {
-
-                this.elements.gameBoard.classList.add('reveal');
-
-                this.elements.revealSection.classList.add('visible');
-
-                const finalNarrationIndex = this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess');
-
-                this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text;
-
-            },
-
-            updateDieFace(dieElement, value) {
-
-                dieElement.dataset.value = value;
-
-                let dots = '';
-
-                for (let i = 0; i < value; i++) dots += '<div class="dot"></div>';
-
-                dieElement.innerHTML = dots;
-
-            },
-
-            setHandInteractable(isInteractable) {
-
-                if (isInteractable) {
-
-                    this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
-
-                        action.style.pointerEvents = '';
-
-                        action.style.opacity = '';
-
-                    });
-
-                }
-
-                this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
-
-                this.elements.cardHand.querySelectorAll('.card').forEach(card => {
-
-                    card.classList.toggle('inactive', !isInteractable);
-
-                });
-
-            },
-
-            handleSubscription(event) {
-
-                event.preventDefault();
-
-                const emailInput = this.elements.subscribeEmail;
-
-                if (emailInput.value && emailInput.value.includes('@')) {
-
-                    this.elements.subscriptionAlert.classList.add('visible');
-
-                    setTimeout(() => {
-
-                        this.elements.subscriptionAlert.classList.remove('visible');
-
-                    }, 3000);
-
-                    emailInput.value = '';
-
-                } else {
-
-                    emailInput.style.borderColor = '#ff6b6b';
-
-                    setTimeout(() => {
-
-                        emailInput.style.borderColor = 'var(--color-accent)';
-
-                    }, 2000);
-
-                }
-
-            },
-
-            openPreorderModal() {
-
-                this.elements.preorderModal.form.reset();
-
-                this.elements.preorderModal.formContainer.style.display = 'block';
-
-                this.elements.preorderModal.confirmationMsg.style.display = 'none';
-
-                this.elements.preorderModal.classList.add('visible');
-
-            },
-
-            closePreorderModal() {
-
-                this.elements.preorderModal.classList.remove('visible');
-
-            }
-
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            setTimeout(() => game.init(), 100);
-
+       const game = {
+    elements: {},
+    state: {},
+    spotCoordinates: [],
+    config: {
+        SPOTS_PER_RING: 11,
+        PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
+        // DEMO CARD TITLES (English)
+        CARD_TITLES: ["Black Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
+        CARD_IMAGES: [
+            "https://littlesprout.ro/images/card-black-woodpecker.png",
+            "https://littlesprout.ro/images/card-praying-mantis.png",
+            "https://littlesprout.ro/images/card-zander.png",
+            "https://littlesprout.ro/images/card-bear.png",
+            "https://littlesprout.ro/images/card-romanian-peony.png",
+            "https://littlesprout.ro/images/card-clouded-yellow.png"
+        ],
+        // DEMO CARD DESCRIPTIONS (English) - Matched to CARD_TITLES order
+        CARD_DESCRIPTIONS: [
+            '1. Distinctive all-black plumage with a red crown.<br/>2. Provides vital shelter for many species.<br/>3. Usually found in small family groups.<br/>4. Loud drumming sound used in communication.<br/>5. Prefers mature, old-growth forests.', // Black Woodpecker
+            '1. Ambush predators that sit and wait.<br/>2. Female lives 6-8 months, male 4-6 months.<br/>3. Feeds on insects and honey.<br/>4. Mates during spring and summer months.<br/>5. Has 3 life stages: egg, nymph stage, and adult.', // Praying Mantis
+            '1. Apex predator in its ecosystem.<br/>2. Prefers clear waters with moderate current.<br/>3. Found in large rivers, lakes, and reservoirs.<br/>4. Carnivorous, feeds mainly on smaller fish.<br/>5. Sharp vision adapted to low-light conditions.', // Zander
+            '1. Largest land carnivore after polar bears.<br/>2. Color varies from blonde to nearly black.<br/>3. Apex predators in their habitats.<br/>4. Complex problem-solving skills.<br/>5. Remarkable sense of smell and high intelligence.', // Brown Bear
+            '1. National flower of Romania.<br/>2. Symbolizes beauty and resilience.<br/>3. Blooms in vibrant pink and white colors.<br/>4. Important in traditional Romanian culture.<br/>5. Blooms from late spring to early summer.', // Romanian Peony
+            '1. Wings with yellow color and black margins.<br/>2. Known for its migratory behavior.<br/>3. Plays a role in the ecosystem\'s biodiversity.<br/>4. Strong and fast flier, flies close to the ground.<br/>5. Its sight is a delight for butterfly enthusiasts.' // Clouded Yellow
+        ],
+        OUTER_RING_COLORS: ['#f7a732', '#f0c340', '#92c045', '#55b64c', '#29b9e6', '#2b77c8', '#4a4aa8', '#684196', '#9e2a8f', '#e53935', '#d82b45']
+    },
+    // TUTORIAL STEPS (English)
+    tutorialSteps: [{
+        text: "First, choose a color for your pawn.",
+        action: 'promptColor',
+        stepNumber: 1
+    }, {
+        text: "Roll the dice to find your starting spot.",
+        action: 'promptDiceRoll',
+        stepNumber: 2
+    }, {
+        text: () => `Click the glowing ${game.state.diceSum} to begin.`,
+        action: 'promptPlacePawn',
+        stepNumber: 3
+    }, {
+        text: "Choose an action to play a card.",
+        action: 'promptPlayerTurn'
+    }, {
+        text: "Nice! Now it's your friend's turn...",
+        action: 'opponentTurn'
+    }, {
+        text: "Perfect. It's your turn again!",
+        action: 'promptPlayerTurn'
+    }, {
+        text: "Congratulations! You've reached the heart of the forest!",
+        action: 'endGameSuccess'
+    }],
+    init() {
+    this.cacheElements();
+    this.createPawns();
+    this.createBoardLayout();
+    this.createColorPalette();
+    this.attachEventListeners();
+    // Set unified scale factors as CSS variables
+    const desktopScale = 1.8; // Decreased from 2.38
+    const mobileScale = 3.0;
+    const mobileEnlargedScale = 1.5;
+    document.documentElement.style.setProperty('--desktop-card-scale', desktopScale);
+    document.documentElement.style.setProperty('--mobile-card-scale', mobileScale);
+    document.documentElement.style.setProperty('--mobile-enlarged-scale', mobileEnlargedScale);
+    this.resetGame(true);},
+    cacheElements() {
+        const requiredIds = ['sidebar', 'narration-text', 'reveal-section', 'replay-button', 'spots-container', 'dice-container', 'color-palette', 'card-hand', 'opponent-card-hand', 'game-container', 'steps-list', 'game-board', 'game-title', 'product-container', 'subscribe-email', 'subscription-alert', 'preorder-modal', 'interactive-controls-container'];
+        requiredIds.forEach(id => {
+            const element = document.getElementById(id);
+            if (!element) console.error(`Critical element not found: #${id}`);
+            this.elements[id.replace(/-(\w)/g, (m, l) => l.toUpperCase())] = element;
         });
+        this.elements.dice = this.elements.diceContainer.querySelectorAll('.dice');
+        this.elements.preorderModal.overlay = this.elements.preorderModal.querySelector('.modal-overlay');
+        this.elements.preorderModal.closeBtn = this.elements.preorderModal.querySelector('.modal-close-btn');
+        this.elements.preorderModal.form = this.elements.preorderModal.querySelector('#preorder-form');
+        this.elements.preorderModal.formContainer = this.elements.preorderModal.querySelector('#preorder-form-container');
+        this.elements.preorderModal.confirmationMsg = this.elements.preorderModal.querySelector('#confirmation-message');
+        this.elements.preorderModal.closeConfirmationBtn = this.elements.preorderModal.querySelector('#close-confirmation-btn');
+    },
+    createPawns() {
+        this.elements.playerSprout = this.createPawn('player-sprout');
+        this.elements.opponentSprout = this.createPawn('opponent-sprout');
+        this.elements.opponentSprout.style.backgroundColor = '#8E44AD';
+    },
+    // MODIFIED: Updated to include facts
+    createPlayerCard(cardIndex, rotation) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.setProperty('--rotation', `${rotation}deg`);
 
-    </script>
-
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function() {
-
-            // --- Overlay Fade Trigger ---
-
-            const startButton = document.querySelector('#welcome .cta-button');
-
-            const welcomeOverlay = document.querySelector('.welcome-overlay');
-
-            if (startButton && welcomeOverlay) {
-
-                startButton.addEventListener('click', function(e) {
-
-                    e.preventDefault();
-
-                    welcomeOverlay.classList.add('fade-out');
-
-                    // Add this line to make the game container visible
-
-                    document.getElementById('integrated-game-container').classList.add('visible');
-
-                });
-
+        // NEW: Get and parse facts
+        let fact1 = '';
+        let fact2 = '';
+        const description = this.config.CARD_DESCRIPTIONS[cardIndex];
+        if (description) {
+            const facts = description.split('<br/>');
+            if (facts[0]) {
+                fact1 = facts[0].substring(3); // Remove "1. "
             }
+            if (facts[1]) {
+                fact2 = facts[1].substring(3); // Remove "2. "
+            }
+        }
 
-            // --- Card Display Script ---
+        // MODIFIED: Corrected HTML order
+        card.innerHTML = `
+            <p class="card-title">${this.config.CARD_TITLES[cardIndex] || 'New Card'}</p> <div class="card-actions">
+                <div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div>
+                <div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div>
+                <div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div>
+            </div>
+            <div class="card-image-placeholder">
+                <img src="${this.config.CARD_IMAGES[cardIndex]}" alt="${this.config.CARD_TITLES[cardIndex]}">
+            </div>
+            <div class="card-facts">
+                <p class="card-fact">${fact1}</p>
+                <p class="card-fact">${fact2}</p>
+            </div>
+           `;                        card.addEventListener('click', (e) => this.handleCardTap(e, card));
+        card.querySelectorAll('.action-dot').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.handleActionChoice(parseInt(btn.dataset.move), e.target);
+            });
+        });
+        return card;
+    },
+    buildCardHands() {
+        const isMobile = window.innerWidth <= 768;
+        const cardCount = isMobile ? 5 : 6;
+        const rotationMultiplier = isMobile ? 4 : 5;
+        const centerIndex = (cardCount - 1) / 2;
+        const playerCardFragment = document.createDocumentFragment();
+        this.elements.cardHand.innerHTML = '';
+        for (let i = 0; i < cardCount; i++) {
+            const rotation = (i - centerIndex) * rotationMultiplier;
+            const card = this.createPlayerCard(i, rotation);
+            playerCardFragment.appendChild(card);
+        }
+        this.elements.cardHand.appendChild(playerCardFragment);
+        const opponentCardFragment = document.createDocumentFragment();
+        this.elements.opponentCardHand.innerHTML = '';
+        for (let i = 0; i < cardCount; i++) {
+            const card = document.createElement('div');
+            card.className = 'opponent-card';
+            const rotation = (i - centerIndex) * -rotationMultiplier;
+            card.style.setProperty('--rotation', `${rotation}deg`);
+            opponentCardFragment.appendChild(card);
+        }
+        this.elements.opponentCardHand.appendChild(opponentCardFragment);
+    },
+    createPawn(id) {
+        const pawn = document.createElement('div');
+        pawn.id = id;
+        pawn.className = 'sprout-pawn';
+        return pawn;
+    },
+    createBoardLayout() {
+        this.elements.spotsContainer.innerHTML = '';
+        this.spotCoordinates = [];
+        let spotCounter = 0;
+        const rings = [{ numSpots: this.config.SPOTS_PER_RING, radius: 0.46 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.37 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.28 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.19 }, { numSpots: this.config.SPOTS_PER_RING, radius: 0.09 }, { numSpots: 1, radius: 0 }];
+        const boardWidth = this.elements.gameBoard.getBoundingClientRect().width;
+        if (boardWidth === 0) {
+            requestAnimationFrame(() => this.createBoardLayout());
+            return;
+        }
+        rings.forEach((ring, ringIndex) => {
+            for (let i = 0; i < ring.numSpots; i++) {
+                const angle = (i / ring.numSpots) * 2 * Math.PI - (Math.PI / 2);
+                const x = Math.cos(angle) * ring.radius * boardWidth;
+                const y = Math.sin(angle) * ring.radius * boardWidth;
+                this.spotCoordinates.push({ x, y });
+                const spot = document.createElement('div');
+                spot.className = 'spot';
+                spot.id = `spot-${spotCounter}`;
+                spot.style.zIndex = rings.length - ringIndex;
+                if (ring.radius === 0) {
+                    spot.id = 'center-spot';
+                } else if (ringIndex === 0) {
+                    spot.innerHTML = `<span>${i + 2}</span>`;
+                    spot.addEventListener('click', () => this.handleSpotClick(i));
+                } else if (ringIndex === 1 || ringIndex === 3) {
+                    spot.style.backgroundColor = '#BDB7AB';
+                    spot.style.border = '1px solid #aaa';
+                }
+                spot.style.transform = `translate(${x}px, ${y}px)`;
+                this.elements.spotsContainer.appendChild(spot);
+                spotCounter++;
+            }
+        });
+        this.elements.spotsContainer.appendChild(this.elements.playerSprout);
+        this.elements.spotsContainer.appendChild(this.elements.opponentSprout);
+        if (this.state && this.state.playerPawnPosition > -1) {
+            const playerPos = this.spotCoordinates[this.state.playerPawnPosition];
+            this.elements.playerSprout.style.transform = `translate(${playerPos.x}px, ${playerPos.y}px) scale(1)`;
+        }
+        if (this.state && this.state.opponentPawnPosition > -1) {
+            const opponentPos = this.spotCoordinates[this.state.opponentPawnPosition];
+            this.elements.opponentSprout.style.transform = `translate(${opponentPos.x}px, ${opponentPos.y}px) scale(1)`;
+        }
+    },
+    createColorPalette() {
+        this.elements.colorPalette.innerHTML = '';
+        this.config.PAWN_COLORS.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.innerHTML = `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16,4 C12.69,4 10,6.69,10,10 C10,13.31 12.69,16 16,16 C19.31,16 22,13.31 22,10 C22,6.69 19.31,4 16,4 Z M16,17 C13,17 11,19 11,22 L21,22 C21,19 19,17 16,17 Z M9,23 L23,23 L23,26 L9,26 Z M7,27 L25,27 L25,29 L7,29 Z" fill="${color}" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+            swatch.addEventListener('click', () => this.handleColorChoice(color));
+            this.elements.colorPalette.appendChild(swatch);
+        });
+    },
+    attachEventListeners() {
+        this.elements.replayButton.addEventListener('click', () => this.resetGame());
+        this.elements.preorderModal.overlay.addEventListener('click', () => this.closePreorderModal());
+        this.elements.preorderModal.closeBtn.addEventListener('click', () => this.closePreorderModal());
+        this.elements.preorderModal.closeConfirmationBtn.addEventListener('click', () => this.closePreorderModal());
+        this.elements.preorderModal.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.elements.preorderModal.formContainer.style.display = 'none';
+            this.elements.preorderModal.confirmationMsg.style.display = 'block';
+        });
+        window.addEventListener('resize', () => this.createBoardLayout());
+    },
+    nextStep() {
+        this.state.currentStep++;
+        if (this.state.currentStep < this.tutorialSteps.length) {
+            const step = this.tutorialSteps[this.state.currentStep];
+            if (step) {
+                this.elements.narrationText.textContent = typeof step.text === 'function' ? step.text() : step.text;
+                this.updateStepsUI(step.stepNumber);
+                this[step.action]();
+            }
+        }
+    },
+    resetGame(isInitialStart = false) {
+        if (!isInitialStart) {
+            this.elements.gameBoard.classList.remove('reveal');
+            this.elements.revealSection.classList.remove('visible');
+        }
+        this.buildCardHands();
+        this.state = {
+            currentStep: -1,
+            diceSum: 0,
+            playerPawnPosition: -1,
+            opponentPawnPosition: -1,
+            selectedPawnColor: this.config.PAWN_COLORS[0],
+            turn: 1,
+            reachedCenter: false,
+            forceMemorize: false,
+            enlargedCard: null
+        };
+        this.elements.playerSprout.style.backgroundColor = this.state.selectedPawnColor;
+        [this.elements.playerSprout, this.elements.opponentSprout].forEach(pawn => {
+            pawn.style.transition = 'opacity 0s, transform 0s';
+            pawn.style.opacity = '0';
+            pawn.style.transform = `scale(0)`;
+        });
+        this.elements.playerSprout.classList.remove('winning-pawn');
+        const existingWinnerText = this.elements.spotsContainer.querySelector('.winner-text');
+        if (existingWinnerText) existingWinnerText.remove();
+        document.querySelectorAll('.spot.glowing').forEach(el => el.classList.remove('glowing'));
+        this.elements.cardHand.classList.remove('visible', 'has-enlarged-card');
+        this.elements.opponentCardHand.classList.remove('visible');
+        this.setHandInteractable(false);
+        this.elements.dice.forEach(d => this.updateDieFace(d, 1));
+        this.elements.cardHand.classList.remove('hand-active');
+        this.elements.colorPalette.classList.remove('visible');
+        this.elements.diceContainer.classList.remove('visible');
+        if (window.innerWidth <= 1200) {
+            this.elements.colorPalette.style.display = 'none';
+            this.elements.diceContainer.style.display = 'none';
+        }
+        setTimeout(() => {
+            this.elements.cardHand.classList.add('visible');
+            this.elements.opponentCardHand.classList.add('visible');
+            this.nextStep();
+        }, isInitialStart ? 500 : 750);
+    },
+    updateStepsUI(stepNumber) {
+        this.elements.stepsList.querySelectorAll('li').forEach((step, index) => {
+            step.classList.toggle('step-active', index + 1 === stepNumber);
+        });
+    },
+    promptColor() {
+        this.updateStepsUI(1);
+        this.elements.diceContainer.classList.remove('visible');
+        this.elements.colorPalette.classList.add('visible');
+        if (window.innerWidth <= 1200) {
+            this.elements.diceContainer.style.display = 'none';
+            this.elements.colorPalette.style.display = 'flex';
+        }
+    },
+    promptDiceRoll() {
+        this.updateStepsUI(2);
+        this.elements.colorPalette.classList.remove('visible');
+        this.elements.diceContainer.classList.add('visible', 'selectable');
+        if (window.innerWidth <= 1200) {
+            this.elements.colorPalette.style.display = 'none';
+            this.elements.diceContainer.style.display = 'flex';
+        }
+        this.elements.diceContainer.addEventListener('click', () => this.handleDiceRoll(), { once: true });
+    },
+    promptPlacePawn() {
+        this.updateStepsUI(3);
+        document.getElementById(`spot-${this.state.diceSum - 2}`).classList.add('glowing');
+    },
+    promptPlayerTurn() {
+        this.updateStepsUI(0);
+        this.elements.cardHand.classList.add('hand-active');
+        this.elements.opponentCardHand.classList.add('active');
+        document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
+        if (this.state.forceMemorize) {
+            this.elements.narrationText.textContent = "'Memorize' (+2) to advance."; // English text
+            this.setHandInteractable(true);
+            this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
+                if (action.dataset.move === '2') {
+                    action.classList.add('glowing-action');
+                    action.style.pointerEvents = 'auto';
+                    action.style.opacity = '1';
+                } else {
+                    action.style.pointerEvents = 'none';
+                    action.style.opacity = '0.4';
+                }
+            });
+        } else {
+            this.elements.narrationText.textContent = "Tap a card to enlarge, or press an action to play."; // English text
+            this.setHandInteractable(true);
+        }
+    },
+    opponentTurn() {
+        this.handleOpponentTurn();
+    },
+    endGameSuccess() {
+        this.elements.playerSprout.classList.add('winning-pawn');
+        const winnerText = document.createElement('div');
+        winnerText.textContent = 'Winner'; // English text
+        winnerText.className = 'winner-text';
+        this.elements.spotsContainer.appendChild(winnerText);
+        setTimeout(() => {
+            this.reveal();
+            this.elements.playerSprout.classList.remove('winning-pawn');
+            winnerText.remove();
+        }, 2500);
+    },
+    handleColorChoice(color) {
+        this.state.selectedPawnColor = color;
+        this.elements.playerSprout.style.backgroundColor = color;
+        this.elements.colorPalette.classList.remove('visible');
+        if (window.innerWidth <= 1200) {
+            setTimeout(() => {
+                this.elements.colorPalette.style.display = 'none';
+            }, 500);
+        }
+        this.nextStep();
+    },
+    handleDiceRoll() {
+        this.elements.diceContainer.classList.remove('selectable');
+        let rollCount = 0;
+        const rollInterval = setInterval(() => {
+            rollCount++;
+            this.elements.dice.forEach(d => {
+                d.classList.add('rolling');
+                const randomValue = Math.ceil(Math.random() * 6);
+                this.updateDieFace(d, randomValue);
+            });
+            if (rollCount > 5) {
+                clearInterval(rollInterval);
+                const val1 = Math.ceil(Math.random() * 6), val2 = Math.ceil(Math.random() * 6);
+                this.updateDieFace(this.elements.dice[0], val1);
+                this.updateDieFace(this.elements.dice[1], val2);
+                this.state.diceSum = val1 + val2;
+                this.elements.dice.forEach(d => d.classList.remove('rolling'));
+                setTimeout(() => this.nextStep(), 500);
+            }
+        }, 100);
+    },
+    handleSpotClick(index) {
+        if (this.state.currentStep !== 2 || index !== this.state.diceSum - 2) return;
+        this.elements.diceContainer.classList.remove('visible');
+        if (window.innerWidth <= 1200) {
+            setTimeout(() => {
+                this.elements.diceContainer.style.display = 'none';
+            }, 500);
+        }
+        document.getElementById(`spot-${index}`).classList.remove('glowing');
+        this.updateStepsUI(0);
+        this.elements.playerSprout.style.transition = 'opacity 0.5s';
+        const pos = this.spotCoordinates[index];
+        this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+        requestAnimationFrame(() => {
+            this.elements.playerSprout.style.opacity = '1';
+            setTimeout(() => {
+                this.elements.playerSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
+                this.placeOpponentPawn(index);
+                this.nextStep();
+            }, 500);
+        });
+        this.state.playerPawnPosition = index;
+    },
+    placeOpponentPawn(playerStartIndex) {
+        const opponentStartIndex = (playerStartIndex + 4) % this.config.SPOTS_PER_RING;
+        this.state.opponentPawnPosition = opponentStartIndex;
+        const pos = this.spotCoordinates[opponentStartIndex];
+        this.elements.opponentSprout.style.transition = 'opacity 0.5s';
+        this.elements.opponentSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+        requestAnimationFrame(() => {
+            this.elements.opponentSprout.style.opacity = '1';
+            setTimeout(() => {
+                this.elements.opponentSprout.style.transition = 'transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s';
+            }, 500);
+        });
+    },
+    handleCardTap(event, cardElement) {
+        if (!this.elements.cardHand.classList.contains('hand-interactable')) return;
+        if (this.state.enlargedCard && this.state.enlargedCard !== cardElement) {
+            this.state.enlargedCard.classList.remove('is-enlarged');
+        }
+        cardElement.classList.toggle('is-enlarged');
+        if (cardElement.classList.contains('is-enlarged')) {
+            this.state.enlargedCard = cardElement;
+            this.elements.cardHand.classList.add('has-enlarged-card');
+        } else {
+            this.state.enlargedCard = null;
+            this.elements.cardHand.classList.remove('has-enlarged-card');
+        }
+    },
+    handleActionChoice(moveAmount, clickedElement) {
+        this.setHandInteractable(false);
+        this.showGamificationText(`+${moveAmount}`, clickedElement);
+        this.elements.cardHand.classList.remove('hand-active', 'has-enlarged-card');
+        const cardToPlay = clickedElement.closest('.card');
+        // Hide any other enlarged card that wasn't the one played
+        if (this.state.enlargedCard && this.state.enlargedCard !== cardToPlay) {
+            this.state.enlargedCard.classList.remove('is-enlarged');
+        }
+        this.state.enlargedCard = null;
+        if (cardToPlay) {
+            const allDotsOnCard = Array.from(cardToPlay.querySelectorAll('.action-dot'));
+            const clickedIndex = allDotsOnCard.indexOf(clickedElement);
+            // This single function now handles both cases (playing from small or big)
+            this.animateAndReplaceCard(cardToPlay, moveAmount, clickedIndex);
+        }
+    },
+    advancePlayer(moveAmount) {
+        let newSpotIndex = this.state.playerPawnPosition + (this.config.SPOTS_PER_RING * moveAmount);
+        const centerSpotIndex = this.spotCoordinates.length - 1;
+        if (newSpotIndex >= centerSpotIndex) {
+            newSpotIndex = centerSpotIndex;
+            this.state.reachedCenter = true;
+        }
+        if (newSpotIndex !== this.state.playerPawnPosition) {
+            const pos = this.spotCoordinates[newSpotIndex];
+            this.elements.playerSprout.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(1)`;
+            this.state.playerPawnPosition = newSpotIndex;
+        }
+        if (this.state.forceMemorize && moveAmount === 2) {
+            this.state.forceMemorize = false;
+        }
+        const ringIndex = Math.floor(this.state.playerPawnPosition / this.config.SPOTS_PER_RING);
+        if (ringIndex === 1 || ringIndex === 3) {
+            this.state.forceMemorize = true;
+        }
+        let nextFlowStep = this.state.reachedCenter ? 'endGameSuccess' : 'opponentTurn';
+        this.state.currentStep = this.tutorialSteps.findIndex(s => s.action === nextFlowStep) - 1;
+        setTimeout(() => this.nextStep(), 500);
+    },
+    animateAndReplaceCard(cardElement, moveAmount, playedActionIndex) {
+    const cardRect = cardElement.getBoundingClientRect();
+    const clone = cardElement.cloneNode(true);
 
-            const cards = [{
+    let baseWidth = cardRect.width;
+    let baseHeight = cardRect.height;
+    const isEnlarged = cardElement.classList.contains('is-enlarged');
 
+    if (isEnlarged) {
+        // Use the correct scale factor for reversal based on device
+        const scaleFactor = window.innerWidth > 768 ? 
+             parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--desktop-card-scale')) :
+            parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mobile-enlarged-scale'));
+                        
+        const safeScale = isNaN(scaleFactor) || scaleFactor === 0 ? (window.innerWidth > 768 ? 1.8 : 1.5) : scaleFactor;
+        baseWidth /= safeScale;
+        baseHeight /= safeScale;
+    }
+    // Video logic has been REMOVED. Clone will just show the image.
+    if (playedActionIndex > -1) {
+        const playedActionDot = clone.querySelectorAll('.action-dot')[playedActionIndex];
+        if (playedActionDot) {
+            playedActionDot.classList.add('is-played-action');
+        }
+    }
+
+    cardElement.style.opacity = '0';
+    cardElement.style.pointerEvents = 'none';
+
+    const screenCenterX = window.innerWidth / 2;
+    let targetY;
+
+    if (window.innerWidth > 768) {
+        const boardRect = this.elements.gameBoard.getBoundingClientRect();
+        targetY = boardRect.top + (boardRect.height / 2);
+    } else {
+        // MOBILE: Center vertically, then move down 100px
+        targetY = (window.innerHeight / 2) + 100;
+    }
+
+    const cardCenterX = cardRect.left + cardRect.width / 2;
+    const cardCenterY = cardRect.top + cardRect.height / 2;
+    const translateX = screenCenterX - cardCenterX;
+    const translateY = targetY - cardCenterY;
+
+    clone.style.top = `${cardRect.top}px`;
+    clone.style.left = `${cardRect.left}px`;
+    clone.style.width = `${baseWidth}px`;
+    clone.style.height = `${baseHeight}px`;
+
+    clone.style.setProperty('--translateX', `${translateX}px`);
+    clone.style.setProperty('--translateY', `${translateY}px`);
+
+    const desktopScale = getComputedStyle(document.documentElement).getPropertyValue('--desktop-card-scale');
+    const mobileScale = getComputedStyle(document.documentElement).getPropertyValue('--mobile-card-scale');
+
+    if (window.innerWidth <= 768) {
+        clone.style.setProperty('--played-card-scale', mobileScale);
+        clone.style.setProperty('--played-card-scale-fade', parseFloat(mobileScale) + 0.24);
+    } else {
+        clone.style.setProperty('--played-card-scale', desktopScale);
+        clone.style.setProperty('--played-card-scale-fade', parseFloat(desktopScale) + 0.14);
+    }
+
+    clone.classList.add('played-card-animation');
+    document.body.appendChild(clone);
+
+    setTimeout(() => {
+        clone.remove();
+        const newCardIndex = Math.floor(Math.random() * this.config.CARD_DESCRIPTIONS.length); // Use new array length
+        const newCard = this.createPlayerCard(newCardIndex, cardElement.style.getPropertyValue('--rotation').replace('deg', ''));
+        cardElement.parentElement.replaceChild(newCard, cardElement);
+        this.advancePlayer(moveAmount);
+    }, 6000);},
+    handleOpponentTurn() {
+        setTimeout(() => {
+            const currentRingIndex = Math.floor(this.state.opponentPawnPosition / this.config.SPOTS_PER_RING);
+            const moveRings = (currentRingIndex === 1 || currentRingIndex === 3) ? 2 : 1;
+            const moveDistance = this.config.SPOTS_PER_RING * moveRings;
+            const newPosIndex = this.state.opponentPawnPosition + moveDistance;
+            if (newPosIndex < this.spotCoordinates.length - 1) {
+                const newPos = this.spotCoordinates[newPosIndex];
+                this.elements.opponentSprout.style.transform = `translate(${newPos.x}px, ${newPos.y}px) scale(1)`;
+                this.state.opponentPawnPosition = newPosIndex;
+            }
+            setTimeout(() => this.nextStep(), 1500);
+        }, 1000);
+    },
+    showGamificationText(text, targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        const el = document.createElement('div');
+        el.textContent = text;
+        el.className = 'floating-text';
+        el.style.left = `${rect.left + rect.width / 2}px`;
+        el.style.top = `${rect.top}px`;
+        el.style.transform = 'translateX(-50%)';
+        document.body.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+    },
+    reveal() {
+        this.elements.gameBoard.classList.add('reveal');
+        this.elements.revealSection.classList.add('visible');
+        const finalNarrationIndex = this.tutorialSteps.findIndex(s => s.action === 'endGameSuccess');
+        this.elements.narrationText.textContent = this.tutorialSteps[finalNarrationIndex].text;
+    },
+    updateDieFace(dieElement, value) {
+        dieElement.dataset.value = value;
+        let dots = '';
+        for (let i = 0; i < value; i++) dots += '<div class="dot"></div>';
+        dieElement.innerHTML = dots;
+    },
+    setHandInteractable(isInteractable) {
+        if (isInteractable) {
+            this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
+                action.style.pointerEvents = '';
+                action.style.opacity = '';
+            });
+        }
+        this.elements.cardHand.classList.toggle('hand-interactable', isInteractable);
+        this.elements.cardHand.querySelectorAll('.card').forEach(card => {
+            card.classList.toggle('inactive', !isInteractable);
+        });
+    },
+    handleSubscription(event) {
+        event.preventDefault();
+        const emailInput = this.elements.subscribeEmail;
+        if (emailInput.value && emailInput.value.includes('@')) {
+            this.elements.subscriptionAlert.classList.add('visible');
+            setTimeout(() => {
+                this.elements.subscriptionAlert.classList.remove('visible');
+            }, 3000);
+            emailInput.value = '';
+        } else {
+            emailInput.style.borderColor = '#ff6b6b';
+            setTimeout(() => {
+                emailInput.style.borderColor = 'var(--color-accent)';
+            }, 2000);
+        }
+    },
+    openPreorderModal() {
+        this.elements.preorderModal.form.reset();
+        this.elements.preorderModal.formContainer.style.display = 'block';
+        this.elements.preorderModal.confirmationMsg.style.display = 'none';
+        this.elements.preorderModal.classList.add('visible');
+    },
+    closePreorderModal() {
+        this.elements.preorderModal.classList.remove('visible');
+    }};
+        // Initialize the game when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => game.init(), 100);
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Overlay Fade Trigger ---
+            const startButton = document.querySelector('#welcome .cta-button');
+            const welcomeOverlay = document.querySelector('.welcome-overlay');
+            if (startButton && welcomeOverlay) {
+                startButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    welcomeOverlay.classList.add('fade-out');
+                    // Add this line to make the game container visible
+                    document.getElementById('integrated-game-container').classList.add('visible');
+                });
+            }
+           
+           // --- Card Display Script (for #cards section) ---
+           // This data is for the full card gallery, not the game demo
+           const cards = [{
                 name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>',
-
                 image: 'images/card-black-woodpecker.png',
-
                 category_text: 'Birds',
-
                 category_icon: 'images/birds.png',
-
-                description: '1. It has a distinctive all-black plumage with a red crown.<br>2. It provides vital shelter for many forest species.<br/>3. You can typically find it in pairs or small family groups.<br/>4. It uses a loud drumming sound to communicate.<br/>5. It prefers mature, old-growth forests.'
-
+                description: '1. Distinctive all-black plumage with a red crown.<br/>2. Provides vital shelter for many species.<br/>3. Usually found in small family groups.<br/>4. Loud drumming sound used in communication.<br/>5. Prefers mature, old-growth forests.'
             }, {
-
                 name: 'European Praying Mantis<br><span class="small">(Mantis religiosa)</span>',
-
                 image: 'images/card-praying-mantis.png',
-
                 category_text: 'Insects',
-
                 category_icon: 'images/insects.png',
-
                 description: '1. The female lives 6-8 months, while the male lives for 4-6 months.<br/>2. It feeds on insects and honey.<br/>3. These are ambush predators, so they sit and wait for their prey.<br/>4. They mate during the spring and summer months.<br/>5. It has 3 life stages: egg, nymph, and adult.'
-
             }, {
-
                 name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>',
-
                 image: 'images/card-clouded-yellow.png',
-
                 category_text: 'Butterflies',
-
                 category_icon: 'images/butterflies.png',
-
                 description: '1. Its wings have a yellow coloration with black margins.<br/>2. It is known for its strong migratory behavior.<br/>3. It plays a role in the local ecosystem\'s biodiversity.<br/>4. They are strong and fast fliers, and they fly close to the ground.<br/>5. Seeing one is a delight for any butterfly enthusiast.'
-
             }, {
-
                 name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>',
-
                 image: 'images/card-bear.png',
-
                 category_text: 'Animals',
-
                 category_icon: 'images/animals.png',
-
                 description: '1. It is the largest land carnivore after the polar bear.<br/>2. Its color can vary from blonde to nearly black.<br/>3. They are apex predators in their habitats.<br/>4. They have complex problem-solving skills.<br/>5. They have a remarkable sense of smell and high intelligence.'
-
             }, {
-
                 name: 'Zander<br/><span class="small">(Sander lucioperca)</span>',
-
                 image: 'images/card-zander.png',
-
                 category_text: 'Fish',
-
                 category_icon: 'images/fish.png',
-
                 description: '1. This is an apex predator in its ecosystem.<br/>2. It prefers clear waters with a moderate current.<br/>3. You can find it in large rivers, lakes, and reservoirs.<br/>4. It is carnivorous, feeding primarily on smaller fish.<br/>5. It has sharp vision that is adapted to low-light conditions.'
-
             }, {
-
                 name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>',
-
                 image: 'images/card-romanian-peony.png',
-
                 category_text: 'Flowers',
-
                 category_icon: 'images/flowers.png',
-
                 description: '1. This is the national flower of Romania.<br/>2. It symbolizes beauty and resilience.<br/>3. It blooms in vibrant pink and white colors.<br/>4. It is important in traditional Romanian culture.<br/>5. You can see it bloom in late spring to early summer.'
-
             }];
 
             const cardSearch = document.getElementById('cardSearch');
-
             if (cardSearch) {
-
                 cardSearch.addEventListener('input', function(e) {
-
                     const searchTerm = e.target.value.toLowerCase();
-
                     const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm));
-
                     displayCards(filteredCards);
-
                 });
-
             }
-
-
 
             function displayCards(cardsToShow) {
-
                 const cardsGrid = document.getElementById('cardsGrid');
-
                 if (cardsGrid) {
-
                     cardsGrid.innerHTML = cardsToShow.map(card => `
-
-                            <div class="card">
-
-                                <h3 class="tcenter">${card.name}</h3>
-
-                                <img class="product-img-card" src="${card.image}">
-
-                                <p class="category">
-
-                                    <span><img class="card-category" src="${card.category_icon}" alt="${card.category_text}"> ${card.category_text}</span>
-
-                                    <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
-
-                                </p>
-
-                                <p>${card.description}</p>
-
-                            </div>`).join('');
-
+                                <div class="card">
+                                    <h3 class="tcenter">${card.name}</h3>
+                                    <img class="product-img-card" src="${card.image}">
+                                    <p class="category">
+                                        <span><img class="card-category" src="${card.category_icon}" alt="${card.category_text}"> ${card.category_text}</span>
+                                        <img class="card-img" src="images/logo-little-sprout.png" alt="Logo Little Sprout">
+                                    </p>
+                                    <p>${card.description}</p>
+                                </div>`).join('');
                 }
-
             }
-
             displayCards(cards);
 
             // --- Nav and Scroll Logic ---
-
             const sections = document.querySelectorAll('section');
-
             const navLinks = document.querySelectorAll('nav a');
-
             const observer = new IntersectionObserver((entries) => {
-
                 entries.forEach(entry => {
-
                     if (entry.isIntersecting) {
-
                         navLinks.forEach(link => link.classList.remove('active'));
-
                         const activeLink = document.querySelector(`nav a[href="#${entry.target.id}"]`);
-
                         if (activeLink) {
-
                             activeLink.classList.add('active');
-
                         }
-
                     }
-
                 });
-
             }, {
-
                 root: null,
-
                 rootMargin: '-50% 0px',
-
                 threshold: 0
-
             });
-
             sections.forEach(section => {
-
                 if (section) {
-
                     observer.observe(section);
-
                 }
-
             });
-
             navLinks.forEach(anchor => {
-
                 anchor.addEventListener('click', function(e) {
-
                     e.preventDefault();
-
                     const targetId = this.getAttribute('href');
-
                     const targetSection = document.querySelector(targetId);
-
                     if (targetSection) {
-
                         navLinks.forEach(link => link.classList.remove('active'));
-
                         this.classList.add('active');
-
                         targetSection.scrollIntoView({
-
                             behavior: 'smooth'
-
                         });
-
                     }
-
                 });
-
             });
 
             // --- Language Switcher Logic ---
-
             const enLink = document.getElementById('en-link');
-
             const roLink = document.getElementById('ro-link');
-
             const currentPath = window.location.pathname;
-
             const currentFile = currentPath.split('/').pop() || 'index.html';
-
-            if (currentFile === 'index.html' || currentFile === '') {
-
-                roLink.classList.add('active2');
-
-                enLink.classList.remove('active2');
-
-            } else if (currentFile === 'en.html') {
-
+            
+            // This is 'en.html', so set English as active
+            if (currentFile === 'en.html') {
                 enLink.classList.add('active2');
-
                 roLink.classList.remove('active2');
-
+            } else { // Fallback for index.html
+                roLink.classList.add('active2');
+                enLink.classList.remove('active2');
             }
 
             enLink.href = 'en.html';
-
             roLink.href = 'index.html';
-
         });
-
     </script>
-
+    
 </body>
-
 </html>
