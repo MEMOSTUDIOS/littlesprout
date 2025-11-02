@@ -19,6 +19,38 @@
         .card-image-placeholder {
             overflow: hidden;
         }
+        
+        /* Dynamic cards styling - make image fill the entire card */
+        #cards .cards-grid .card {
+            padding: 0; /* Remove default padding for image-only cards */
+            overflow: hidden;
+            min-height: 535.5px; /* Match hardcoded card height */
+        }
+        
+        #cards .cards-grid .card:has(.product-img-card:only-child) {
+            padding: 0;
+        }
+        
+        #cards .cards-grid .card:not(:has(.product-img-card:only-child)) {
+            padding: 1rem; /* Keep padding for hardcoded cards with content */
+        }
+        
+        #cards .cards-grid .card .product-img-card:only-child {
+            width: 100%;
+            height: 100%;
+            min-height: 535.5px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin: 0;
+        }
+        
+        #cards .cards-grid .card .product-img-card:not(:only-child) {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        
         /* Ensure cards have a stacking context for tooltips */
         #card-hand .card {
             position: relative;
@@ -1048,20 +1080,49 @@ min-height: 72px;
             card.classList.toggle('inactive', !isInteractable);
         });
     },
-    handleSubscription(event) {
+    async handleSubscription(event) {
         event.preventDefault();
         const emailInput = this.elements.subscribeEmail;
-        if (emailInput.value && emailInput.value.includes('@')) {
-            this.elements.subscriptionAlert.classList.add('visible');
-            setTimeout(() => {
-                this.elements.subscriptionAlert.classList.remove('visible');
-            }, 3000);
-            emailInput.value = '';
-        } else {
+        
+        if (!emailInput.value || !emailInput.value.includes('@')) {
             emailInput.style.borderColor = '#ff6b6b';
             setTimeout(() => {
                 emailInput.style.borderColor = 'var(--color-accent)';
             }, 2000);
+            return;
+        }
+        
+        try {
+            const response = await fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: emailInput.value })
+            });
+            
+            if (response.ok) {
+                this.elements.subscriptionAlert.querySelector('span').textContent = 'Mulțumim pentru abonare!';
+                this.elements.subscriptionAlert.classList.add('visible');
+                setTimeout(() => {
+                    this.elements.subscriptionAlert.classList.remove('visible');
+                }, 3000);
+                emailInput.value = '';
+            } else {
+                const data = await response.json();
+                this.elements.subscriptionAlert.querySelector('span').textContent = data.message || 'Eroare la abonare.';
+                this.elements.subscriptionAlert.classList.add('visible');
+                setTimeout(() => {
+                    this.elements.subscriptionAlert.classList.remove('visible');
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('Subscription error:', error);
+            this.elements.subscriptionAlert.querySelector('span').textContent = 'Eroare de rețea. Încearcă din nou.';
+            this.elements.subscriptionAlert.classList.add('visible');
+            setTimeout(() => {
+                this.elements.subscriptionAlert.classList.remove('visible');
+            }, 3000);
         }
     },
     openPreorderModal() {
@@ -1129,19 +1190,47 @@ min-height: 72px;
     category_icon: 'images/flowers.png',
     description: '1. Floarea națională a României.<br/>2. Simbolizează frumusețea și rezistența.<br/>3. Înflorește în culori vibrante roz și alb.<br/>4. Important în cultura tradițională românească.<br/>5. Înflorește de la sfârșitul primăverii până la începutul verii.'
 }];
+            
+            // Dynamic cards from hidden-visual--cards folder
+            let dynamicCards = [];
+            
             const cardSearch = document.getElementById('cardSearch');
             if (cardSearch) {
-                cardSearch.addEventListener('input', function(e) {
+                cardSearch.addEventListener('input', async function(e) {
                     const searchTerm = e.target.value.toLowerCase();
-                    const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm));
-                    displayCards(filteredCards);
+                    
+                    // Filter hardcoded cards
+                    const filteredCards = cards.filter(card => 
+                        card.name.toLowerCase().includes(searchTerm) || 
+                        card.category_text.toLowerCase().includes(searchTerm) || 
+                        card.description.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    // Fetch and filter dynamic cards from folder
+                    if (searchTerm) {
+                        try {
+                            const response = await fetch(`/api/card-images?search=${encodeURIComponent(searchTerm)}`);
+                            const data = await response.json();
+                            dynamicCards = data.cards || [];
+                        } catch (error) {
+                            console.error('Error fetching dynamic cards:', error);
+                            dynamicCards = [];
+                        }
+                    } else {
+                        dynamicCards = [];
+                    }
+                    
+                    displayCards(filteredCards, dynamicCards);
                 });
             }
 
-            function displayCards(cardsToShow) {
+            function displayCards(cardsToShow, dynamicCardsToShow = []) {
                 const cardsGrid = document.getElementById('cardsGrid');
                 if (cardsGrid) {
-                    cardsGrid.innerHTML = cardsToShow.map(card => `
+                    let html = '';
+                    
+                    // Display hardcoded cards
+                    html += cardsToShow.map(card => `
                                 <div class="card">
                                     <h3 class="tcenter">${card.name}</h3>
                                     <img class="product-img-card" src="${card.image}">
@@ -1151,6 +1240,14 @@ min-height: 72px;
                                     </p>
                                     <p>${card.description}</p>
                                 </div>`).join('');
+                    
+                    // Display dynamic cards from folder (simplified - only image)
+                    html += dynamicCardsToShow.map(card => `
+                                <div class="card">
+                                    <img class="product-img-card" src="${card.path}">
+                                </div>`).join('');
+                    
+                    cardsGrid.innerHTML = html;
                 }
             }
             displayCards(cards);
