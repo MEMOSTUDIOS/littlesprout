@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
-    <title>Little Sprout: Aventură în Natură</title>
+    <title>Little Sprout: Adventure in Nature</title>
     <meta name="apple-mobile-web-app-title" content="Little Sprout" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -19,38 +19,6 @@
         .card-image-placeholder {
             overflow: hidden;
         }
-        
-        /* Dynamic cards styling - make image fill the entire card */
-        #cards .cards-grid .card {
-            padding: 0; /* Remove default padding for image-only cards */
-            overflow: hidden;
-            min-height: 535.5px; /* Match hardcoded card height */
-        }
-        
-        #cards .cards-grid .card:has(.product-img-card:only-child) {
-            padding: 0;
-        }
-        
-        #cards .cards-grid .card:not(:has(.product-img-card:only-child)) {
-            padding: 1rem; /* Keep padding for hardcoded cards with content */
-        }
-        
-        #cards .cards-grid .card .product-img-card:only-child {
-            width: 100%;
-            height: 100%;
-            min-height: 535.5px;
-            object-fit: cover;
-            border-radius: 20px;
-            margin: 0;
-        }
-        
-        #cards .cards-grid .card .product-img-card:not(:only-child) {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-        
         /* Ensure cards have a stacking context for tooltips */
         #card-hand .card {
             position: relative;
@@ -81,9 +49,7 @@
         }
         .played-card-animation .card-title {
             font-size: 0.75em;
-        }
-                
-        /* CSS for hover tooltips positioned at the bottom */
+        }                        /* CSS for hover tooltips positioned at the bottom */
         .action-dot {
             position: relative;
             cursor: pointer;
@@ -112,11 +78,10 @@
             opacity: 1;
             visibility: visible;
         }
-
         /* NEW: Styles for card facts - SCOPED TO #card-hand */
         #card-hand .card-facts {
             padding: 0 0.25rem;
-            margin-top: 0.1rem; /* Tighter margin */
+            margin-top: 5px; /* Tighter margin */
             display: flex;
             flex-direction: column;
             justify-content: flex-start; /* Start from top */
@@ -124,69 +89,45 @@
             width: 100%;
             flex-grow: 1;/* Allows facts to take up space */
         }
-
         #card-hand .card-fact {
-            font-size: 0.4rem; /* Very small to fit */
+            font-size: 0.3rem; /* Very small to fit */
             color: #333;
             margin: 1px 0;
             line-height: 1.2;
-            text-align: left;
-	letter-spacing: 0.3px;
+            text-align: left;	letter-spacing: 0.3px;
         }
-
         /* Adjust card layout to accommodate new text */
-        #card-hand .card {
-             /* Make card a flex column */
+        #card-hand .card {             /* Make card a flex column */
             display: flex;
             flex-direction: column;
             justify-content: flex-start; /* Align from top */
-        }
-        
-        /* SCOPED TO #card-hand */
+        }                /* SCOPED TO #card-hand */
         #card-hand .card-image-placeholder {
             flex-grow: 0; /* Don't let image grow */
             flex-shrink: 0; /* Don't let image shrink */
-            height: 50%; /* Give image a fixed height */
-min-height: 75px;
+            height: 50%; /* Give image a fixed height */min-height: 75px;
         }
-
         /* SCOPED TO #card-hand */
         #card-hand .card-actions {
             flex-shrink: 0; /* Prevent actions from shrinking */
             margin-top: auto; /* Push actions to the bottom */
             padding-top: 0.2rem; /* Add a little space */
         }
-
         .card-title {
             flex-shrink: 0; /* Prevent title from shrinking */
-        }
-                
-        /* Force the played action's tooltip to be visible on the animated card */
+        }                        /* Force the played action's tooltip to be visible on the animated card */
         .played-card-animation .is-played-action[data-tooltip]::after {
             opacity: 1;
             visibility: visible;
-            font-size: 0.5rem; 
-            bottom: -18px; 
-            padding: 1px 4px;z-index: 9999; 
-        }
-                
-        /* This rule is now global, which is fine */
-        .card-image-placeholder {
-             width: 100%;
-             border-radius: 8px;
-             overflow: hidden;
-             background-color: transparent;z-index: 10; 
-         }
-
+            font-size: 0.3rem;             bottom: -18px;             padding: 1px 4px;z-index: 9999;         }                        /* This rule is now global, which is fine */
+        .card-image-placeholder {             width: 100%;             border-radius: 8px;             overflow: hidden;             background-color: transparent;z-index: 10;          }
         /* This global rule is also fine */
         .card-actions {
             display: flex;
             justify-content: space-around;
             width: 100%;
             align-items: flex-start;
-        }
-        
-        /* These rules are for the animated card, which is correct */
+        }                /* These rules are for the animated card, which is correct */
         .played-card-animation .card-actions {
             width: 100%;
             flex-shrink: 0;
@@ -197,76 +138,43 @@ min-height: 75px;
         .played-card-animation .card-image-placeholder img {
             width: 100%;
             height: 100%;
-            object-fit: fill;
-min-height: 72px;
+            object-fit: fill;min-height: 72px;
         }
         .played-card-animation .card-facts {
             flex-shrink: 0; /* Don't let facts grow on BIG card */
         }
-        .played-card-animation .card-fact {
-             font-size: 0.42rem; /* Slightly larger on the big card */
-             text-align: left;
-        }
+        .played-card-animation .card-fact {             font-size: 0.3rem; /* Slightly larger on the big card */             text-align: left;        }
         .played-card-animation .action-dot {
-            font-size: 0.6em; /* Makes advance options smaller on the big card */
-        }
-        
-       @keyframes play-card-effect {    0% {        transform: scale(1);        opacity: 1;    }    8% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    92% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    100% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);        opacity: 0;    }}
-        /* Media query for mobile-specific played card size */
-        @media (max-width: 768px) {
-            .played-card-animation .card-title {
-            font-size: 0.5em;
-        }
-            .played-card-animation {
-                padding: 0.5rem;
-            }
-            @keyframes play-card-effect {
-                0% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-                8% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
-                    opacity: 1;
-                }
-                92% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
-                    opacity: 1;
-                }
-                100% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
-                    opacity: 0;
-                }
-            }
-        }/* Ensure cards have a stacking context for tooltips */#card-hand .card {    position: relative;    z-index: 1;    transition: z-index 0s 0.2s, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease; /* Delay z-index change to prevent flicker */}#card-hand .card:hover {    z-index: 10; /* Bring hovered card to the front */    transition: z-index 0s;    overflow: visible; /* Allow tooltip to show on small cards */}/* CSS for hover tooltips positioned at the bottom */.action-dot {    position: relative;    cursor: pointer;}.action-dot[data-tooltip]::after {    content: attr(data-tooltip);    position: absolute;    bottom: -22px;    left: 50%;    transform: translateX(-50%);    background-color: #333;    color: #fff;    padding: 2px 4px;    border-radius: 4px;    font-size: 0.55rem;    white-space: nowrap;    z-index: 1001;    opacity: 0;    visibility: hidden;    pointer-events: none;    transition: opacity 0.2s, visibility 0.2s;}.action-dot[data-tooltip]:hover::after,.action-dot[data-tooltip]:focus::after {    opacity: 1;    visibility: visible;}/* Card Enlargement & Interaction Styles */
-#card-hand .card:not(.is-enlarged):hover {    transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);}#card-hand .card.is-enlarged,#card-hand .card.is-enlarged:hover {    transform: translateY(-110px) scale(var(--desktop-card-scale)) rotate(var(--rotation));    z-index: 20;    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);    cursor: pointer;}#card-hand .card.is-enlarged {    overflow: visible;}/* Make tooltips on enlarged cards smaller, like labels */#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {    font-size: 0.35rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}#card-hand.has-enlarged-card .card:not(.is-enlarged) {    opacity: 0.6;    transform: translateY(10px) rotate(var(--rotation));}#card-hand .card.is-enlarged .action-dot.show-tooltip::after {    opacity: 1;    visibility: visible;    transition-delay: 0s;}#card-hand .card.is-enlarged .action-dot {    cursor: pointer;}@media (max-width: 768px) {    #card-hand .card.is-enlarged,    #card-hand .card.is-enlarged:hover {        /* Use new mobile scale and move down 100px from center */        transform: translateY(calc(-25vh + 100px)) scale(var(--mobile-enlarged-scale)) rotate(0);    }#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {font-size: 0.25rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}#card-hand .card-image-placeholder {min-height: 35px;} #card-hand .card-fact {font-size:6px!important;}#card-hand .card-title{font-size:6px;} }    </style>
+            font-size: 0.5em; /* Makes advance options smaller on the big card */
+        }               @keyframes play-card-effect {    0% {        transform: scale(1);        opacity: 1;    }    8% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    92% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    100% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);        opacity: 0;    }}        /* Media query for mobile-specific played card size */
+        @media (max-width: 768px) {            .played-card-animation .card-title {            font-size: 0.4em;        }            .played-card-animation {                padding: 0.5rem;            }            @keyframes play-card-effect {                0% {                    transform: scale(1);                    opacity: 1;                }                8% {                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));                    opacity: 1;                }                92% {                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));                    opacity: 1;                }                100% {                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));                    opacity: 0;                }            }        }/* Ensure cards have a stacking context for tooltips */#card-hand .card {    position: relative;    z-index: 1;    transition: z-index 0s 0.2s, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease; /* Delay z-index change to prevent flicker */}#card-hand .card:hover {    z-index: 10; /* Bring hovered card to the front */    transition: z-index 0s;    overflow: visible; /* Allow tooltip to show on small cards */}/* CSS for hover tooltips positioned at the bottom */.action-dot {    position: relative;    cursor: pointer;}.action-dot[data-tooltip]::after {    content: attr(data-tooltip);    position: absolute;    bottom: -22px;    left: 50%;    transform: translateX(-50%);    background-color: #333;    color: #fff;    padding: 2px 4px;    border-radius: 4px;    font-size: 0.55rem;    white-space: nowrap;    z-index: 1001;    opacity: 0;    visibility: hidden;    pointer-events: none;    transition: opacity 0.2s, visibility 0.2s;}.action-dot[data-tooltip]:hover::after,.action-dot[data-tooltip]:focus::after {    opacity: 1;    visibility: visible;}/* Card Enlargement & Interaction Styles */#card-hand .card:not(.is-enlarged):hover {    transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);}#card-hand .card.is-enlarged,#card-hand .card.is-enlarged:hover {    transform: translateY(-110px) scale(var(--desktop-card-scale)) rotate(var(--rotation));    z-index: 20;    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);    cursor: pointer;}#card-hand .card.is-enlarged {    overflow: visible;}/* Make tooltips on enlarged cards smaller, like labels */#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {    font-size: 0.35rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}#card-hand.has-enlarged-card .card:not(.is-enlarged) {    opacity: 0.6;    transform: translateY(10px) rotate(var(--rotation));}#card-hand .card.is-enlarged .action-dot.show-tooltip::after {    opacity: 1;    visibility: visible;    transition-delay: 0s;}#card-hand .card.is-enlarged .action-dot {    cursor: pointer;}@media (max-width: 768px) {    #card-hand .card.is-enlarged,    #card-hand .card.is-enlarged:hover {        /* Use new mobile scale and move down 100px from center */        transform: translateY(calc(-25vh + 100px)) scale(var(--mobile-enlarged-scale)) rotate(0);    }#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {font-size: 0.25rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;} #card-hand .card-image-placeholder {min-height: 35px;} #card-hand .card-fact {font-size:6px!important;}#card-hand .card-title{font-size:6px;} }    </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <a href="#welcome" class="logo" title="Logo Little Sprout">
+            <a href="#welcome" class="logo" title="Little Sprout Logo">
                 <img src="images/logo-little-sprout.png" alt="icon"><span>Little Sprout</span>
             </a>
             <ul>
-                <li><a href="#bunvenit" class="active">Bun venit</a></li>
-                <li><a href="#game">Jocul</a></li>
-                <li><a href="#rules">Reguli</a></li>
-                <li><a href="#cards">Cărți de joc</a></li>
-                <li><a href="#shop">Magazin</a></li>
+                <li><a href="#Willkommen" class="active">Welcome</a></li>
+                <li><a href="#game">Game</a></li>
+                <li><a href="#rules">Rules</a></li>
+                <li><a href="#cards">Cards</a></li>
+                <li><a href="#shop">Shop</a></li>
             </ul>
         </div>
     </nav>
-    <section id="bunvenit">
+    <section id="Willkommen">
         <h1 id="game-title"></h1>
         <div id="integrated-game-container">
             <div id="main-container">
                 <div id="sidebar">
                     <div id="setup-controls">
-                        <h2>Pornește în Aventură</h2>
+                        <h2>Start the Adventure</h2>
                         <ol id="steps-list">
-                            <li id="step-1">Alege culoarea</li>
-                            <li id="step-2">Dă cu zarurile</li>
-                            <li id="step-3">Așează pionul</li>
+                            <li id="step-1">Choose your color</li>
+                            <li id="step-2">Roll the dice</li>
+                            <li id="step-3">Place your pawn</li>
                         </ol>
                         <div id="interactive-controls-container">
                             <div id="color-palette"></div>
@@ -294,180 +202,180 @@ min-height: 72px;
                     <div id="opponent-card-hand"></div>
                     <div id="card-hand"></div>
                     <div id="reveal-section">
-                        <h1 id="reveal-title">Joacă Aventura Acasă</h1>
+                        <h1 id="reveal-title">Play the Adventure at Home</h1>
                         <div id="product-container">
                             <div class="product-box"><img src="https://littlesprout.ro/images/standard.jpg" alt="Standard Edition Box Art">
-                                <h3>Jocul Standard</h3>
-                                <p>Experiența de bază completă. Tot ce ai nevoie pentru a începe aventura.</p><button class="preorder-btn">Precomandă</button>
+                                <h3>Standard Game</h3>
+                                <p>The complete core experience. Everything you need to start the adventure.</p><button class="preorder-btn">Pre-order</button>
                             </div>
                             <div class="product-box product-expansion"><img src="https://littlesprout.ro/images/expansion.jpg" alt="Expansion Box Art">
-                                <h3>Pachet Expansiune</h3>
-                                <p>Personaje noi și provocări mai mari.</p><button class="preorder-btn">Precomandă</button>
+                                <h3>Expansion Pack</h3>
+                                <p>New characters and greater challenges.</p><button class="preorder-btn">Pre-order</button>
                             </div>
                             <div class="product-box product-collector"><img src="https://littlesprout.ro/images/collector-edition.jpg" alt="Collector's Edition Box Art">
-                                <h3>Ediția de Colecție</h3>
-                                <p>Comoara supremă, cu conținut exclusiv.</p><button class="preorder-btn">Precomandă</button>
+                                <h3>Collector's Edition</h3>
+                                <p>The ultimate treasure, with exclusive content.</p><button class="preorder-btn">Pre-order</button>
                             </div>
                         </div>
                         <div id="reveal-footer">
-                            <button id="replay-button">Rejoacă Demo</button>
+                            <button id="replay-button">Replay Demo</button>
                             <form class="subscribe-form" onsubmit="game.handleSubscription(event)">
-                                <input type="email" id="subscribe-email" placeholder="Emailul pentru noutăți...">
-                                <button type="submit">Abonează-te</button>
+                                <input type="email" id="subscribe-email" placeholder="Email for updates...">
+                                <button type="submit">Subscribe</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="subscription-alert"><span>Mulțumim pentru abonare!</span></div>
+            <div id="subscription-alert"><span>Thanks for subscribing!</span></div>
             <div id="preorder-modal" class="modal">
                 <div class="modal-overlay"></div>
                 <div class="modal-content">
                     <div id="preorder-form-container">
                         <div class="modal-header">
-                            <h3>Precomandă Little Sprout</h3><button class="modal-close-btn">&times;</button>
+                            <h3>Pre-order Little Sprout</h3><button class="modal-close-btn">&times;</button>
                         </div>
                         <form id="preorder-form" class="modal-body">
-                            <div class="form-group"><label for="name">Nume Complet</label><input type="text" id="name" placeholder="Popescu Ion" required></div>
-                            <div class="form-group"><label for="email">Adresă de Email</label><input type="email" id="email" placeholder="exemplu@email.com" required></div>
-                            <div class="form-group"><label for="address">Adresă de Livrare</label><textarea id="address" rows="3" placeholder="Str. Exemplu, Nr. 1, Oraș" required></textarea></div>
-                            <p style="font-size: 0.8rem; text-align: center; opacity: 0.7; margin-bottom: 1rem;">Notă: Acesta este un demo. Nicio plată nu va fi procesată.</p>
-                            <button type="submit">Confirmă Precomanda</button>
+                            <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" placeholder="John Doe" required></div>
+                            <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" placeholder="example@email.com" required></div>
+                            <div class="form-group"><label for="address">Shipping Address</label><textarea id="address" rows="3" placeholder="123 Example St, City" required></textarea></div>
+                            <p style="font-size: 0.8rem; text-align: center; opacity: 0.7; margin-bottom: 1rem;">Note: This is a demo. No payment will be processed.</p>
+                            <button type="submit">Confirm Pre-order</button>
                         </form>
                     </div>
                     <div id="confirmation-message">
-                        <h3 style="font-size: 1.8rem; color: var(--glow-color); margin-bottom: 0.5rem;">Precomandă confirmată!</h3>
-                        <p>Mulțumim! O confirmare a fost trimisă pe email. Te vom anunța când jocul va fi expediat.</p>
-                        <button id="close-confirmation-btn" style="background: var(--color-accent); color: white; padding: 10px 20px; border-radius: 5px; margin-top: 1.5rem; border: none; cursor: pointer;">Închide</button>
+                        <h3 style="font-size: 1.8rem; color: var(--glow-color); margin-bottom: 0.5rem;">Pre-order confirmed!</h3>
+                        <p>Thank you! A confirmation has been sent to your email. We'll notify you when the game ships.</p>
+                        <button id="close-confirmation-btn" style="background: var(--color-accent); color: white; padding: 10px 20px; border-radius: 5px; margin-top: 1.5rem; border: none; cursor: pointer;">Close</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="welcome-overlay">
             <h3 class="mt-5">Little Sprout</h3>
-            <h1>Aventură în Natură</h1>
+            <h1>Adventure in Nature</h1>
             <div class="language-switcher">
                 <a href="index.html" id="ro-link" title="Română">RO</a>
                 <span class="divider">|</span>
                 <a href="en.html" id="en-link" class="active2" title="Engleză">EN</a>
             </div>
-            <a class="cta-button" href="#game">Joacă demo</a>
+            <a class="cta-button" href="#game">Play demo</a>
         </div>
     </section>
     <section id="game">
-        <h2 class="mt-5">Jocul</h2>
-        <h3>Bun venit în ținutul magic al României, unde natura te așteaptă în cele mai spectaculoase forme!</h3>
-        <p>În inima pădurilor fermecate, a râurilor sclipitoare și a pajiștilor vibrante, un mic lăstar numit Little Sprout este pe cale să pornească într-o mare aventură, iar tu ești invitat să i te alături.<br/>Ghidat de șoaptele naturii, Little Sprout vrea să învețe despre cele mai faimoase animale, insecte, flori, pești, păsări și fluturi din România.</p>
-        <p>Fiecare tură îți aduce o nouă descoperire, pe măsură ce tragi cărți cu cele mai incredibile minuni naturale ale României.</p>
+        <h2 class="mt-5">The Game</h2>
+        <h3>Welcome to the magical land of Romania, where nature awaits you in its most spectacular forms!</h3>
+        <p>In the heart of enchanted forests, sparkling rivers, and vibrant meadows, a little sprout named Little Sprout is about to embark on a great adventure, and you are invited to join.<br/>Guided by the whispers of nature, Little Sprout wants to learn about the most famous animals, insects, flowers, fish, birds, and butterflies in Romania.</p>
+        <p>Each turn brings you a new discovery as you draw cards featuring the most incredible natural wonders of Romania.</p>
         <div class="game-features mt-5">
             <div class="product-img feature">
                 <h3 class="game-dot1">+1</h3>
-                <h1>Desen</h1>
-                <p>(Adu natura la viață prin arta ta)</p>
-                <p><br/>Desenează creaturi sau plante frumoase pe care prietenii tăi să le ghicească.</p>
+                <h1>Draw</h1>
+                <p>(Bring nature to life through your art)</p>
+                <p><br/>Draw beautiful creatures or plants for your friends to guess.</p>
             </div>
             <div class="product-img feature">
                 <h3 class="game-dot2">+2</h3>
-                <h1>Memorare</h1>
-                <p>(Împărtășește două fapte fascinante pe care le-ai învățat despre fauna României)</p>
-                <p><br/>Amintește-ți fapte interesante despre plantele și animalele pe care le-ai întâlnit pe parcurs.</p>
+                <h1>Memorize</h1>
+                <p>(Share two fascinating facts you've learned about Romania's wildlife)</p>
+                <p><br/>Recall interesting facts about the plants and animals you've encountered along the way.</p>
             </div>
             <div class="product-img feature">
                 <h3 class="game-dot1">+1</h3>
-                <h1>Interpretare</h1>
-                <p>(Descrie minunile naturii în cuvintele tale)</p>
-                <p><br/>Descrie aceste creaturi uimitoare folosind doar cuvintele tale — ca și cum ai spune o poveste magică despre natură!</p>
+                <h1>Interpret</h1>
+                <p>(Describe the wonders of nature in your own words)</p>
+                <p><br/>Describe these amazing creatures using only your words—like telling a magical story about nature!</p>
             </div>
         </div>
-        <p class="mt-5">De fiecare dată când finalizezi aceste provocări distractive, vei câștiga puncte speciale care ajută copacul cunoașterii tale să crească mai înalt și mai puternic.</p>
-        <p>Cu cât te joci mai mult, cu atât înveți mai mult, iar copacul tău înflorește — la fel ca Little Sprout!</p>
-        <p><br/>Această aventură plină de căldură îți va ajuta mintea să înflorească în nenumărate feluri:<br/>🌱 Imaginația ta va zbura pe măsură ce creezi opere de artă și spui povești<br/>🌱 Memoria ta va deveni mai puternică pe măsură ce înveți fapte fascinante despre natură<br/>🌱 Prieteniile tale vor înflori pe măsură ce lucrezi împreună cu alți jucători<br/>🌱 Dragostea ta pentru natură se va adânci pe măsură ce descoperi fauna uimitoare a României</p>
+        <p class="mt-5">Each time you complete these fun challenges, you'll earn special points that help your tree of knowledge grow taller and stronger.</p>
+        <p>The more you play, the more you learn, and your tree blossoms—just like Little Sprout!</p>
+        <p><br/>This heartwarming adventure will help your mind bloom in countless ways:<br/>🌱 Your imagination will soar as you create art and tell stories<br/>🌱 Your memory will get stronger as you learn fascinating facts about nature<br/>🌱 Your friendships will flourish as you work together with other players<br/>🌱 Your love for nature will deepen as you discover the amazing wildlife of Romania</p>
     </section>
     <section id="rules">
         <div class="rules-container">
-            <h2 class="mt-5">Cum se Joacă</h2>
+            <h2 class="mt-5">How to Play</h2>
             <div class="rules-content">
-                <h3>Pregătirea jocului: 2-10 jucători</h3>
-                <p>1. Mai întâi, alege-ți pionul.</p>
-                <p>2. Vei începe cu 6 cărți din pachet.</p>
-                <p>3. Dă cu zarul și așează-ți pionul pe numărul obținut.</p>
-                <p>4. Alege o opțiune și joacă o carte: poți desena, memora sau interpreta.</p>
-                <p>5. Vei avansa 1 sau 2 puncte dacă cineva ghicește corect.</p>
-                <p>6. Jucătorul care a ghicit corect avansează și el 1 punct.</p>
-                <p>7. Cartea jucată se întoarce în pachet pentru a fi amestecată.</p>
-                <p>8. Vei trage o carte nouă la sfârșitul turei tale.</p>
-                <p>9. Vei juca opțiunea de culoare pe care ai aterizat.</p>
-                <h3>Desfășurarea Jocului</h3>
-                <p>Tu și ceilalți jucători veți juca pe rând cărți pentru a vă construi copacul cunoașterii.</p>
-                <p>Alege una dintre aceste opțiuni pentru a juca:</p>
-                <p>1. Desen (+1 punct)</p>
-                <p>2. Memorarea a 2 fapte (+2 puncte)</p>
-                <p>3. Interpretare (+1 punct)</p>
-                <p>Primul jucător care ghicește corect câștigă 1 punct.</p>
-                <h3>Câștigarea Jocului</h3>
-                <p>Primul jucător care ajunge la nivelul "Little Sprout" câștigă! Dar stai, mai este!</p>
-                <p>După ce ajungi la nivelul "Little Sprout", poți continua să joci de la început sau să faci echipă cu alți jucători. Puteți forma echipe de maxim 2-3 jucători.</p>
+                <h3>Game Setup: 2-10 players</h3>
+                <p>1. First, choose your pawn.</p>
+                <p>2. You will start with 6 cards from the deck.</p>
+                <p>3. Roll the dice and place your pawn on the number obtained.</p>
+                <p>4. Choose an option and play a card: you can draw, memorize, or interpret.</p>
+                <p>5. You will advance 1 or 2 points if someone guesses correctly.</p>
+                <p>6. The player who guessed correctly also advances 1 point.</p>
+                <p>7. The played card returns to the deck to be shuffled.</p>
+                <p>8. You will draw a new card at the end of your turn.</p>
+                <p>9. You will play the color option you landed on.</p>
+                <h3>Gameplay</h3>
+                <p>You and the other players will take turns playing cards to build your tree of knowledge.</p>
+                <p>Choose one of these options to play:</p>
+                <p>1. Draw (+1 point)</p>
+                <p>2. Memorize 2 facts (+2 points)</p>
+                <p>3. Interpret (+1 point)</p>
+                <p>The first player to guess correctly wins 1 point.</p>
+                <h3>Winning the Game</h3>
+                <p>The first player to reach the "Little Sprout" level wins! But wait, there's more!</p>
+                <p>After reaching the "Little Sprout" level, you can continue playing from the beginning or team up with other players. You can form teams of up to 2-3 players.</p>
             </div>
         </div>
     </section>
     <section id="cards">
-        <h2 class="mt-5">Cărți de Joc</h2>
+        <h2 class="mt-5">Game Cards</h2>
         <div class="search-filter">
-            <input type="text" id="cardSearch" placeholder="Caută o carte...">
+            <input type="text" id="cardSearch" placeholder="Search for a card...">
         </div>
         <div class="cards-grid" id="cardsGrid">
         </div>
-        <p class="mt-3"><strong>Notă:</strong> Informațiile de pe cărțile reale pot fi diferite.</p>
+        <p class="mt-3"><strong>Note:</strong> Information on the actual cards may differ.</p>
     </section>
     <section id="shop">
-        <h2 class="mt-5">Magazin</h2>
+        <h2 class="mt-5">Shop</h2>
         <div class="products-grid">
             <div class="product product-img2"><img class="product-img" src="images/standard.jpg" alt="Family Adventure Set">
-                <h3>Setul de Aventură în Familie</h3>
-                <p>Începe-ți seara de jocuri cu o călătorie magică, simplu de învățat și distractiv de jucat.</p>
+                <h3>Family Adventure Set</h3>
+                <p>Start your game night with a magical journey, simple to learn and fun to play.</p>
                 <p class="game-content">
-                    🌱 <strong>Poveste și Reguli:</strong> Am inclus o poveste captivantă și reguli ușor de urmat pentru a-ți stârni imaginația.<br/>
-                    🌱 <strong>72 de Cărți de Descoperire:</strong> Vei descoperi surprize și provocări la fiecare pas.<br/>
-                    🌱 <strong>4 Cărți de Anotimp:</strong> Vezi cum jocul evoluează cu întorsături de situație sezoniere.<br/>
-                    🌱 <strong>Tablă de Joc Ilustrată:</strong> O tablă vibrantă și detaliată care te va transporta într-o lume magică.<br/>
-                    🌱 <strong>10 Pioni colorați și 2 Zaruri:</strong> Primești toate componentele clasice pentru un început perfect.<br/><br/>
-                    <strong>Perfect pentru:</strong> Crearea unei seri de jocuri confortabile și interactive, care aduce întreaga familie împreună!
+                    🌱 <strong>Story and Rules:</strong> We've included a captivating story and easy-to-follow rules to spark your imagination.<br/>
+                    🌱 <strong>72 Discovery Cards:</strong> You'll find surprises and challenges at every step.<br/>
+                    🌱 <strong>4 Season Cards:</strong> See how the game evolves with seasonal twists.<br/>
+                    🌱 <strong>Illustrated Game Board:</strong> A vibrant and detailed board that will transport you to a magical world.<br/>
+                    🌱 <strong>10 colorful Pawns and 2 Dice:</strong> You get all the classic components for a perfect start.<br/><br/>
+                    <strong>Perfect for:</strong> Creating a cozy and interactive game night that brings the whole family together!
                 </p>
-                <button>ÎN CURÂND</button>
+                <button>COMING SOON</button>
             </div>
-            <div class="product product-img2"><img class="product-img" src="images/expansion.jpg" alt="Family Adventure Set">
-                <h3>Pachetul de Provocări Suplimentare</h3>
-                <p>Dacă îți dorești o doză suplimentară de aventură și creativitate — acest pachet adaugă straturi interesante jocului tău.</p>
-                <p>(Notă: Vei avea nevoie de Setul de Aventură în Familie pentru asta.)</p>
+            <div class="product product-img2"><img class="product-img" src="images/expansion.jpg" alt="Extra Challenges Pack">
+                <h3>Extra Challenges Pack</h3>
+                <p>If you want an extra dose of adventure and creativity—this pack adds interesting layers to your game.</p>
+                <p>(Note: You'll need the Family Adventure Set for this.)</p>
                 <p class="game-content">
-                    🌿 <strong>Povestea Extinsă și Reguli Noi:</strong> Poți aprofunda aventura cu întorsături de situație proaspete.<br/>
-                    🌿 <strong>54 de Cărți de Descoperire Suplimentare:</strong> Mai multe provocări pentru a menține fiecare sesiune de joc interesantă.<br/>
-                    🌿 <strong>4 Cărți de Anotimp Suplimentare:</strong> Surprize suplimentare care schimbă atmosfera jocului.<br/>
-                    🌿 <strong>Elemente de Tablă de Joc Îmbunătățite:</strong> Detalii suplimentare care îmbunătățesc povestea vizuală.<br/><br/>
-                    <strong>Sfat:</strong> Poți combina acest pachet cu Setul de Aventură în Familie pentru a debloca o experiență de joc și mai bogată!
+                    🌿 <strong>Expanded Story and New Rules:</strong> You can deepen the adventure with fresh twists.<br/>
+                    🌿 <strong>54 Additional Discovery Cards:</strong> More challenges to keep every game session exciting.<br/>
+                    🌿 <strong>4 Additional Season Cards:</strong> Extra surprises that change the game's atmosphere.<br/>
+                    🌿 <strong>Enhanced Game Board Elements:</strong> Additional details that enhance the visual story.<br/><br/>
+                    <strong>Tip:</strong> You can combine this pack with the Family Adventure Set to unlock an even richer gaming experience!
                 </p>
-                <button>ÎN CURÂND</button>
+                <button>COMING SOON</button>
             </div>
-            <div class="product product-img2 full-width"><img class="product-img" src="images/collector-edition.jpg" alt="Family Adventure Set">
-                <h3>Pachetul de Aventură în Familie (Ediția de Colecție)</h3>
-                <p>Acesta este pachetul suprem pentru o seară de joc cu adevărat captivantă! Te poți bucura de aventura completă — combinând Setul de Aventură în Familie și Pachetul de Provocări Suplimentare — plus am inclus extra-uri creative exclusive care fac fiecare moment special.</p>
+            <div class="product product-img2 full-width"><img class="product-img" src="images/collector-edition.jpg" alt="Collector's Edition Set">
+                <h3>Family Adventure Pack (Collector's Edition)</h3>
+                <p>This is the ultimate package for a truly captivating game night! You can enjoy the complete adventure—combining the Family Adventure Set and the Extra Challenges Pack—plus we've included exclusive creative extras that make every moment special.</p>
                 <p class="game-content">
-                    🌱 <strong>Povestea Completă și Reguli:</strong> Te vei bucura de povestea completă și de regulile ușor de înțeles care îți ghidează aventura.<br/>
-                    🌱 <strong>Total Cărți de Descoperire:</strong> Primești un total de 126 de cărți (72 standard + 54 expansiune) pentru a stârni distracție fără sfârșit.<br/>
-                    🌱 <strong>Toate Cărțile de Anotimp:</strong> 8 cărți în total (4 standard + 4 extra) pentru un joc dinamic și mereu în schimbare.<br/>
-                    🌱 <strong>Tablă de Joc Ilustrată:</strong> O tablă de joc artistic concepută, care te va atrage pe tine și pe familia ta în aventură.<br/>
-                    🌱 <strong>Pioni de Familie:</strong> 10 pioni colorați și 2 zaruri pentru a face fiecare tură interesantă.<br/>
-                    <br/><strong>Extra-uri Creative Incluse pentru Tine:</strong><br/>
-                    🌿 <strong>Rechizite de Artă:</strong> Creioane colorate, un creion multifuncțional (cu gumă de șters și ascuțitoare) și un caiet A5 — perfect pentru a desena sau a ține scorul!<br/>
-                    🌿 <strong>Bonus:</strong> Un abțibild fermecător Little Sprout pentru a-ți aminti de magia naturii.<br/>
-                    <br/><strong>De ce o să-ți placă:</strong><br/>
-                    🍀 <strong>Legături de Familie:</strong> L-am conceput pentru a fi savurat de toată lumea, făcându-l ideal pentru o seară de joc memorabilă în familie.<br/>
-                    🍀 <strong>Distracție Fără Ecrane:</strong> Încurajează creativitatea, lucrul în echipă și povestirea, departe de ecrane.<br/>
-                    🍀 <strong>Ușor de Învățat:</strong> Regulile simple înseamnă că poți sări direct în distracție.<br/>
-                    🍀 <strong>Rejucabilitate Infinită:</strong> Cu peste 120 de cărți și surprize sezoniere schimbătoare, fiecare joc se va simți ca nou.<br/>
-                    <br/><strong>Sper să vă bucurați de nenumărate momente magice împreună!</strong>
+                    🌱 <strong>Complete Story and Rules:</strong> You'll enjoy the full story and easy-to-understand rules that guide your adventure.<br/>
+                    🌱 <strong>Total Discovery Cards:</strong> You get a total of 126 cards (72 standard + 54 expansion) to spark endless fun.<br/>
+                    🌱 <strong>All Season Cards:</strong> 8 cards in total (4 standard + 4 extra) for a dynamic and ever-changing game.<br/>
+                    🌱 <strong>Illustrated Game Board:</strong>An artistically designed game board that will draw you and your family into the adventure.<br/>
+                    🌱 <strong>Family Pawns:</strong> 10 colorful pawns and 2 dice to make every turn exciting.<br/>
+                    <br/><strong>Creative Extras Included for You:</strong><br/>
+                    🌿 <strong>Art Supplies:</strong> Colored pencils, a multi-functional pencil (with eraser and sharpener), and an A5 notebook—perfect for drawing or keeping score!<br/>
+                    🌿 <strong>Bonus:</strong> A charming Little Sprout sticker to remind you of nature's magic.<br/>
+                    <br/><strong>Why you'll love it:</strong><br/>
+                    🍀 <strong>Family Bonding:</strong> We designed it to be enjoyed by everyone, making it ideal for a memorable family game night.<br/>
+                    🍀 <strong>Screen-Free Fun:</strong> Encourages creativity, teamwork, and storytelling, away from screens.<br/>
+                    🍀 <strong>Easy to Learn:</strong> Simple rules mean you can jump right into the fun.<br/>
+                    🍀 <strong>Infinite Replayability:</strong> With over 120 cards and changing seasonal surprises, every game will feel new.<br/>
+                    <br/><strong>Hope you enjoy countless magical moments together!</strong>
                 </p>
-                <button>ÎN CURÂND</button>
+                <button>COMING SOON</button>
             </div>
         </div>
     </section>
@@ -475,16 +383,18 @@ min-height: 72px;
         <div class="language-switcher">
             <a href="index.html" id="ro-link" title="Română">RO</a>
             <span class="divider">|</span>
-            <a href="en.html" id="en-link" class="active2" title="Engleză">EN</a>
+            <a href="en.html" id="en-link" class="active2" title="English">EN</a>
         </div>
-        <p>&copy; Little Sprout. Toate drepturile rezervate.</p>
+        <p>&copy; Little Sprout. All rights reserved.</p>
         <div class="footer-links">
-            <a href="index.html">Acasă</a> |
-            <a href="terms-of-service.html">Termeni și Condiții</a> |
+            <a href="en.html">Home</a> |
+            <a href="terms-of-service-en.html">Terms and Conditions</a> |
             <a href="/cdn-cgi/l/email-protection#3f534a5c565e5111525e51584a7f58525e5653115c5052">Contact</a>
         </div>
     </footer>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    
+    <script>
        const game = {
     elements: {},
     state: {},
@@ -492,7 +402,8 @@ min-height: 72px;
     config: {
         SPOTS_PER_RING: 11,
         PAWN_COLORS: ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9f43'],
-        CARD_TITLES: ["Ciocănitoare", "Călugăriță", "Șalău", "Urs Brun", "Bujor Românesc", "Fluturele Galben"],
+        // DEMO CARD TITLES (English)
+        CARD_TITLES: ["Black Woodpecker", "Praying Mantis", "Zander", "Brown Bear", "Romanian Peony", "Clouded Yellow"],
         CARD_IMAGES: [
             "https://littlesprout.ro/images/card-black-woodpecker.png",
             "https://littlesprout.ro/images/card-praying-mantis.png",
@@ -501,40 +412,41 @@ min-height: 72px;
             "https://littlesprout.ro/images/card-romanian-peony.png",
             "https://littlesprout.ro/images/card-clouded-yellow.png"
         ],
-        // NEW: Added descriptions in the correct order to match CARD_TITLES
+        // DEMO CARD DESCRIPTIONS (English) - Matched to CARD_TITLES order
         CARD_DESCRIPTIONS: [
-            '1. Penaj distinctiv, complet negru, cu coroană roșie.<br/>2. Oferă un adăpost vital pentru multe specii de viețuitoare.<br/>3. De obicei, se găsesc în grupuri mici de familie.<br/>4. Sunet puternic de tobe utilizat în comunicare.<br/>5. Preferă pădurile mature, vechi.', // Ciocănitoare
-            '1. Prădători în ambuscadă, care stau și așteaptă.<br/>2. Femela trăiește 6-8 luni, masculul 4-6 luni.<br/>3. Se hrănește cu insecte și miere.<br/>4. Se împerechează în timpul lunilor de primăvară și de vară.<br/>5. Are 3 stadii de viață: ou, stadiu de nimfă și adult.', // Călugăriță
-            '1. Prădător apex în ecosistemul său.<br/>2. Preferă apele limpezi cu curent moderat.<br/>3. Se găsește în râuri mari, lacuri și rezervoare.<br/>4. Carnivor, se hrănește în principal cu pești mai mici.<br/>5. Vedere clară adaptată la condiții de lumină scăzută.', // Șalău (Matches index 2 of CARD_TITLES)
-            '1. Cel mai mare carnivor terestru după urșii polari.<br/>2. Culoarea variază de la blond la aproape negru.<br/>3. Prădători apex în habitatele lor.<br/>4. Abilități complexe de rezolvare a problemelor.<br/>5. Simțul mirosului remarcabil și inteligența ridicată.', // Urs Brun
-            '1. Floarea națională a României.<br/>2. Simbolizează frumusețea și rezistența.<br/>3. Înflorește în culori vibrante roz și alb.<br/>4. Important în cultura tradițională românească.<br/>5. Înflorește de la sfârșitul primăverii până la începutul verii.', // Bujor Românesc
-            '1. Aripi cu culoare galbenă și margini negre.<br/>2. Cunoscut pentru comportamentul său migrator.<br/>3. Joacă un rol în biodiversitatea ecosistemului.<br/>4. Zburător puternic și rapid, care zboară aproape de sol.<br/>5. Vederea lui este o încântare pentru pasionații de fluturi.' // Fluturele Galben (Matches index 5 of CARD_TITLES)
+            '1. Distinctive all-black plumage with a red crown.<br/>2. Provides vital shelter for many species.<br/>3. Usually found in small family groups.<br/>4. Loud drumming sound used in communication.<br/>5. Prefers mature, old-growth forests.', // Black Woodpecker
+            '1. Ambush predators that sit and wait.<br/>2. Female lives 6-8 months, male 4-6 months.<br/>3. Feeds on insects and honey.<br/>4. Mates during spring and summer months.<br/>5. Has 3 life stages: egg, nymph stage, and adult.', // Praying Mantis
+            '1. Apex predator in its ecosystem.<br/>2. Prefers clear waters with moderate current.<br/>3. Found in large rivers, lakes, and reservoirs.<br/>4. Carnivorous, feeds mainly on smaller fish.<br/>5. Sharp vision adapted to low-light conditions.', // Zander
+            '1. Largest land carnivore after polar bears.<br/>2. Color varies from blonde to nearly black.<br/>3. Apex predators in their habitats.<br/>4. Complex problem-solving skills.<br/>5. Remarkable sense of smell and high intelligence.', // Brown Bear
+            '1. National flower of Romania.<br/>2. Symbolizes beauty and resilience.<br/>3. Blooms in vibrant pink and white colors.<br/>4. Important in traditional Romanian culture.<br/>5. Blooms from late spring to early summer.', // Romanian Peony
+            '1. Wings with yellow color and black margins.<br/>2. Known for its migratory behavior.<br/>3. Plays a role in the ecosystem\'s biodiversity.<br/>4. Strong and fast flier, flies close to the ground.<br/>5. Its sight is a delight for butterfly enthusiasts.' // Clouded Yellow
         ],
         OUTER_RING_COLORS: ['#f7a732', '#f0c340', '#92c045', '#55b64c', '#29b9e6', '#2b77c8', '#4a4aa8', '#684196', '#9e2a8f', '#e53935', '#d82b45']
     },
+    // TUTORIAL STEPS (English)
     tutorialSteps: [{
-        text: "Mai întâi, alege o culoare pentru pionul tău.",
+        text: "First, choose a color for your pawn.",
         action: 'promptColor',
         stepNumber: 1
     }, {
-        text: "Dă cu zarurile pentru a găsi locul de start.",
+        text: "Roll the dice to find your starting spot.",
         action: 'promptDiceRoll',
         stepNumber: 2
     }, {
-        text: () => `Apasă pe ${game.state.diceSum} care luminează pentru a incepe.`,
+        text: () => `Click the glowing ${game.state.diceSum} to begin.`,
         action: 'promptPlacePawn',
         stepNumber: 3
     }, {
-        text: "Alege o acțiune pentru a juca o carte.",
+        text: "Choose an action to play a card.",
         action: 'promptPlayerTurn'
     }, {
-        text: "Bravo! Acum este rândul prietenului tău...",
+        text: "Nice! Now it's your friend's turn...",
         action: 'opponentTurn'
     }, {
-        text: "Perfect. Este din nou rândul tău!",
+        text: "Perfect. It's your turn again!",
         action: 'promptPlayerTurn'
     }, {
-        text: "Felicitări! Ai ajuns în inima pădurii!",
+        text: "Congratulations! You've reached the heart of the forest!",
         action: 'endGameSuccess'
     }],
     init() {
@@ -593,11 +505,10 @@ min-height: 72px;
 
         // MODIFIED: Corrected HTML order
         card.innerHTML = `
-            <p class="card-title">${this.config.CARD_TITLES[cardIndex] || 'Carte Nouă'}</p>
- <div class="card-actions">
-                <div class="action-dot white" data-move="1" data-tooltip="Desen">+1</div>
-                <div class="action-dot black" data-move="2" data-tooltip="Memorare">+2</div>
-                <div class="action-dot white" data-move="1" data-tooltip="Interpretare">+1</div>
+            <p class="card-title">${this.config.CARD_TITLES[cardIndex] || 'New Card'}</p> <div class="card-actions">
+                <div class="action-dot white" data-move="1" data-tooltip="Draw">+1</div>
+                <div class="action-dot black" data-move="2" data-tooltip="Memorize">+2</div>
+                <div class="action-dot white" data-move="1" data-tooltip="Interpret">+1</div>
             </div>
             <div class="card-image-placeholder">
                 <img src="${this.config.CARD_IMAGES[cardIndex]}" alt="${this.config.CARD_TITLES[cardIndex]}">
@@ -606,9 +517,7 @@ min-height: 72px;
                 <p class="card-fact">${fact1}</p>
                 <p class="card-fact">${fact2}</p>
             </div>
-           `;
-                
-        card.addEventListener('click', (e) => this.handleCardTap(e, card));
+           `;                        card.addEventListener('click', (e) => this.handleCardTap(e, card));
         card.querySelectorAll('.action-dot').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -803,7 +712,7 @@ min-height: 72px;
         this.elements.opponentCardHand.classList.add('active');
         document.querySelectorAll('.glowing-action').forEach(el => el.classList.remove('glowing-action'));
         if (this.state.forceMemorize) {
-            this.elements.narrationText.textContent = "'Memorează' (+2) pentru a avansa.";
+            this.elements.narrationText.textContent = "'Memorize' (+2) to advance."; // English text
             this.setHandInteractable(true);
             this.elements.cardHand.querySelectorAll('.action-dot').forEach(action => {
                 if (action.dataset.move === '2') {
@@ -816,7 +725,7 @@ min-height: 72px;
                 }
             });
         } else {
-            this.elements.narrationText.textContent = "Atinge o carte pentru a o mări, sau apasă o acțiune pentru a juca.";
+            this.elements.narrationText.textContent = "Tap a card to enlarge, or press an action to play."; // English text
             this.setHandInteractable(true);
         }
     },
@@ -826,7 +735,7 @@ min-height: 72px;
     endGameSuccess() {
         this.elements.playerSprout.classList.add('winning-pawn');
         const winnerText = document.createElement('div');
-        winnerText.textContent = 'Câștigător';
+        winnerText.textContent = 'Winner'; // English text
         winnerText.className = 'winner-text';
         this.elements.spotsContainer.appendChild(winnerText);
         setTimeout(() => {
@@ -968,9 +877,9 @@ min-height: 72px;
     if (isEnlarged) {
         // Use the correct scale factor for reversal based on device
         const scaleFactor = window.innerWidth > 768 ? 
-            parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--desktop-card-scale')) :
+             parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--desktop-card-scale')) :
             parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mobile-enlarged-scale'));
-                
+                        
         const safeScale = isNaN(scaleFactor) || scaleFactor === 0 ? (window.innerWidth > 768 ? 1.8 : 1.5) : scaleFactor;
         baseWidth /= safeScale;
         baseHeight /= safeScale;
@@ -1080,49 +989,20 @@ min-height: 72px;
             card.classList.toggle('inactive', !isInteractable);
         });
     },
-    async handleSubscription(event) {
+    handleSubscription(event) {
         event.preventDefault();
         const emailInput = this.elements.subscribeEmail;
-        
-        if (!emailInput.value || !emailInput.value.includes('@')) {
-            emailInput.style.borderColor = '#ff6b6b';
-            setTimeout(() => {
-                emailInput.style.borderColor = 'var(--color-accent)';
-            }, 2000);
-            return;
-        }
-        
-        try {
-            const response = await fetch('/subscribe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: emailInput.value })
-            });
-            
-            if (response.ok) {
-                this.elements.subscriptionAlert.querySelector('span').textContent = 'Mulțumim pentru abonare!';
-                this.elements.subscriptionAlert.classList.add('visible');
-                setTimeout(() => {
-                    this.elements.subscriptionAlert.classList.remove('visible');
-                }, 3000);
-                emailInput.value = '';
-            } else {
-                const data = await response.json();
-                this.elements.subscriptionAlert.querySelector('span').textContent = data.message || 'Eroare la abonare.';
-                this.elements.subscriptionAlert.classList.add('visible');
-                setTimeout(() => {
-                    this.elements.subscriptionAlert.classList.remove('visible');
-                }, 3000);
-            }
-        } catch (error) {
-            console.error('Subscription error:', error);
-            this.elements.subscriptionAlert.querySelector('span').textContent = 'Eroare de rețea. Încearcă din nou.';
+        if (emailInput.value && emailInput.value.includes('@')) {
             this.elements.subscriptionAlert.classList.add('visible');
             setTimeout(() => {
                 this.elements.subscriptionAlert.classList.remove('visible');
             }, 3000);
+            emailInput.value = '';
+        } else {
+            emailInput.style.borderColor = '#ff6b6b';
+            setTimeout(() => {
+                emailInput.style.borderColor = 'var(--color-accent)';
+            }, 2000);
         }
     },
     openPreorderModal() {
@@ -1134,10 +1014,12 @@ min-height: 72px;
     closePreorderModal() {
         this.elements.preorderModal.classList.remove('visible');
     }};
+        // Initialize the game when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => game.init(), 100);
         });
     </script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // --- Overlay Fade Trigger ---
@@ -1151,86 +1033,60 @@ min-height: 72px;
                     document.getElementById('integrated-game-container').classList.add('visible');
                 });
             }
-           // --- Card Display Script ---
-           // MODIFIED: This data is now stored in game.config, but we still need this for the #cards section
+           
+           // --- Card Display Script (for #cards section) ---
+           // This data is for the full card gallery, not the game demo
            const cards = [{
-    name: 'Ciocănitoarea Neagră<br><span class="small">(Dryocopus martius)</span>',
-    image: 'images/card-black-woodpecker.png',
-    category_text: 'Păsări',
-    category_icon: 'images/birds.png',
-    description: '1. Penaj distinctiv, complet negru, cu coroană roșie.<br/>2. Oferă un adăpost vital pentru multe specii de viețuitoare.<br/>3. De obicei, se găsesc în grupuri mici de familie.<br/>4. Sunet puternic de tobe utilizat în comunicare.<br/>5. Preferă pădurile mature, vechi.'
-}, {
-    name: 'Călugărița<br><span class="small">(Mantis religiosa)</span>',
-    image: 'images/card-praying-mantis.png',
-    category_text: 'Insecte',
-    category_icon: 'images/insects.png',
-    description: '1. Prădători în ambuscadă, care stau și așteaptă.<br/>2. Femela trăiește 6-8 luni, masculul 4-6 luni.<br/>3. Se hrănește cu insecte și miere.<br/>4. Se împerechează în timpul lunilor de primăvară și de vară.<br/>5. Are 3 stadii de viață: ou, stadiu de nimfă și adult.'
-}, {
-    name: 'Fluturele Lămâiță<br/><span class="small">(Colias croceus)</span>',
-    image: 'images/card-clouded-yellow.png',
-    category_text: 'Fluturi',
-    category_icon: 'images/butterflies.png',
-    description: '1. Aripi cu culoare galbenă și margini negre.<br/>2. Cunoscut pentru comportamentul său migrator.<br/>3. Joacă un rol în biodiversitatea ecosistemului.<br/>4. Zburător puternic și rapid, care zboară aproape de sol.<br/>5. Vederea lui este o încântare pentru pasionații de fluturi.'
-}, {
-    name: 'Ursul Brun<br/><span class="small">(Ursus arctos)</span>',
-    image: 'images/card-bear.png',
-    category_text: 'Animale',
-    category_icon: 'images/animals.png',
-    description: '1. Cel mai mare carnivor terestru după urșii polari.<br/>2. Culoarea variază de la blond la aproape negru.<br/>3. Prădători apex în habitatele lor.<br/>4. Abilități complexe de rezolvare a problemelor.<br/>5. Simțul mirosului remarcabil și inteligența ridicată.'
-}, {
-    name: 'Șalăul<br/><span class="small">(Sander lucioperca)</span>',
-    image: 'images/card-zander.png',
-    category_text: 'Pești',
-    category_icon: 'images/fish.png',
-    description: '1. Prădător apex în ecosistemul său.<br/>2. Preferă apele limpezi cu curent moderat.<br/>3. Se găsește în râuri mari, lacuri și rezervoare.<br/>4. Carnivor, se hrănește în principal cu pești mai mici.<br/>5. Vedere clară adaptată la condiții de lumină scăzută.'
-}, {
-    name: 'Bujorul Românesc<br/><span class="small">(Paeonia peregrina)</span>',
-    image: 'images/card-romanian-peony.png',
-    category_text: 'Flori',
-    category_icon: 'images/flowers.png',
-    description: '1. Floarea națională a României.<br/>2. Simbolizează frumusețea și rezistența.<br/>3. Înflorește în culori vibrante roz și alb.<br/>4. Important în cultura tradițională românească.<br/>5. Înflorește de la sfârșitul primăverii până la începutul verii.'
-}];
-            
-            // Dynamic cards from hidden-visual--cards folder
-            let dynamicCards = [];
-            
+                name: 'Black Woodpecker<br><span class="small">(Dryocopus martius)</span>',
+                image: 'images/card-black-woodpecker.png',
+                category_text: 'Birds',
+                category_icon: 'images/birds.png',
+                description: '1. Distinctive all-black plumage with a red crown.<br/>2. Provides vital shelter for many species.<br/>3. Usually found in small family groups.<br/>4. Loud drumming sound used in communication.<br/>5. Prefers mature, old-growth forests.'
+            }, {
+                name: 'European Praying Mantis<br><span class="small">(Mantis religiosa)</span>',
+                image: 'images/card-praying-mantis.png',
+                category_text: 'Insects',
+                category_icon: 'images/insects.png',
+                description: '1. The female lives 6-8 months, while the male lives for 4-6 months.<br/>2. It feeds on insects and honey.<br/>3. These are ambush predators, so they sit and wait for their prey.<br/>4. They mate during the spring and summer months.<br/>5. It has 3 life stages: egg, nymph, and adult.'
+            }, {
+                name: 'Clouded Yellow<br/><span class="small">(Colias croceus)</span>',
+                image: 'images/card-clouded-yellow.png',
+                category_text: 'Butterflies',
+                category_icon: 'images/butterflies.png',
+                description: '1. Its wings have a yellow coloration with black margins.<br/>2. It is known for its strong migratory behavior.<br/>3. It plays a role in the local ecosystem\'s biodiversity.<br/>4. They are strong and fast fliers, and they fly close to the ground.<br/>5. Seeing one is a delight for any butterfly enthusiast.'
+            }, {
+                name: 'Brown Bear <br/><span class="small">(Ursus arctos)</span>',
+                image: 'images/card-bear.png',
+                category_text: 'Animals',
+                category_icon: 'images/animals.png',
+                description: '1. It is the largest land carnivore after the polar bear.<br/>2. Its color can vary from blonde to nearly black.<br/>3. They are apex predators in their habitats.<br/>4. They have complex problem-solving skills.<br/>5. They have a remarkable sense of smell and high intelligence.'
+            }, {
+                name: 'Zander<br/><span class="small">(Sander lucioperca)</span>',
+                image: 'images/card-zander.png',
+                category_text: 'Fish',
+                category_icon: 'images/fish.png',
+                description: '1. This is an apex predator in its ecosystem.<br/>2. It prefers clear waters with a moderate current.<br/>3. You can find it in large rivers, lakes, and reservoirs.<br/>4. It is carnivorous, feeding primarily on smaller fish.<br/>5. It has sharp vision that is adapted to low-light conditions.'
+            }, {
+                name: 'Romanian Peony<br/><span class="small">(Paeonia peregrina)</span>',
+                image: 'images/card-romanian-peony.png',
+                category_text: 'Flowers',
+                category_icon: 'images/flowers.png',
+                description: '1. This is the national flower of Romania.<br/>2. It symbolizes beauty and resilience.<br/>3. It blooms in vibrant pink and white colors.<br/>4. It is important in traditional Romanian culture.<br/>5. You can see it bloom in late spring to early summer.'
+            }];
+
             const cardSearch = document.getElementById('cardSearch');
             if (cardSearch) {
-                cardSearch.addEventListener('input', async function(e) {
+                cardSearch.addEventListener('input', function(e) {
                     const searchTerm = e.target.value.toLowerCase();
-                    
-                    // Filter hardcoded cards
-                    const filteredCards = cards.filter(card => 
-                        card.name.toLowerCase().includes(searchTerm) || 
-                        card.category_text.toLowerCase().includes(searchTerm) || 
-                        card.description.toLowerCase().includes(searchTerm)
-                    );
-                    
-                    // Fetch and filter dynamic cards from folder
-                    if (searchTerm) {
-                        try {
-                            const response = await fetch(`/api/card-images?search=${encodeURIComponent(searchTerm)}`);
-                            const data = await response.json();
-                            dynamicCards = data.cards || [];
-                        } catch (error) {
-                            console.error('Error fetching dynamic cards:', error);
-                            dynamicCards = [];
-                        }
-                    } else {
-                        dynamicCards = [];
-                    }
-                    
-                    displayCards(filteredCards, dynamicCards);
+                    const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchTerm) || card.category_text.toLowerCase().includes(searchTerm) || card.description.toLowerCase().includes(searchTerm));
+                    displayCards(filteredCards);
                 });
             }
 
-            function displayCards(cardsToShow, dynamicCardsToShow = []) {
+            function displayCards(cardsToShow) {
                 const cardsGrid = document.getElementById('cardsGrid');
                 if (cardsGrid) {
-                    let html = '';
-                    
-                    // Display hardcoded cards
-                    html += cardsToShow.map(card => `
+                    cardsGrid.innerHTML = cardsToShow.map(card => `
                                 <div class="card">
                                     <h3 class="tcenter">${card.name}</h3>
                                     <img class="product-img-card" src="${card.image}">
@@ -1240,17 +1096,10 @@ min-height: 72px;
                                     </p>
                                     <p>${card.description}</p>
                                 </div>`).join('');
-                    
-                    // Display dynamic cards from folder (simplified - only image)
-                    html += dynamicCardsToShow.map(card => `
-                                <div class="card">
-                                    <img class="product-img-card" src="${card.path}">
-                                </div>`).join('');
-                    
-                    cardsGrid.innerHTML = html;
                 }
             }
             displayCards(cards);
+
             // --- Nav and Scroll Logic ---
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('nav a');
@@ -1288,21 +1137,26 @@ min-height: 72px;
                     }
                 });
             });
+
             // --- Language Switcher Logic ---
             const enLink = document.getElementById('en-link');
             const roLink = document.getElementById('ro-link');
             const currentPath = window.location.pathname;
             const currentFile = currentPath.split('/').pop() || 'index.html';
-            if (currentFile === 'index.html' || currentFile === '') {
-                roLink.classList.add('active2');
-                enLink.classList.remove('active2');
-            } else if (currentFile === 'en.html') {
+            
+            // This is 'en.html', so set English as active
+            if (currentFile === 'en.html') {
                 enLink.classList.add('active2');
                 roLink.classList.remove('active2');
+            } else { // Fallback for index.html
+                roLink.classList.add('active2');
+                enLink.classList.remove('active2');
             }
+
             enLink.href = 'en.html';
             roLink.href = 'index.html';
         });
     </script>
+    
 </body>
 </html>
