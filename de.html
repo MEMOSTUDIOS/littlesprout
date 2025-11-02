@@ -143,7 +143,7 @@
         .played-card-animation .card-facts {
             flex-shrink: 0; /* Don't let facts grow on BIG card */
         }
-        .played-card-animation .card-fact {             font-size: 0.3rem; /* Slightly larger on the big card */             text-align: left;        }
+        .played-card-animation .card-fact {             font-size: 0.45rem; /* Slightly larger on the big card */             text-align: left;        }
         .played-card-animation .action-dot {
             font-size: 0.5em; /* Makes advance options smaller on the big card */
         }               @keyframes play-card-effect {    0% {        transform: scale(1);        opacity: 1;    }    8% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    92% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    100% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);        opacity: 0;    }}        /* Media query for mobile-specific played card size */
