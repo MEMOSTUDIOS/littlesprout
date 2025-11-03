@@ -1140,24 +1140,7 @@
                 });
             });
 
-            // --- Language Switcher Logic ---
-            const enLink = document.getElementById('en-link');
-            const roLink = document.getElementById('ro-link');
-            const currentPath = window.location.pathname;
-            const currentFile = currentPath.split('/').pop() || 'index.html';
-            
-            // This is 'en.html', so set English as active
-            if (currentFile === 'en.html') {
-                enLink.classList.add('active2');
-                roLink.classList.remove('active2');
-            } else { // Fallback for index.html
-                roLink.classList.add('active2');
-                enLink.classList.remove('active2');
-            }
-
-            enLink.href = 'en.html';
-            roLink.href = 'index.html';
-        });
+           
     </script>
 </body>
 </html>
