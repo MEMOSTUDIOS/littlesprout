@@ -13,77 +13,218 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Fix for image and content overflow */
-        .card,
-        .card-image-placeholder {
-            overflow: hidden;
+ <style>
+    /* Fix for image and content overflow */
+    .card,
+    .card-image-placeholder {
+        overflow: hidden;
+    }
+
+    /* Ensure cards have a stacking context for tooltips */
+    #card-hand .card {
+        position: relative;
+        z-index: 1;
+        transition: z-index 0s 0.2s; /* Delay z-index change to prevent flicker */
+    }
+
+    #card-hand .card:hover {
+        z-index: 10; /* Bring hovered card to the front */
+        transition: z-index 0s;
+    }
+
+    /* Fully updated styles for the animated card */
+    .played-card-animation {
+        position: fixed;
+        z-index: 1000;
+        pointer-events: none;
+        margin: 0;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        animation: play-card-effect 6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .played-card-animation .card-title {
+        font-size: 0.70em;
+    }
+
+    /* CSS for hover tooltips positioned at the bottom */
+    .action-dot {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .action-dot[data-tooltip]::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -22px; /* Position below the dot */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: #fff;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-size: 0.55rem;
+        white-space: nowrap;
+        z-index: 1001; /* Ensure tooltip is above card */
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .action-dot[data-tooltip]:hover::after,
+    .action-dot[data-tooltip]:focus::after {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* --- SMALL CARD IN HAND --- */
+    #card-hand .card-facts {
+        padding: 0 0.25rem;
+        margin-top: 0.1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow: hidden;
+        width: 100%;
+        flex-grow: 0; /* STOP facts from growing */
+    }
+
+    #card-hand .card-fact {
+        font-size: 0.4rem;
+        color: #333;
+        margin: 1px 0;
+        line-height: 1.2;
+        text-align: left;
+        letter-spacing: 0.3px;
+    }
+
+    #card-hand .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    #card-hand .card-image-placeholder {
+        flex-grow: 1; /* LET the image grow */
+        flex-shrink: 1;
+        height: auto; /* Let flexbox control the height */
+        min-height: 50px;
+    }
+
+    /* This rule makes the image fill its container */
+    #card-hand .card-image-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* This looks better than 'contain' */
+    }
+
+    #card-hand .card-actions {
+        flex-shrink: 0;
+        margin-top: auto;
+        padding-top: 0.2rem;
+    }
+
+    .card-title {
+        flex-shrink: 0;
+    }
+
+    /* Force the played action's tooltip to be visible on the animated card */
+    .played-card-animation .is-played-action[data-tooltip]::after {
+        opacity: 1;
+        visibility: visible;
+        font-size: 0.3rem;
+        bottom: -18px;
+        padding: 1px 4px;
+        z-index: 9999;
+    }
+
+    .card-image-placeholder {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: transparent;
+        z-index: 10;
+    }
+
+    .card-actions {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    /* --- ANIMATED CARD (WHEN PLAYED) --- */
+    .played-card-animation .card-actions {
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .played-card-animation .card-image-placeholder {
+        flex-grow: 1; /* Let the image fill space on the BIG card */
+    }
+
+    .played-card-animation .card-image-placeholder img {
+        /* This rule is for the *original* image, not a problem */
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        min-height: 65px;
+    }
+
+    .played-card-animation .card-facts {
+        flex-shrink: 0;
+    }
+
+    .played-card-animation .card-fact {
+        font-size: 0.4rem; /* Adjusted font size for facts */
+        text-align: left;
+    }
+
+    .played-card-animation .action-dot {
+        font-size: 0.5em; /* Makes advance options smaller on the big card */
+    }
+
+    @keyframes play-card-effect {
+        0% {
+            transform: scale(1);
+            opacity: 1;
         }
-        
-        /* Dynamic cards styling - make image fill the entire card */
-        #cards .cards-grid .card {
-            padding: 0; /* Remove default padding for image-only cards */
-            overflow: hidden;
-            min-height: 535.5px; /* Match hardcoded card height */
+        8% {
+            transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);
+            opacity: 1;
         }
-        
-        #cards .cards-grid .card:has(.product-img-card:only-child) {
-            padding: 0;
+        92% {
+            transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);
+            opacity: 1;
         }
-        
-        #cards .cards-grid .card:not(:has(.product-img-card:only-child)) {
-            padding: 1rem; /* Keep padding for hardcoded cards with content */
+        100% {
+            transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);
+            opacity: 0;
         }
-        
-        #cards .cards-grid .card .product-img-card:only-child {
-            width: 100%;
-            height: 100%;
-            min-height: 535.5px;
-            object-fit: cover;
-            border-radius: 20px;
-            margin: 0;
-        }
-        
-        #cards .cards-grid .card .product-img-card:not(:only-child) {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-        
-        /* Ensure cards have a stacking context for tooltips */
+    }
+.played-card-animation .action-dot[data-tooltip]::after {
+    display: none;
+}
+/* --- Card Enlargement & Interaction Styles --- */
+        /* (These were in your original file, keeping them) */
         #card-hand .card {
             position: relative;
             z-index: 1;
-            transition: z-index 0s 0.2s; /* Delay z-index change to prevent flicker */
+            transition: z-index 0s 0.2s, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease;
         }
         #card-hand .card:hover {
-            z-index: 10; /* Bring hovered card to the front */
+            z-index: 10;
             transition: z-index 0s;
+            overflow: visible;
         }
-        /* Fully updated styles for the animated card */
-        .played-card-animation {
-            position: fixed;
-            z-index: 1000;
-            pointer-events: none;
-            margin: 0;
-            box-sizing: border-box;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-            padding: 0.75rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            /* Animation duration is now 6s total */
-            animation: play-card-effect 6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        .played-card-animation .card-title {
-            font-size: 0.75em;
-        }
-                
-        /* CSS for hover tooltips positioned at the bottom */
         .action-dot {
             position: relative;
             cursor: pointer;
@@ -91,17 +232,16 @@
         .action-dot[data-tooltip]::after {
             content: attr(data-tooltip);
             position: absolute;
-            bottom: -22px; /* Position below the dot */
+            bottom: -22px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #333;
             color: #fff;
             padding: 2px 4px;
             border-radius: 4px;
-            /* Smaller tooltip font */
             font-size: 0.55rem;
             white-space: nowrap;
-            z-index: 1001; /* Ensure tooltip is above card */
+            z-index: 1001;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -112,137 +252,104 @@
             opacity: 1;
             visibility: visible;
         }
-
-        /* NEW: Styles for card facts - SCOPED TO #card-hand */
-        #card-hand .card-facts {
-            padding: 0 0.25rem;
-            margin-top: 0.1rem; /* Tighter margin */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Start from top */
-            overflow: hidden;
-            width: 100%;
-            flex-grow: 1;/* Allows facts to take up space */
+        #card-hand .card:not(.is-enlarged):hover {
+            transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
-
-        #card-hand .card-fact {
-            font-size: 0.4rem; /* Very small to fit */
-            color: #333;
-            margin: 1px 0;
-            line-height: 1.2;
-            text-align: left;
-	letter-spacing: 0.3px;
+        #card-hand .card.is-enlarged,
+        #card-hand .card.is-enlarged:hover {
+            transform: translateY(-110px) scale(var(--desktop-card-scale)) rotate(var(--rotation));
+            z-index: 20;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
         }
-
-        /* Adjust card layout to accommodate new text */
-        #card-hand .card {
-             /* Make card a flex column */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Align from top */
+        #card-hand .card.is-enlarged {
+            overflow: visible;
         }
-        
-        /* SCOPED TO #card-hand */
-        #card-hand .card-image-placeholder {
-            flex-grow: 0; /* Don't let image grow */
-            flex-shrink: 0; /* Don't let image shrink */
-            height: 50%; /* Give image a fixed height */
-min-height: 75px;
+        #card-hand .card.is-enlarged .action-dot[data-tooltip]::after {
+            font-size: 0.35rem;
+            padding: 1px 3px;
+            bottom: -16px;
+            border-radius: 2px;
         }
-
-        /* SCOPED TO #card-hand */
-        #card-hand .card-actions {
-            flex-shrink: 0; /* Prevent actions from shrinking */
-            margin-top: auto; /* Push actions to the bottom */
-            padding-top: 0.2rem; /* Add a little space */
+        #card-hand.has-enlarged-card .card:not(.is-enlarged) {
+            opacity: 0.6;
+            transform: translateY(10px) rotate(var(--rotation));
         }
-
-        .card-title {
-            flex-shrink: 0; /* Prevent title from shrinking */
-        }
-                
-        /* Force the played action's tooltip to be visible on the animated card */
-        .played-card-animation .is-played-action[data-tooltip]::after {
+        #card-hand .card.is-enlarged .action-dot.show-tooltip::after {
             opacity: 1;
             visibility: visible;
-            font-size: 0.5rem; 
-            bottom: -18px; 
-            padding: 1px 4px;z-index: 9999; 
+            transition-delay: 0s;
         }
-                
-        /* This rule is now global, which is fine */
-        .card-image-placeholder {
-             width: 100%;
-             border-radius: 8px;
-             overflow: hidden;
-             background-color: transparent;z-index: 10; 
-         }
-
-        /* This global rule is also fine */
-        .card-actions {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            align-items: flex-start;
+        #card-hand .card.is-enlarged .action-dot {
+            cursor: pointer;
         }
         
-        /* These rules are for the animated card, which is correct */
-        .played-card-animation .card-actions {
-            width: 100%;
-            flex-shrink: 0;
+        /* --- Mobile-Specific Enlarged Card --- */
+        #card-hand .card.is-enlarged,
+        #card-hand .card.is-enlarged:hover {
+            transform: translateY(calc(-25vh + 100px)) scale(var(--mobile-enlarged-scale)) rotate(0);
         }
+        #card-hand .card.is-enlarged .action-dot[data-tooltip]::after {
+            font-size: 0.25rem;
+            padding: 1px 3px;
+            bottom: -16px;
+            border-radius: 2px;
+        }
+      
+.played-card-animation .card-fact {
+    font-size: 0.45rem;
+    line-height: 1.2;
+}
+    /* Media query for mobile-specific played card size */
+    @media (max-width: 768px) {
+
+#card-hand .card-image-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: fill; /* This looks better than 'contain' */
+    }
+
+  /* I removed the tiny font/min-height rules from here */
+    /* --- Mobile override for PLAYED card --- */
         .played-card-animation .card-image-placeholder {
-            flex-grow: 1; /* Let the image fill space on the BIG card */
-        }
-        .played-card-animation .card-image-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-min-height: 72px;
+            display: flex;
         }
         .played-card-animation .card-facts {
-            flex-shrink: 0; /* Don't let facts grow on BIG card */
+            flex-grow: 1; /* Show facts on mobile animation */
         }
-        .played-card-animation .card-fact {
-             font-size: 0.45rem; /* Slightly larger on the big card */
-             text-align: left;
+
+        .played-card-animation .card-title {
+            font-size: 0.4em;
         }
-        .played-card-animation .action-dot {
-            font-size: 0.6em; /* Makes advance options smaller on the big card */
-        }
-        
-       @keyframes play-card-effect {    0% {        transform: scale(1);        opacity: 1;    }    8% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    92% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    100% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);        opacity: 0;    }}
-        /* Media query for mobile-specific played card size */
-        @media (max-width: 768px) {
-            .played-card-animation .card-title {
-            font-size: 0.5em;
+        .played-card-animation {
+            padding: 0.35rem;
         }
 .played-card-animation .card-fact {
-            font-size: 0.5em;
+    font-size: 0.25rem;
+    line-height: 1.1;
+}
+        @keyframes play-card-effect {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            8% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
+                opacity: 1;
+            }
+            92% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
+                opacity: 0;
+            }
         }
-            .played-card-animation {
-                padding: 0.5rem;
-            }
-            @keyframes play-card-effect {
-                0% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-                8% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
-                    opacity: 1;
-                }
-                92% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
-                    opacity: 1;
-                }
-                100% {
-                    transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
-                    opacity: 0;
-                }
-            }
-        }/* Ensure cards have a stacking context for tooltips */#card-hand .card {    position: relative;    z-index: 1;    transition: z-index 0s 0.2s, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.4s ease, opacity 0.3s ease; /* Delay z-index change to prevent flicker */}#card-hand .card:hover {    z-index: 10; /* Bring hovered card to the front */    transition: z-index 0s;    overflow: visible; /* Allow tooltip to show on small cards */}/* CSS for hover tooltips positioned at the bottom */.action-dot {    position: relative;    cursor: pointer;}.action-dot[data-tooltip]::after {    content: attr(data-tooltip);    position: absolute;    bottom: -22px;    left: 50%;    transform: translateX(-50%);    background-color: #333;    color: #fff;    padding: 2px 4px;    border-radius: 4px;    font-size: 0.55rem;    white-space: nowrap;    z-index: 1001;    opacity: 0;    visibility: hidden;    pointer-events: none;    transition: opacity 0.2s, visibility 0.2s;}.action-dot[data-tooltip]:hover::after,.action-dot[data-tooltip]:focus::after {    opacity: 1;    visibility: visible;}/* Card Enlargement & Interaction Styles */
-#card-hand .card:not(.is-enlarged):hover {    transform: translateY(-15px) rotate(var(--rotation)) scale(1.05);    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);}#card-hand .card.is-enlarged,#card-hand .card.is-enlarged:hover {    transform: translateY(-110px) scale(var(--desktop-card-scale)) rotate(var(--rotation));    z-index: 20;    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);    cursor: pointer;}#card-hand .card.is-enlarged {    overflow: visible;}/* Make tooltips on enlarged cards smaller, like labels */#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {    font-size: 0.30rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}#card-hand.has-enlarged-card .card:not(.is-enlarged) {    opacity: 0.6;    transform: translateY(10px) rotate(var(--rotation));}#card-hand .card.is-enlarged .action-dot.show-tooltip::after {    opacity: 1;    visibility: visible;    transition-delay: 0s;}#card-hand .card.is-enlarged .action-dot {    cursor: pointer;}@media (max-width: 768px) {    #card-hand .card.is-enlarged,    #card-hand .card.is-enlarged:hover {        /* Use new mobile scale and move down 100px from center */        transform: translateY(calc(-25vh + 100px)) scale(var(--mobile-enlarged-scale)) rotate(0);    }#card-hand .card.is-enlarged .action-dot[data-tooltip]::after {font-size: 0.20rem;    padding: 1px 3px;    bottom: -16px;    border-radius: 2px;}#card-hand .card-image-placeholder {min-height: 35px;} #card-hand .card-fact {font-size:5px!important;}#card-hand .card-title{font-size:6px;} }    </style>
+        
+        }
+</style>    
 </head>
 <body>
     <nav>
