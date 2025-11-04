@@ -104,7 +104,7 @@
         }                /* SCOPED TO #card-hand */
         #card-hand .card-image-placeholder {
             flex-grow: 1; /* LET the image grow */
-    flex-shrink: 1; /* Allow image to shrink */
+    flex-shrink: 0; /* Allow image to shrink */
     height: auto; /* Let flexbox control the height */
     min-height: 50px; /* Give it a more reasonable minimum */
         }
@@ -147,14 +147,14 @@
             object-fit: fill;min-height: 72px;
         }
         .played-card-animation .card-facts {
-            flex-shrink: 0; /* Don't let facts grow on BIG card */
+            flex-grow: 1; /* Don't let facts grow on BIG card */
         }
-        .played-card-animation .card-fact {             font-size: 0.45rem; /* Slightly larger on the big card */             text-align: left;        }
+        .played-card-animation .card-fact {             font-size: 0.20rem; /* Slightly larger on the big card */             text-align: left;        }
         .played-card-animation .action-dot {
             font-size: 0.5em; /* Makes advance options smaller on the big card */
         }               @keyframes play-card-effect {    0% {        transform: scale(1);        opacity: 1;    }    8% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    92% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale)) rotate(0);        opacity: 1;    }    100% {        transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade)) rotate(0);        opacity: 0;    }}        /* Media query for mobile-specific played card size */
        @media (max-width: 768px) {
-    
+    .played-card-animation .is-played-action[data-tooltip]::after { bottom:-10px;}
     /* --- Your animation rules (unchanged) --- */
     .played-card-animation .card-title {
         font-size: 0.4em;
