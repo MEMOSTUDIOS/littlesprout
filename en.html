@@ -46,12 +46,12 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.25rem;
         animation: play-card-effect 6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
     .played-card-animation .card-title {
-        font-size: 0.75em;
+        font-size: 0.70em;
     }
 
     /* CSS for hover tooltips positioned at the bottom */
@@ -176,7 +176,7 @@
         width: 100%;
         height: 100%;
         object-fit: fill;
-        min-height: 72px;
+        min-height: 65px;
     }
 
     .played-card-animation .card-facts {
@@ -210,35 +210,10 @@
             opacity: 0;
         }
     }
-
-    /* Media query for mobile-specific played card size */
-    @media (max-width: 768px) {
-        .played-card-animation .card-title {
-            font-size: 0.4em;
-        }
-        .played-card-animation {
-            padding: 0.5rem;
-        }
-        @keyframes play-card-effect {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            8% {
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
-                opacity: 1;
-            }
-            92% {
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
-                opacity: 0;
-            }
-        }
-        
-        /* --- Card Enlargement & Interaction Styles --- */
+.played-card-animation .action-dot[data-tooltip]::after {
+    display: none;
+}
+/* --- Card Enlargement & Interaction Styles --- */
         /* (These were in your original file, keeping them) */
         #card-hand .card {
             position: relative;
@@ -321,14 +296,48 @@
             bottom: -16px;
             border-radius: 2px;
         }
-        /* I removed the tiny font/min-height rules from here */
+      
+.played-card-animation .card-fact {
+    font-size: 0.30rem;
+    line-height: 1.2;
+}
+    /* Media query for mobile-specific played card size */
+    @media (max-width: 768px) {
+  /* I removed the tiny font/min-height rules from here */
     /* --- Mobile override for PLAYED card --- */
         .played-card-animation .card-image-placeholder {
             display: none; /* Hide image on mobile animation */
         }
         .played-card-animation .card-facts {
             flex-grow: 1; /* Show facts on mobile animation */
-        }}
+        }
+
+        .played-card-animation .card-title {
+            font-size: 0.4em;
+        }
+        .played-card-animation {
+            padding: 0.35rem;
+        }
+        @keyframes play-card-effect {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            8% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 1));
+                opacity: 1;
+            }
+            92% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale, 2.5));
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--translateX), var(--translateY)) scale(var(--played-card-scale-fade, 3));
+                opacity: 0;
+            }
+        }
+        
+        }
 </style>
 </head>
 <body>
