@@ -298,7 +298,7 @@
         }
       
 .played-card-animation .card-fact {
-    font-size: 0.30rem;
+    font-size: 0.45rem;
     line-height: 1.2;
 }
     /* Media query for mobile-specific played card size */
@@ -306,7 +306,7 @@
   /* I removed the tiny font/min-height rules from here */
     /* --- Mobile override for PLAYED card --- */
         .played-card-animation .card-image-placeholder {
-            display: none; /* Hide image on mobile animation */
+            display: flex;
         }
         .played-card-animation .card-facts {
             flex-grow: 1; /* Show facts on mobile animation */
@@ -318,6 +318,10 @@
         .played-card-animation {
             padding: 0.35rem;
         }
+.played-card-animation .card-fact {
+    font-size: 0.25rem;
+    line-height: 1.1;
+}
         @keyframes play-card-effect {
             0% {
                 transform: scale(1);
