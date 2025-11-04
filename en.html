@@ -303,6 +303,13 @@
 }
     /* Media query for mobile-specific played card size */
     @media (max-width: 768px) {
+
+#card-hand .card-image-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* This looks better than 'contain' */
+    }
+
   /* I removed the tiny font/min-height rules from here */
     /* --- Mobile override for PLAYED card --- */
         .played-card-animation .card-image-placeholder {
